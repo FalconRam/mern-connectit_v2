@@ -1,0 +1,35 @@
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+.nav-listItems > li > a,
+.nav-listItems > li > a > button {
+  color: rgb(255, 255, 255);
+  font-size: 0.8rem;
+}
+
+.nav-listItems > li > a:hover {
+  color: rgb(1, 236, 249);
+}
+
+.nav-listItems > li > a > button:hover {
+  color: rgb(255, 255, 255);
+  background: red;
+}
+
+.btn.show {
+  border: none;
+}
+
+.dropdown-menu[data-bs-popper] {
+  left: -4rem;
+}
+
+.dropdown-menu.show {
+  min-width: 8em;
+}
+
+.more-icon {
+  width: 2rem;
+  height: 2rem;
+}
