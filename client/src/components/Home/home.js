@@ -10,7 +10,7 @@ import RightSection from "./RightSection/rightSection";
 const Home = () => {
   const history = useHistory();
 
-  let user = false;
+  const user = JSON.parse(localStorage.getItem("profile"));
 
   if (!user) {
     history.push("/auth");

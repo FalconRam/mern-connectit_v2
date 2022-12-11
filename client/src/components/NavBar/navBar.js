@@ -12,24 +12,23 @@ import more from "../../assets/more.png";
 import "./navBar.css";
 
 const NavBar = () => {
-  // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  let user = false;
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+
   const dispatch = useDispatch();
   const location = useLocation();
 
-  // useEffect(() => {
-  //   const token = user?.token;
-  //   if (token) {
-  //     const decodedToken = decode(token);
-  //     if (decodedToken.exp * 1000 < new Date().getTime()) logout();
-  //   }
-  //   setUser(JSON.parse(localStorage.getItem("profile")));
-  // }, [location]);
+  useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [location]);
 
   const logout = () => {
     dispatch({ type: LOGOUT });
     // window.location.href = "/auth";
-    // setUser(null);
   };
   return (
     <>
@@ -47,7 +46,7 @@ const NavBar = () => {
           </a>
 
           {/* From Medium to xxl Devices Component*/}
-          {user && (
+          {user?.result && (
             <div role="navigation " className="d-none d-sm-none d-md-block">
               <ul className="nav justify-content-end nav-listItems me-2">
                 <li className="nav-item ">
@@ -77,7 +76,7 @@ const NavBar = () => {
           )}
 
           {/* Mobile and below mobile Component */}
-          {user && (
+          {user?.result && (
             <div className="d-md-none dropdown me-4 ">
               <button
                 className="btn"
