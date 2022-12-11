@@ -2,6 +2,13 @@
   color: green;
 }
 
-.formError{
+.formError {
   color: red;
+}
+
+.switchButton {
+  border: none;
+  background: none;
+  font-size: 0.8rem;
+  color: #0a58ca;
 }

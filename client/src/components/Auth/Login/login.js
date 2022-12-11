@@ -55,6 +55,7 @@ const LogIn = ({ isLogin, setIsLogin }) => {
       password: "",
     });
     setIsLogin(!isLogin);
+    setLoginCred({ email: "", password: "" });
   };
 
   return (
@@ -62,7 +63,7 @@ const LogIn = ({ isLogin, setIsLogin }) => {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-10 col-md-8 col-lg-4 border rounded p-5 border-primary">
-            <p className="h3 text-center loginIcon">
+            <p className="h3 text-center loginIcon fw-bold">
               <i className="bi bi-box-arrow-in-right me-2" />
               LogIn
             </p>
@@ -100,19 +101,22 @@ const LogIn = ({ isLogin, setIsLogin }) => {
 
               <button
                 type="submit"
-                className="btn btn-primary d-grid mx-auto"
+                className="btn btn-primary d-grid col-6 mx-auto"
                 onClick={handleSubmit}
               >
                 Login
               </button>
             </form>
-            <button onClick={switchMode} className="btn btn-none">
-              <a className="d-grid mt-3">
+            <div className="d-flex flex-column flex-md-row justify-content-between ">
+              <button onClick={switchMode} className="p-0 mt-3 switchButton">
                 {isLogin
                   ? "Don't have an account?"
                   : "Already have an account? Sign In"}
-              </a>
-            </button>
+              </button>
+              <button className="p-0 mt-3 switchButton">
+                {isLogin && "Forgot Password?"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
