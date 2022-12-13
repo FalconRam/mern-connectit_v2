@@ -11,6 +11,7 @@ const LogIn = ({ isLogin, setIsLogin }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [showFormError, setShowFormError] = useState(false);
   const [loginCred, setLoginCred] = useState({
@@ -60,6 +61,10 @@ const LogIn = ({ isLogin, setIsLogin }) => {
     setIsLogin(!isLogin);
   };
 
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <>
       <div className="container col-sm-10 col-md-7 col-lg-5">
@@ -85,22 +90,34 @@ const LogIn = ({ isLogin, setIsLogin }) => {
                 ></input>
                 {showFormError && <p className="formError">{errors.email}</p>}
               </div>
+
               <div className="mb-3">
                 <label htmlFor="exampleInputPassword1" className="form-label">
                   Password
                 </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="exampleInputPassword1"
-                  onChange={(e) => setField("password", e.target.value)}
-                  required
-                ></input>
+                <div className="input-group">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form-control"
+                    id="exampleInputPassword1"
+                    onChange={(e) => setField("password", e.target.value)}
+                    required
+                  ></input>
+                  <span
+                    className="input-group-text eyeButton"
+                    onClick={handleShowPassword}
+                  >
+                    {showPassword ? (
+                      <i className="bi bi-eye-fill"></i>
+                    ) : (
+                      <i className="bi bi-eye-slash-fill"></i>
+                    )}
+                  </span>
+                </div>
                 {showFormError && (
                   <p className="formError">{errors.password}</p>
                 )}
               </div>
-
               <button
                 type="submit"
                 className="btn btn-primary d-grid col-sm-12 col-md-5 col-lg-4 mx-auto"

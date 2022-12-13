@@ -11,6 +11,9 @@ const SignUp = ({ isLogin, setIsLogin }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [errors, setErrors] = useState({});
   const [showFormError, setShowFormError] = useState(false);
   const [signInData, setsignInData] = useState({
@@ -69,6 +72,15 @@ const SignUp = ({ isLogin, setIsLogin }) => {
     clearForm();
     setIsLogin(!isLogin);
   };
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <>
       <div className="col-sm-10 col-md-8 col-lg-5 mx-auto py-4 p-3 border rounded border-primary">
@@ -152,14 +164,26 @@ const SignUp = ({ isLogin, setIsLogin }) => {
               <label htmlFor="exampleInputPassword1" className="form-label">
                 Password
               </label>
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                aria-label="Password"
-                onChange={(e) => setField("password", e.target.value)}
-                required
-              ></input>
+              <div className="input-group">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-control"
+                  placeholder="Password"
+                  aria-label="Password"
+                  onChange={(e) => setField("password", e.target.value)}
+                  required
+                ></input>
+                <span
+                  className="input-group-text eyeButton"
+                  onClick={handleShowPassword}
+                >
+                  {showPassword ? (
+                    <i className="bi bi-eye-fill"></i>
+                  ) : (
+                    <i className="bi bi-eye-slash-fill"></i>
+                  )}
+                </span>
+              </div>
               {showFormError && <p className="formError">{errors.password}</p>}
             </div>
             <div className="col-12 col-md-6">
@@ -169,14 +193,26 @@ const SignUp = ({ isLogin, setIsLogin }) => {
               >
                 Confirm Password
               </label>
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Confirm Password"
-                aria-label="Confirm Password"
-                onChange={(e) => setField("confirmPassword", e.target.value)}
-                required
-              ></input>
+              <div className="input-group">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  className="form-control"
+                  placeholder="Confirm Password"
+                  aria-label="Confirm Password"
+                  onChange={(e) => setField("confirmPassword", e.target.value)}
+                  required
+                ></input>
+                <span
+                  className="input-group-text eyeButton"
+                  onClick={handleShowConfirmPassword}
+                >
+                  {showConfirmPassword ? (
+                    <i className="bi bi-eye-fill"></i>
+                  ) : (
+                    <i className="bi bi-eye-slash-fill"></i>
+                  )}
+                </span>
+              </div>
               {showFormError && (
                 <p className="formError">{errors.confirmPassword}</p>
               )}
