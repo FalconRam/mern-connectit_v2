@@ -50,7 +50,7 @@ const SignUp = ({ isLogin, setIsLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(signInData);
+
     const newErrors = findSigninFormErrors(signInData);
     // Conditional logic:
     if (Object.keys(newErrors).length > 0) {
