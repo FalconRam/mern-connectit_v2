@@ -60,6 +60,7 @@ export const findSigninFormErrors = (signInData) => {
     confirmPassword !== password
   )
     newErrors.confirmPassword = "Password is not Matching!";
+  else newErrors.confirmPassword = "Password is not Matching!";
 
   return newErrors;
 };
