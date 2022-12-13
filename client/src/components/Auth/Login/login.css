@@ -5,6 +5,7 @@
 .formError {
   color: red;
   font-size: 0.7rem;
+  margin-bottom: 0;
 }
 
 .switchButton {

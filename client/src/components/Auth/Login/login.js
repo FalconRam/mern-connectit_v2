@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { logIn, signUp } from "../../../actions/auth";
+import { logIn } from "../../../actions/auth";
 import { findLoginFormErrors } from "../../../errorHandling/authFormEH";
 
 import "./logIn.css";
@@ -17,6 +17,13 @@ const LogIn = ({ isLogin, setIsLogin }) => {
     email: "",
     password: "",
   });
+
+  let clearForm = () => {
+    setLoginCred({
+      email: "",
+      password: "",
+    });
+  };
 
   const setField = (field, value) => {
     setLoginCred({
@@ -43,26 +50,21 @@ const LogIn = ({ isLogin, setIsLogin }) => {
     } else {
       // No errors!
       // step : 1 - dispatching the action ; check step to in actions/auth
-      isLogin
-        ? dispatch(logIn(loginCred, history))
-        : dispatch(signUp(loginCred, history));
+      dispatch(logIn(loginCred, history));
+      clearForm();
     }
   };
 
   const switchMode = () => {
-    setLoginCred({
-      email: "",
-      password: "",
-    });
+    clearForm();
     setIsLogin(!isLogin);
-    setLoginCred({ email: "", password: "" });
   };
 
   return (
     <>
-      <div className="container">
+      <div className="container col-sm-10 col-md-7 col-lg-5">
         <div className="row justify-content-center">
-          <div className="col-10 col-md-8 col-lg-5 border rounded p-5 border-primary">
+          <div className="border rounded p-5 border-primary">
             <p className="h3 text-center loginIcon fw-bold">
               <i className="bi bi-box-arrow-in-right me-2" />
               LogIn
@@ -101,7 +103,7 @@ const LogIn = ({ isLogin, setIsLogin }) => {
 
               <button
                 type="submit"
-                className="btn btn-primary d-grid col-6 mx-auto"
+                className="btn btn-primary d-grid col-sm-12 col-md-5 col-lg-4 mx-auto"
                 onClick={handleSubmit}
               >
                 Login

@@ -10,7 +10,7 @@ const Auth = () => {
     <>
       <div className="container auth">
         {/* d-flex align-items-center justify-content-center */}
-        <div className="">
+        <div>
           {isLogin ? (
             <LogIn isLogin={isLogin} setIsLogin={setIsLogin} />
           ) : (
