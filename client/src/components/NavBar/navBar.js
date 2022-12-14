@@ -32,15 +32,18 @@ const NavBar = () => {
   };
   return (
     <>
-      <div className="container-fluid ">
-        <nav className="navbar fixed-top navbar-dark bg-primary ">
-          <a className="navbar-brand mx-3" href={user ? "/" : "/auth"}>
+      <div className="container-fluid">
+        <nav className="navbar fixed-top navbar-dark navBgColor">
+          <a
+            className="navbar-brand mx-3 navFontColor d-flex align-items-center"
+            href={user ? "/" : "/auth"}
+          >
             <img
               src={logo}
               alt="Logo"
               width="30"
               height="24"
-              className="d-inline-block "
+              className="d-inline-block"
             />
             ConnectIT
           </a>

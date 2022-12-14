@@ -67,7 +67,7 @@ const LogIn = ({ isLogin, setIsLogin }) => {
 
   return (
     <>
-      <div className="container col-sm-10 col-md-7 col-lg-5">
+      <div className="container bg-white col-sm-10 col-md-7 col-lg-5">
         <div className="row justify-content-center">
           <div className="border rounded p-5 border-primary">
             <p className="h3 text-center loginIcon fw-bold">

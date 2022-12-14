@@ -2,18 +2,28 @@
   font-family: "Roboto", sans-serif;
 }
 
+.navBgColor {
+  background: #ffffff;
+}
+
+.navbar-brand,
+.navbar-brand:hover,
+.navbar-brand:focus {
+  color: #000000;
+}
+
 .nav-listItems > li > a,
 .nav-listItems > li > a > button {
-  color: rgb(255, 255, 255);
   font-size: 0.8rem;
+  color: #666666;
 }
 
 .nav-listItems > li > a:hover {
-  color: rgb(1, 236, 249);
+  color: #191919;
 }
 
 .nav-listItems > li > a > button:hover {
-  color: rgb(255, 255, 255);
+  color: #fff;
   background: red;
 }
 

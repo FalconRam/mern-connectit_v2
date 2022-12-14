@@ -83,7 +83,7 @@ const SignUp = ({ isLogin, setIsLogin }) => {
 
   return (
     <>
-      <div className="col-sm-10 col-md-8 col-lg-5 mx-auto py-4 p-3 border rounded border-primary">
+      <div className="col-sm-10 col-md-8 col-lg-5 mx-auto py-4 p-3 bg-white border rounded border-primary">
         <p className="h3 text-center signIcon fw-bold">
           <i className="bi bi-box-arrow-in-right me-2" />
           SignIn
