@@ -96,7 +96,7 @@ const SignUp = ({ isLogin, setIsLogin }) => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control form-control-sm"
                 placeholder="First name"
                 aria-label="First name"
                 onChange={(e) => setField("firstName", e.target.value)}
@@ -110,7 +110,7 @@ const SignUp = ({ isLogin, setIsLogin }) => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control form-control-sm"
                 placeholder="Last name"
                 aria-label="Last name"
                 onChange={(e) => setField("lastName", e.target.value)}
@@ -124,7 +124,7 @@ const SignUp = ({ isLogin, setIsLogin }) => {
               </label>
               <input
                 type="email"
-                className="form-control"
+                className="form-control form-control-sm"
                 placeholder="Email"
                 aria-label="Email"
                 onChange={(e) => setField("email", e.target.value)}
@@ -138,7 +138,7 @@ const SignUp = ({ isLogin, setIsLogin }) => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control form-control-sm"
                 placeholder="City"
                 aria-label="City"
                 onChange={(e) => setField("city", e.target.value)}
@@ -152,7 +152,7 @@ const SignUp = ({ isLogin, setIsLogin }) => {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control form-control-sm"
                 placeholder="Country"
                 aria-label="Country"
                 onChange={(e) => setField("country", e.target.value)}
@@ -167,7 +167,7 @@ const SignUp = ({ isLogin, setIsLogin }) => {
               <div className="input-group">
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="form-control"
+                  className="form-control form-control-sm form-control-password"
                   placeholder="Password"
                   aria-label="Password"
                   onChange={(e) => setField("password", e.target.value)}
@@ -178,9 +178,9 @@ const SignUp = ({ isLogin, setIsLogin }) => {
                   onClick={handleShowPassword}
                 >
                   {showPassword ? (
-                    <i className="bi bi-eye-fill"></i>
+                    <i className="bi bi-eye-fill bi-eye-fill-size"></i>
                   ) : (
-                    <i className="bi bi-eye-slash-fill"></i>
+                    <i className="bi bi-eye-slash-fill bi-eye-fill-size"></i>
                   )}
                 </span>
               </div>
@@ -196,7 +196,7 @@ const SignUp = ({ isLogin, setIsLogin }) => {
               <div className="input-group">
                 <input
                   type={showConfirmPassword ? "text" : "password"}
-                  className="form-control"
+                  className="form-control form-control-sm form-control-password"
                   placeholder="Confirm Password"
                   aria-label="Confirm Password"
                   onChange={(e) => setField("confirmPassword", e.target.value)}
@@ -207,9 +207,9 @@ const SignUp = ({ isLogin, setIsLogin }) => {
                   onClick={handleShowConfirmPassword}
                 >
                   {showConfirmPassword ? (
-                    <i className="bi bi-eye-fill"></i>
+                    <i className="bi bi-eye-fill bi-eye-fill-size"></i>
                   ) : (
-                    <i className="bi bi-eye-slash-fill"></i>
+                    <i className="bi bi-eye-slash-fill bi-eye-fill-size"></i>
                   )}
                 </span>
               </div>
@@ -219,7 +219,7 @@ const SignUp = ({ isLogin, setIsLogin }) => {
             </div>
             <button
               type="submit"
-              className="btn btn-primary d-grid col-sm-12 col-md-5 col-lg-4 mx-auto"
+              className="btn btn-primary d-grid col-sm-12 col-md-5 col-lg-4 mx-auto mt-3"
               onClick={handleSubmit}
             >
               Sigin

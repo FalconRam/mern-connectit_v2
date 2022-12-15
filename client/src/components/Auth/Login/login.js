@@ -82,7 +82,7 @@ const LogIn = ({ isLogin, setIsLogin }) => {
                 </label>
                 <input
                   type="email"
-                  className="form-control"
+                  className="form-control form-control-sm"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
                   onChange={(e) => setField("email", e.target.value)}
@@ -98,7 +98,7 @@ const LogIn = ({ isLogin, setIsLogin }) => {
                 <div className="input-group">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className="form-control"
+                    className="form-control form-control-sm form-control-password"
                     id="exampleInputPassword1"
                     onChange={(e) => setField("password", e.target.value)}
                     required
@@ -108,9 +108,9 @@ const LogIn = ({ isLogin, setIsLogin }) => {
                     onClick={handleShowPassword}
                   >
                     {showPassword ? (
-                      <i className="bi bi-eye-fill"></i>
+                      <i className="bi bi-eye-fill bi-eye-fill-size"></i>
                     ) : (
-                      <i className="bi bi-eye-slash-fill"></i>
+                      <i className="bi bi-eye-slash-fill bi-eye-fill-size"></i>
                     )}
                   </span>
                 </div>

@@ -1,6 +1,19 @@
 .signIcon {
   color: #0d6efd;
 }
+
 label {
   font-size: 0.8rem;
+}
+
+.bi-eye-fill-size {
+  font-size: 0.7rem !important;
+}
+
+.form-control-password {
+  border-right-color: #fff;
+}
+
+.input-group-text {
+  background: transparent;
 }
