@@ -17,7 +17,7 @@ const Home = () => {
   }
   return (
     <>
-      <div className="container">
+      <div className="container-md customMargin d-flex justify-content-around flex-column flex-sm-row mx-auto">
         <LeftSection />
         <MiddleSection />
         <RightSection />
