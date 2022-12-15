@@ -34,8 +34,8 @@ const MiddleSection = () => {
               Some quick example text to build on the card title and make up the
               bulk of the card's content.
             </p>
-            <div class="card-footer">2 days ago</div>
           </div>
+          <div class="card-footer">2 days ago</div>
         </div>
 
         <div className="card col-sm-12 col-md-10 col-lg-10 mb-3 mx-auto">
