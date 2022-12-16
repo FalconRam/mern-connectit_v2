@@ -1,11 +1,22 @@
 import React, { useState } from "react";
 
+import { useHistory } from "react-router-dom";
+
 import "./auth.css";
 import LogIn from "./Login/logIn";
 import SignUp from "./SignUp/signUp";
 
 const Auth = () => {
+  const history = useHistory();
+  
   const [isLogin, setIsLogin] = useState(true);
+
+  const user = JSON.parse(localStorage.getItem("profile"));
+
+  if (user) {
+    history.push("/");
+  }
+
   return (
     <>
       <div className="container auth">
