@@ -35,7 +35,7 @@ const NavBar = () => {
       <div className="container-fluid">
         <nav className="navbar fixed-top navbar-dark navBgColor">
           <a
-            className="navbar-brand mx-3 navFontColor d-flex align-items-center"
+            className="navbar-brand mx-3 navFontColor d-flex align-items-center text-primary"
             href={user ? "/" : "/auth"}
           >
             <img
