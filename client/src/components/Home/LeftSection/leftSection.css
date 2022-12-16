@@ -11,3 +11,34 @@
   width: 5rem;
   height: 5rem;
 }
+
+.img-thumbnail {
+  padding: 0;
+  border: 2px solid white;
+}
+
+.headline,
+.followCount {
+  font-size: 0.7rem;
+}
+
+.profileUser {
+  cursor: pointer;
+}
+.followCount,
+.profileCardLinks,
+.savedItems {
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.profileCardLinks:hover,
+.followFollows:hover,
+.savedItems:hover {
+  color: black !important;
+  cursor: pointer;
+}
+
+.liLeft:hover {
+  background-color: rgb(232, 232, 232);
+}
