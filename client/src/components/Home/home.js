@@ -31,7 +31,7 @@ const Home = () => {
     <>
       <div className="container-md customMargin">
         <div className="row">
-          <div className="col-sm-12 col-md-3">
+          <div className="col-sm-12 col-md-3 mb-3">
             <LeftSection profileDetails={profileDetails} />
           </div>
           <div className="col-sm-12 col-md-6">
