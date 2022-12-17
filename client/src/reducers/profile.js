@@ -9,6 +9,7 @@ import {
 
 const initState = {
   count: {},
+  profileDetails: {},
   followingProfile: [],
   followersProfile: [],
   isLoading: true,

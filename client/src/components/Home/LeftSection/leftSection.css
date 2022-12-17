@@ -2,8 +2,9 @@
   height: 20rem;
 }
 
-.profileBgPic {
+.profileBgWall {
   height: 5rem;
+  object-fit: cover;
 }
 
 .profilePic {
@@ -25,6 +26,7 @@
 .profileUser {
   cursor: pointer;
 }
+
 .followCount,
 .profileCardLinks,
 .savedItems {
@@ -40,5 +42,5 @@
 }
 
 .liLeft:hover {
-  background-color: rgb(232, 232, 232);
+  background-color: rgb(232, 232, 232) !important;
 }
