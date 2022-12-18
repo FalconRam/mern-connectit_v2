@@ -1,6 +1,6 @@
-.postProfilePic{
-    width: 2rem;
-    height: 2rem;
+.postProfilePic {
+  width: 2rem;
+  height: 2rem;
 }
 
 .postCreator {
@@ -14,4 +14,12 @@
 .postImage {
   border-radius: 0;
   cursor: pointer;
+}
+
+.dropdown-menu-custom.show {
+  min-width: 2rem !important;
+}
+
+.dropdown-item-custom {
+  font-size: 0.8rem;
 }

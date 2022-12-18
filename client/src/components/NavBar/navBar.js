@@ -89,25 +89,28 @@ const NavBar = () => {
               >
                 <img src={more} alt="more" title="More" className="more-icon" />
               </button>
-              <ul className="dropdown-menu dropdown-menu-custom text-center">
+              <ul className="dropdown-menu text-center">
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item dropdown-item-custom" href="#">
                     Ram
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item dropdown-item-custom" href="#">
                     My Profile
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item dropdown-item-custom" href="#">
                     Settings
                   </a>
                 </li>
                 <li>
                   <a className="dropdown-item" href="/auth">
-                    <button className="btn" onClick={logout}>
+                    <button
+                      className="btn dropdown-item-custom"
+                      onClick={logout}
+                    >
                       Logout
                     </button>
                   </a>
