@@ -1,0 +1,17 @@
+.postProfilePic{
+    width: 2rem;
+    height: 2rem;
+}
+
+.postCreator {
+  font-size: 0.8rem;
+}
+
+.postCreated {
+  font-size: 0.6rem;
+}
+
+.postImage {
+  border-radius: 0;
+  cursor: pointer;
+}
