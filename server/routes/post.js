@@ -34,7 +34,7 @@ router.patch("/like/:id", auth, likePost);
 
 router.post("/:id/commentPost", auth, addComment);
 
-router.patch("/:id/addComment/byPost",auth, addCommentByPost); //testing
+router.patch("/:id/addComment/byPost", auth, addCommentByPost);
 
 router.get("/user-posts/:id", auth, postsByUserId);
 
