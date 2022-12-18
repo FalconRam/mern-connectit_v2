@@ -1,0 +1,37 @@
+.custom-divider {
+  padding-top: 0.1rem;
+  margin: 0.4rem 0 0;
+}
+
+.miniPostProfilePic {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid rgb(219, 219, 219);
+}
+
+.title {
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.form-control-comment {
+  border-right-color: #fff;
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+}
+
+.commentIcon {
+  font-size: 0.8rem;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+}
+
+.commenterName{
+font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.commenterCmt{
+font-size: 0.75rem;
+  font-weight: 500;
+}
