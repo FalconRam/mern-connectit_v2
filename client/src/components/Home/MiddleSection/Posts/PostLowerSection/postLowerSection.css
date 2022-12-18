@@ -26,12 +26,16 @@
   border-bottom-right-radius: 2rem;
 }
 
-.commenterName{
-font-size: 0.75rem;
+.commentIconHold {
+  cursor: not-allowed;
+}
+
+.commenterName {
+  font-size: 0.75rem;
   font-weight: 700;
 }
 
-.commenterCmt{
-font-size: 0.75rem;
+.commenterCmt {
+  font-size: 0.75rem;
   font-weight: 500;
 }

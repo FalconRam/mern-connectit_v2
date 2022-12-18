@@ -139,18 +139,18 @@ const PostLowerSection = ({ post }) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           />
-          <span
+          <button
             disabled={isPostingComment || !comment.length}
             className={
               isPostingComment || !comment.length
-                ? "input-group-text text-success eyeButton commentIcon me-2 text-muted"
+                ? "input-group-text text-success eyeButton commentIcon me-2 text-muted commentIconHold"
                 : "input-group-text text-success eyeButton commentIcon me-2"
             }
             id="basic-addon1"
             onClick={handleComment}
           >
             <i class="bi bi-plus-circle commentIcon"></i>
-          </span>
+          </button>
         </div>
       </div>
     </>
