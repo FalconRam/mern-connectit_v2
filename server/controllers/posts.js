@@ -22,8 +22,23 @@ export const getPostsByFollowing = async (req, res) => {
       (postsByfollowing) => postsByfollowing
     );
     const postsInOneArr = (await matchedPosts).flat();
-    const sortedPosts = postsInOneArr.sort(function (a, b) {
-      return new Date(b.createdAt) - new Date(a.createdAt);
+
+    const postWithProfilePicture = postsInOneArr.map(async (post) => {
+      let user = await User.findById(post.creator);
+      let profilePicture = user.profilePicture;
+      post = { post, creatorProfilePicture: profilePicture };
+      return post;
+    });
+
+    const postsWithProfilePicture = Promise.all(postWithProfilePicture).then(
+      (posts) => posts
+    );
+    const postsWithProfilePictureInOneArr = (
+      await postsWithProfilePicture
+    ).flat();
+
+    const sortedPosts = postsWithProfilePictureInOneArr.sort(function (a, b) {
+      return new Date(b.post.createdAt) - new Date(a.post.createdAt);
     });
     res.status(200).json({ status: true, data: sortedPosts });
   } catch (error) {
