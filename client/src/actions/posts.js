@@ -6,6 +6,7 @@ import {
   CREATE_POST,
   UPDATE_OR_LIKE_POST,
   LIKE_USER_POST,
+  UNLIKE_USER_POST,
   COMMENT_POST,
   COMMENT_POST_WITH_USER_DETAILS,
   DELETE_POST,
@@ -135,10 +136,24 @@ export const likePost = (id) => async (dispatch) => {
   }
 };
 
-export const likeUserPost = (id) => async (dispatch) => {
+export const likeUserPost = (post, userId) => async (dispatch) => {
+  const newPost = { ...post, likes: [...post.likes, userId] };
   try {
-    const { data } = await api.likePost(id);
-    dispatch({ type: LIKE_USER_POST, payload: data });
+    dispatch({ type: LIKE_USER_POST, payload: newPost });
+    const { data } = await api.likeUserPost(post._id);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const unLikeUserPost = (post, userId) => async (dispatch) => {
+  const newPost = {
+    ...post,
+    likes: post.likes.filter((like) => like._id !== userId),
+  };
+  try {
+    dispatch({ type: UNLIKE_USER_POST, payload: newPost });
+    const { data } = await api.unLikeUserPost(post._id);
   } catch (error) {
     console.log(error);
   }

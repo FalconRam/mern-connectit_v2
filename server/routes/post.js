@@ -11,6 +11,8 @@ import {
   getPostsByFollowing,
   postsByUserId,
   addCommentByPost,
+  likePostV2,
+  unLikePostV2,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
@@ -31,6 +33,10 @@ router.patch("/update/:id", auth, updatePost);
 router.delete("/:id", auth, deletePost);
 
 router.patch("/like/:id", auth, likePost);
+
+router.patch("/likeV2/:id", auth, likePostV2);
+
+router.patch("/unLikeV2/:id", auth, unLikePostV2);
 
 router.post("/:id/commentPost", auth, addComment);
 

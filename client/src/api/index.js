@@ -35,6 +35,10 @@ export const deletePost = (id) => API.delete(`/posts/${id}`);
 
 export const likePost = (id) => API.patch(`/posts/like/${id}`);
 
+export const likeUserPost = (id) => API.patch(`/posts/likev2/${id}`);
+
+export const unLikeUserPost = (id) => API.patch(`/posts/unLikev2/${id}`);
+
 export const commentPost = (comment, id) =>
   API.post(`/posts/${id}/commentPost`, { comment });
 

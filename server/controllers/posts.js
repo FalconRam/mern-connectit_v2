@@ -231,3 +231,79 @@ export const likePost = async (req, res) => {
     res.status(500).json({ message: error });
   }
 };
+
+export const likePostV2 = async (req, res) => {
+  const { id: _id } = req.params;
+
+  try {
+    if (!req.userId)
+      return res.status(400).json({ message: "User not authorized" });
+
+    if (!mongoose.Types.ObjectId.isValid(_id))
+      return res.status(404).send("No Post found");
+
+    const post = await PostMessage.findById(_id);
+
+    const index = post.likes.findIndex((id) => id === String(req.userId));
+
+    index === -1 ? post.likes.push(req.userId) : null;
+
+    // if (index === -1) {
+    //   // like the post
+    //   post.likes.push(req.userId);
+    // }
+    // else {
+    //   // dislike the post
+
+    //   // filter method !== --> returns all the values which not matched/does not return the matched id(value)
+    //   post.likes = post.likes.filter((id) => id !== String(req.userId));
+    // }
+
+    const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
+      new: true,
+    });
+    res.json(updatedPost);
+  } catch (error) {
+    //console.log(error);
+    res.status(500).json({ message: error });
+  }
+};
+
+export const unLikePostV2 = async (req, res) => {
+  const { id: _id } = req.params;
+
+  try {
+    if (!req.userId)
+      return res.status(400).json({ message: "User not authorized" });
+
+    if (!mongoose.Types.ObjectId.isValid(_id))
+      return res.status(404).send("No Post found");
+
+    const post = await PostMessage.findById(_id);
+
+    const index = post.likes.findIndex((id) => id === String(req.userId));
+
+    // filter method !== --> returns all the values which not matched/does not return the matched id(value)
+    index !== -1
+      ? (post.likes = post.likes.filter((id) => id !== String(req.userId)))
+      : null;
+
+    // if (index === -1) {
+    //   // like the post
+    //   post.likes.push(req.userId);
+    // }
+    // else {
+    //   // dislike the post
+    // filter method !== --> returns all the values which not matched/does not return the matched id(value)
+    //   post.likes = post.likes.filter((id) => id !== String(req.userId));
+    // }
+
+    const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
+      new: true,
+    });
+    res.json(updatedPost);
+  } catch (error) {
+    //console.log(error);
+    res.status(500).json({ message: error });
+  }
+};
