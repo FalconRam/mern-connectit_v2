@@ -68,23 +68,23 @@ const PostLowerSection = ({ post }) => {
             </div>
             <PostLikeSection post={post} />
             <span className="d-flex align-items-center gap-1">
-              <i class="bi bi-chat-left likeIcon"></i>
+              <i className="bi bi-chat-left likeIcon"></i>
               <p className="mb-0 p-like">Comment</p>
             </span>
             <span className="d-flex align-items-center gap-1">
-              <i class="bi bi-send"></i>
+              <i className="bi bi-send"></i>
               <p className="mb-0 p-like">Share</p>
             </span>
           </div>
           <span>
             {!isPostSaved ? (
-              <i class="bi bi-bookmark likeIcon"></i>
+              <i className="bi bi-bookmark likeIcon"></i>
             ) : (
-              <i class="bi bi-bookmark-fill likeIcon"></i>
+              <i className="bi bi-bookmark-fill likeIcon"></i>
             )}
           </span>
         </div>
-        <div class="divider custom-divider bg-light"></div>
+        <div className="divider custom-divider bg-light"></div>
         {/* Caption */}
         <div
           className={
@@ -112,7 +112,7 @@ const PostLowerSection = ({ post }) => {
           ) : (
             <>
               <div className="d-flex align-items-center ms-1 gap-2 ">
-                <i class="bi bi-chat-left likeIcon text-success "></i>
+                <i className="bi bi-chat-left likeIcon text-success "></i>
                 <h5 className="mb-0 commenterName">
                   {sortedComment.map((comment) => comment.commenterName)}
                 </h5>
@@ -123,7 +123,7 @@ const PostLowerSection = ({ post }) => {
             </>
           )}
         </div>
-        <div class="input-group">
+        <div className="input-group">
           <input
             disabled={isPostingComment}
             type="text"
@@ -149,7 +149,7 @@ const PostLowerSection = ({ post }) => {
             id="basic-addon1"
             onClick={handleComment}
           >
-            <i class="bi bi-plus-circle commentIcon"></i>
+            <i className="bi bi-plus-circle commentIcon"></i>
           </button>
         </div>
       </div>

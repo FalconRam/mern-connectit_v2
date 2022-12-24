@@ -1,7 +1,13 @@
-.likeIcon{
-     font-size: 0.8rem;
+.likeIcon {
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
 .p-like {
   font-size: 0.7rem;
+  margin-bottom: 0;
+}
+
+.likeBtn {
+  cursor: pointer;
 }
