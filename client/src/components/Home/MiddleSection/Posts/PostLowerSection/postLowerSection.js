@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
-import {
-  commentPost,
-  commentPostWithUserDetails,
-} from "../../../../../actions/posts";
+
 import PostLikeSection from "../PostLikeSection/postLikeSection";
 
 import "./postLowerSection.css";
 import PostCaption from "./PostCaption/postCaption";
+import PostCommentSection from "./PostCommentSection/postCommentSection";
 
 const PostLowerSection = ({ post }) => {
   const dispatch = useDispatch();
@@ -17,29 +15,6 @@ const PostLowerSection = ({ post }) => {
   const [isReadMore, setIsReadMore] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("profile"));
-
-  const [isPostingComment, setIsPostingComment] = useState(false);
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState(post?.post?.commentsInfo);
-
-  let postComment = [];
-  let [commenterId, commenterName] = [user.result._id, user.result.name];
-  postComment[0] = { commenterId, commenterName, comment };
-  const resultComment = { postComment };
-
-  const handleComment = async () => {
-    setIsPostingComment(true);
-    const updatedPostWithComment = await dispatch(
-      commentPostWithUserDetails(post?.post?._id, resultComment)
-    );
-    setComment("");
-    setIsPostingComment(false);
-    setComments(updatedPostWithComment);
-  };
-
-  let sortedComment = comments.postComment
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 1);
 
   const handleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -66,7 +41,9 @@ const PostLowerSection = ({ post }) => {
                 <h6 className="mb-0 postCreator">{post?.post?.name}</h6>
               </div>
             </div>
+
             <PostLikeSection post={post} />
+
             <span className="d-flex align-items-center gap-1">
               <i className="bi bi-chat-left likeIcon"></i>
               <p className="mb-0 p-like">Comment</p>
@@ -103,7 +80,9 @@ const PostLowerSection = ({ post }) => {
       </div>
 
       {/* Comment Section */}
-      <div className="card-footer p-1 pt-1">
+      <PostCommentSection post={post} />
+
+      {/* <div className="card-footer p-1 pt-1">
         <div>
           {!sortedComment.length ? (
             <p className="text-start text-muted ms-2 mb-0 pb-1 p-like">
@@ -152,7 +131,7 @@ const PostLowerSection = ({ post }) => {
             <i className="bi bi-plus-circle commentIcon"></i>
           </button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

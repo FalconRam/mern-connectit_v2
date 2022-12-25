@@ -13,29 +13,3 @@
   font-size: 0.7rem;
   font-weight: 700;
 }
-
-.form-control-comment {
-  border-right-color: #fff;
-  border-top-left-radius: 2rem;
-  border-bottom-left-radius: 2rem;
-}
-
-.commentIcon {
-  font-size: 0.8rem;
-  border-top-right-radius: 2rem;
-  border-bottom-right-radius: 2rem;
-}
-
-.commentIconHold {
-  cursor: not-allowed;
-}
-
-.commenterName {
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.commenterCmt {
-  font-size: 0.75rem;
-  font-weight: 500;
-}
