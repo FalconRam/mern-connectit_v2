@@ -54,7 +54,7 @@ const PostCommentSection = ({ post }) => {
                 </div>
                 <div>
                   <p className="mb-0 me-1 commenterCmt text-muted">
-                    {post?.post?.commentsInfo?.postComment?.length} Comments
+                    {comments?.postComment?.length} Comments
                   </p>
                 </div>
               </div>
