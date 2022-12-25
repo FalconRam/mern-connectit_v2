@@ -8,6 +8,7 @@ import "./home.css";
 import LeftSection from "./LeftSection/leftSection";
 import MiddleSection from "./MiddleSection/middleSection";
 import RightSection from "./RightSection/rightSection";
+import ShareCard from "./MiddleSection/SharePost/ShareCard/shareCard";
 
 const Home = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -35,6 +36,7 @@ const Home = () => {
             <LeftSection profileDetails={profileDetails} />
           </div>
           <div className="col-sm-12 col-md-6">
+            <ShareCard profileDetails={profileDetails} />
             <MiddleSection posts={posts} isLoading={isLoading} />
           </div>
           <div className="col-sm-12 col-md-3">

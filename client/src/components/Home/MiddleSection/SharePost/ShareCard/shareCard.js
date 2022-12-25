@@ -1,0 +1,50 @@
+import React from "react";
+
+import "./shareCard.css";
+
+const ShareCard = ({ profileDetails }) => {
+  return (
+    <>
+      <div className="mb-3">
+        <div className="card">
+          <div className="card-body">
+            {/* shareCardUpperPart */}
+            <div className="d-flex align-items-center gap-3 mb-2">
+              <img
+                src={
+                  profileDetails?.userDetails?.profilePicture ||
+                  profileDetails?.userDetails?.name.charAt(0).toUpperCase() ||
+                  "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
+                }
+                className="img-thumbnail rounded-circle profilePic-share d-flex align-items-center justify-content-center"
+                alt={profileDetails?.userDetails?.name.charAt(0).toUpperCase()}
+              ></img>
+              <div class="mb-2 w-100">
+                <span class="form-control rounded-pill shareCard-input text-muted">
+                  Share a Post
+                </span>
+              </div>
+            </div>
+            {/* shareCardLowerrPart */}
+            <div className="d-flex align-items-center justify-content-between ms-2 me-2 shareIcon-text">
+              <span className="d-flex align-items-center gap-2">
+                <i class="bi bi-image text-primary"></i>
+                <p className="mb-0 text-muted">Photo</p>
+              </span>
+              <span className="d-flex align-items-center gap-2">
+                <i class="bi bi-play-btn-fill text-success"></i>
+                <p className="mb-0 text-muted">Video</p>
+              </span>
+              <span className="d-flex align-items-center gap-2">
+                <i class="bi bi-calendar-event text-warning"></i>
+                <p className="mb-0 text-muted">Event</p>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ShareCard;
