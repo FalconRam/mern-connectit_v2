@@ -7,12 +7,9 @@ import {
   updatePost,
   deletePost,
   likePost,
-  addComment,
   getPostsByFollowing,
   postsByUserId,
   addCommentByPost,
-  likePostV2,
-  unLikePostV2,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
