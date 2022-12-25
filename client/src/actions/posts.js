@@ -4,9 +4,9 @@ import {
   FETCH_POSTS_BY_FOLLOWING,
   FETCH_BY_SEARCH,
   CREATE_POST,
-  UPDATE_OR_LIKE_POST,
-  LIKE_USER_POST,
-  UNLIKE_USER_POST,
+  UPDATE_POST,
+  LIKE_POST,
+  UNLIKE_POST,
   COMMENT_POST,
   COMMENT_POST_WITH_USER_DETAILS,
   DELETE_POST,
@@ -103,7 +103,7 @@ export const updatePost = (id, post, history) => async (dispatch) => {
   try {
     const { data } = await api.updatePost(id, post);
     history.push(`/posts/${id}`);
-    dispatch({ type: UPDATE_OR_LIKE_POST, payload: data });
+    dispatch({ type: UPDATE_POST, payload: data });
   } catch (error) {
     console.log(error);
   }
@@ -130,30 +130,16 @@ export const deleteUserPost = (id) => async (dispatch) => {
 export const likePost = (id) => async (dispatch) => {
   try {
     const { data } = await api.likePost(id);
-    dispatch({ type: UPDATE_OR_LIKE_POST, payload: data });
+    dispatch({ type: LIKE_POST, payload: data });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const likeUserPost = (post, userId) => async (dispatch) => {
-  const newPost = { ...post, likes: [...post.likes, userId] };
+export const unLikePost = (id) => async (dispatch) => {
   try {
-    dispatch({ type: LIKE_USER_POST, payload: newPost });
-    const { data } = await api.likeUserPost(post._id);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const unLikeUserPost = (post, userId) => async (dispatch) => {
-  const newPost = {
-    ...post,
-    likes: post.likes.filter((like) => like._id !== userId),
-  };
-  try {
-    dispatch({ type: UNLIKE_USER_POST, payload: newPost });
-    const { data } = await api.unLikeUserPost(post._id);
+    const { data } = await api.likePost(id);
+    dispatch({ type: UNLIKE_POST, payload: data });
   } catch (error) {
     console.log(error);
   }

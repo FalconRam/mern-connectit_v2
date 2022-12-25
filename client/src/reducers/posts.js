@@ -5,9 +5,9 @@ import {
   FETCH_POST_BY_ID,
   FETCH_POST_BY_USER,
   CREATE_POST,
-  UPDATE_OR_LIKE_POST,
-  LIKE_USER_POST,
-  UNLIKE_USER_POST,
+  UPDATE_POST,
+  LIKE_POST,
+  UNLIKE_POST,
   COMMENT_POST,
   DELETE_POST,
   DELETE_USER_POST,
@@ -42,27 +42,27 @@ export default (state = { posts: [], isLoading: true }, action) => {
       return { ...state, posts: action.payload };
     case CREATE_POST:
       return { ...state, posts: [...state.posts, action.payload] };
-    case UPDATE_OR_LIKE_POST:
+    case UPDATE_POST:
       return {
         ...state,
         posts: state.posts.map((post) =>
           post._id === action.payload._id ? action.payload : post
         ),
       };
-    // case LIKE_USER_POST:
-    //   return {
-    //     ...state,
-    //     posts: state.posts.map((post) =>
-    //       post._id === action.payload._id ? action.payload : post
-    //     ),
-    //   };
-    // case UNLIKE_USER_POST:
-    //   return {
-    //     ...state,
-    //     posts: state.posts.map((post) =>
-    //       post._id === action.payload._id ? action.payload : post
-    //     ),
-    //   };
+    case LIKE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
+    case UNLIKE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
     case COMMENT_POST:
       return {
         ...state,
