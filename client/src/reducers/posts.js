@@ -8,7 +8,6 @@ import {
   UPDATE_POST,
   LIKE_POST,
   UNLIKE_POST,
-  COMMENT_POST,
   DELETE_POST,
   DELETE_USER_POST,
   START_LOADING,
@@ -62,16 +61,6 @@ export default (state = { posts: [], isLoading: true }, action) => {
         posts: state.posts.map((post) =>
           post._id === action.payload._id ? action.payload : post
         ),
-      };
-    case COMMENT_POST:
-      return {
-        ...state,
-        posts: state.posts.map((post) => {
-          // return the post that received with comment
-          if (post._id === action.payload._id) return action.payload;
-          // and return all other posts
-          return post;
-        }),
       };
     case COMMENT_POST_WITH_USER_DETAILS:
       return {

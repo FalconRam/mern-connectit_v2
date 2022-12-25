@@ -6,7 +6,6 @@ export const CREATE_POST = "CREATE_POST";
 export const UPDATE_POST = "UPDATE_POST";
 export const LIKE_POST = "LIKE_POST";
 export const UNLIKE_POST = "UNLIKE_POST";
-export const COMMENT_POST = "COMMENT_POST";
 export const COMMENT_POST_WITH_USER_DETAILS = "COMMENT_POST_WITH_USER_DETAILS";
 export const DELETE_POST = "DELETE_POST";
 export const DELETE_USER_POST = "DELETE_USER_POST";

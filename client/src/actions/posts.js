@@ -7,7 +7,6 @@ import {
   UPDATE_POST,
   LIKE_POST,
   UNLIKE_POST,
-  COMMENT_POST,
   COMMENT_POST_WITH_USER_DETAILS,
   DELETE_POST,
   DELETE_USER_POST,
@@ -142,16 +141,6 @@ export const unLikePost = (id) => async (dispatch) => {
     dispatch({ type: UNLIKE_POST, payload: data });
   } catch (error) {
     console.log(error);
-  }
-};
-
-export const commentPost = (comment, id) => async (dispatch) => {
-  try {
-    const { data } = await api.commentPost(comment, id);
-    dispatch({ type: COMMENT_POST, payload: data });
-    return data.comments;
-  } catch (error) {
-    console.log(error.message);
   }
 };
 
