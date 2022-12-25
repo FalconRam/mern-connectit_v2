@@ -148,25 +148,6 @@ export const updatePost = async (req, res) => {
   res.json(updatedPost);
 };
 
-export const addComment = async (req, res) => {
-  const { id } = req.params;
-  const { comment } = req.body;
-
-  try {
-    const post = await PostMessage.findById(id);
-
-    // push the comment from FE to the comments schema of the post
-    post.comments.push(comment);
-
-    const updatedPostWithCmt = await PostMessage.findByIdAndUpdate(id, post, {
-      new: true,
-    });
-    res.status(200).json(updatedPostWithCmt);
-  } catch (error) {
-    res.status(409).json({ message: error.message });
-  }
-};
-
 export const addCommentByPost = async (req, res) => {
   const { id } = req.params;
   const { postComment } = req.body;
@@ -222,82 +203,6 @@ export const likePost = async (req, res) => {
       // filter method !== --> returns all the values which not matched/does not return the matched id(value)
       post.likes = post.likes.filter((id) => id !== String(req.userId));
     }
-    const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
-      new: true,
-    });
-    res.json(updatedPost);
-  } catch (error) {
-    //console.log(error);
-    res.status(500).json({ message: error });
-  }
-};
-
-export const likePostV2 = async (req, res) => {
-  const { id: _id } = req.params;
-
-  try {
-    if (!req.userId)
-      return res.status(400).json({ message: "User not authorized" });
-
-    if (!mongoose.Types.ObjectId.isValid(_id))
-      return res.status(404).send("No Post found");
-
-    const post = await PostMessage.findById(_id);
-
-    const index = post.likes.findIndex((id) => id === String(req.userId));
-
-    index === -1 ? post.likes.push(req.userId) : null;
-
-    // if (index === -1) {
-    //   // like the post
-    //   post.likes.push(req.userId);
-    // }
-    // else {
-    //   // dislike the post
-
-    //   // filter method !== --> returns all the values which not matched/does not return the matched id(value)
-    //   post.likes = post.likes.filter((id) => id !== String(req.userId));
-    // }
-
-    const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
-      new: true,
-    });
-    res.json(updatedPost);
-  } catch (error) {
-    //console.log(error);
-    res.status(500).json({ message: error });
-  }
-};
-
-export const unLikePostV2 = async (req, res) => {
-  const { id: _id } = req.params;
-
-  try {
-    if (!req.userId)
-      return res.status(400).json({ message: "User not authorized" });
-
-    if (!mongoose.Types.ObjectId.isValid(_id))
-      return res.status(404).send("No Post found");
-
-    const post = await PostMessage.findById(_id);
-
-    const index = post.likes.findIndex((id) => id === String(req.userId));
-
-    // filter method !== --> returns all the values which not matched/does not return the matched id(value)
-    index !== -1
-      ? (post.likes = post.likes.filter((id) => id !== String(req.userId)))
-      : null;
-
-    // if (index === -1) {
-    //   // like the post
-    //   post.likes.push(req.userId);
-    // }
-    // else {
-    //   // dislike the post
-    // filter method !== --> returns all the values which not matched/does not return the matched id(value)
-    //   post.likes = post.likes.filter((id) => id !== String(req.userId));
-    // }
-
     const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
       new: true,
     });

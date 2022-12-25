@@ -34,12 +34,6 @@ router.delete("/:id", auth, deletePost);
 
 router.patch("/like/:id", auth, likePost);
 
-router.patch("/likeV2/:id", auth, likePostV2);
-
-router.patch("/unLikeV2/:id", auth, unLikePostV2);
-
-router.post("/:id/commentPost", auth, addComment);
-
 router.patch("/:id/addComment/byPost", auth, addCommentByPost);
 
 router.get("/user-posts/:id", auth, postsByUserId);
