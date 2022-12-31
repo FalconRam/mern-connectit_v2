@@ -24,17 +24,17 @@ const PostLikeSection = ({ post }) => {
     }
   }, [post.post.likes, userId]);
 
-  const handleLike = async () => {
+  const handleLike = () => {
     setIsLikeUpdating(true);
 
     if (isLiked) {
       setIsLiked(false);
-      setLikes(likes - 1);
-      await dispatch(unLikePost(post?.post?._id));
+      setLikes((currentLikeCount) => currentLikeCount - 1);
+      dispatch(unLikePost(post?.post?._id));
     } else {
       setIsLiked(true);
-      setLikes(likes + 1);
-      await dispatch(likePost(post?.post?._id));
+      setLikes((currentLikeCount) => currentLikeCount + 1);
+      dispatch(likePost(post?.post?._id));
     }
 
     setIsLikeUpdating(false);
