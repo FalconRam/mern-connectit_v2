@@ -6,43 +6,64 @@ import PostMessage from "../models/postMessage.js";
 
 export const getPostsByFollowing = async (req, res) => {
   try {
-    const loggedInUser = await User.findById(req.userId);
-    loggedInUser.following.push(loggedInUser._id);
+    // First, retrieve the user object for the given userId
+    const user = await User.findById(req.userId);
+    if (!user) {
+      throw new Error(`User not found with id: ${req.userId}`);
+    }
 
-    const postByfollowing = loggedInUser.following.map(async (id) => {
-      let ids = await User.findById(id);
-      let creator = ids._id.toString();
-      return await PostMessage.find({ creator: creator });
+    // Retrieve the list of user IDs for the users that the given user is following
+    const followedUserIds = user.following;
+    followedUserIds.push(user._id);
+
+    // Use the list of followed user IDs to retrieve the post objects
+    // made by users by using mongoose db query
+    let followedPosts = await PostMessage.aggregate([
+      {
+        $match: {
+          creator: { $in: followedUserIds },
+        },
+      },
+      {
+        $addFields: {
+          creator: { $toObjectId: "$creator" },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "creator",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          message: 1,
+          name: 1,
+          creator: 1,
+          tags: 1,
+          selectedFile: 1,
+          likes: 1,
+          comments: 1,
+          commentsInfo: 1,
+          createdAt: 1,
+          // Use the $arrayElemAt operator to retrieve the first element in the "userInfo" array
+          // (since we expect there to be only one element in the array)
+          profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
+        },
+      },
+    ]);
+
+    const sortedPosts = followedPosts.sort(function (a, b) {
+      return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
-    // With this the call to map returns an array of promises,
-    // then Promise.all waits for all the promises to resolve and
-    // passes an array of all the results into the callback.
-    const matchedPosts = Promise.all(postByfollowing).then(
-      (postsByfollowing) => postsByfollowing
-    );
-    const postsInOneArr = (await matchedPosts).flat();
-
-    const postWithProfilePicture = postsInOneArr.map(async (post) => {
-      let user = await User.findById(post.creator);
-      let profilePicture = user.profilePicture;
-      post = { post, creatorProfilePicture: profilePicture };
-      return post;
-    });
-
-    const postsWithProfilePicture = Promise.all(postWithProfilePicture).then(
-      (posts) => posts
-    );
-    const postsWithProfilePictureInOneArr = (
-      await postsWithProfilePicture
-    ).flat();
-
-    const sortedPosts = postsWithProfilePictureInOneArr.sort(function (a, b) {
-      return new Date(b.post.createdAt) - new Date(a.post.createdAt);
-    });
+    // Wait for the loop to finish before sending the response
     res.status(200).json({ status: true, data: sortedPosts });
   } catch (error) {
-    res.status(400).json({ status: false, errorMessage: error.message });
+    res.status(500).json({ status: false, message: error.message });
   }
 };
 
@@ -59,7 +80,7 @@ export const postsByUserId = async (req, res) => {
 
     res.status(200).json({ status: true, data: { userPosts: sortedPosts } });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(404).json({ status: false, message: error.message });
   }
 };
 
@@ -86,7 +107,7 @@ export const getPosts = async (req, res) => {
       numberOfPages: Math.ceil(total / LIMIT),
     });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(404).json({ status: false, message: error.message });
   }
 };
 
@@ -103,19 +124,58 @@ export const getPostsBySearch = async (req, res) => {
     if (searchQuery === "none" && tags === "none")
       postMessages = await PostMessage.find();
 
-    res.status(200).json({ data: postMessages });
+    res.status(200).json({ status: true, data: postMessages });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ status: false, message: error.message });
   }
 };
 
 export const getPostsById = async (req, res) => {
   const { id } = req.params;
   try {
+    const user = await User.findById(req.userId);
+
     const post = await PostMessage.findById(id);
-    res.status(200).json(post);
+
+    let updatedPostWithprofPic = await PostMessage.aggregate([
+      {
+        $match: {
+          _id: post._id,
+        },
+      },
+      {
+        $addFields: {
+          creator: user._id,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "creator",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          message: 1,
+          name: 1,
+          creator: 1,
+          tags: 1,
+          selectedFile: 1,
+          likes: 1,
+          comments: 1,
+          commentsInfo: 1,
+          createdAt: 1,
+          profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
+        },
+      },
+    ]);
+
+    res.status(201).json({ status: true, data: updatedPostWithprofPic[0] });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(404).json({ status: false, message: error.message });
   }
 };
 
@@ -129,23 +189,65 @@ export const createPost = async (req, res) => {
   try {
     await newPost.save();
 
-    res.status(201).json(newPost);
+    res.status(201).json({ status: true, data: newPost });
   } catch (error) {
-    res.status(409).json({ message: error.message });
+    res.status(409).json({ status: false, message: error.message });
   }
 };
 
 export const updatePost = async (req, res) => {
   const { id: _id } = req.params;
   const post = req.body;
+  try {
+    const user = await User.findById(req.userId);
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("No post found");
+    if (!mongoose.Types.ObjectId.isValid(_id))
+      return res.status(404).send("No post found");
 
-  const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
-    new: true,
-  });
-  res.json(updatedPost);
+    const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
+      new: true,
+    });
+
+    let updatedPostWithprofPic = await PostMessage.aggregate([
+      {
+        $match: {
+          _id: updatedPost._id,
+        },
+      },
+      {
+        $addFields: {
+          creator: user._id,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "creator",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          message: 1,
+          name: 1,
+          creator: 1,
+          tags: 1,
+          selectedFile: 1,
+          likes: 1,
+          comments: 1,
+          commentsInfo: 1,
+          createdAt: 1,
+          profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
+        },
+      },
+    ]);
+
+    res.status(201).json({ status: true, data: updatedPostWithprofPic[0] });
+  } catch (error) {
+    res.status(500).json({ status: false, message: error.message });
+  }
 };
 
 export const addCommentByPost = async (req, res) => {
@@ -153,6 +255,7 @@ export const addCommentByPost = async (req, res) => {
   const { postComment } = req.body;
 
   try {
+    const user = await User.findById(req.userId);
     const post = await PostMessage.findById(id);
 
     post.commentsInfo.postComment.push(postComment[0]);
@@ -161,9 +264,45 @@ export const addCommentByPost = async (req, res) => {
       new: true,
     });
 
-    res.status(200).json(updatedCommentInfo);
+    let updatedPostWithprofPic = await PostMessage.aggregate([
+      {
+        $match: {
+          _id: updatedCommentInfo._id,
+        },
+      },
+      {
+        $addFields: {
+          creator: user._id,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "creator",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          message: 1,
+          name: 1,
+          creator: 1,
+          tags: 1,
+          selectedFile: 1,
+          likes: 1,
+          comments: 1,
+          commentsInfo: 1,
+          createdAt: 1,
+          profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
+        },
+      },
+    ]);
+
+    res.status(201).json({ status: true, data: updatedPostWithprofPic[0] });
   } catch (error) {
-    res.status(409).json({ status: "failure", message: error.message });
+    res.status(409).json({ status: false, message: error.message });
   }
 };
 export const deletePost = async (req, res) => {
@@ -171,12 +310,14 @@ export const deletePost = async (req, res) => {
 
   try {
     if (!mongoose.Types.ObjectId.isValid(_id))
-      return res.status(404).send("No Post found to Delete");
+      return res
+        .status(404)
+        .json({ status: false, message: "No Post found to Delete" });
 
     await PostMessage.findByIdAndDelete(_id);
-    res.json({ message: "Post Deleted Successfully" });
+    res.status(200).json({ status: true, message: "Post Deleted" });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ status: false, message: error.message });
   }
 };
 
@@ -184,6 +325,7 @@ export const likePost = async (req, res) => {
   const { id: _id } = req.params;
 
   try {
+    const user = await User.findById(req.userId);
     if (!req.userId)
       return res.status(400).json({ message: "User not authorized" });
 
@@ -203,12 +345,48 @@ export const likePost = async (req, res) => {
       // filter method !== --> returns all the values which not matched/does not return the matched id(value)
       post.likes = post.likes.filter((id) => id !== String(req.userId));
     }
-    const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
+    let updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
       new: true,
     });
-    res.json(updatedPost);
+
+    let updatedPostWithprofPic = await PostMessage.aggregate([
+      {
+        $match: {
+          _id: updatedPost._id,
+        },
+      },
+      {
+        $addFields: {
+          creator: user._id,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "creator",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          message: 1,
+          name: 1,
+          creator: 1,
+          tags: 1,
+          selectedFile: 1,
+          likes: 1,
+          comments: 1,
+          commentsInfo: 1,
+          createdAt: 1,
+          profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
+        },
+      },
+    ]);
+
+    res.status(200).json({ status: true, data: updatedPostWithprofPic[0] });
   } catch (error) {
-    //console.log(error);
-    res.status(500).json({ message: error });
+    res.status(500).json({ status: false, message: error.message });
   }
 };
