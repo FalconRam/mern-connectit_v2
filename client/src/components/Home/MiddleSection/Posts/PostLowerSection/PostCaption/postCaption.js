@@ -13,14 +13,14 @@ const PostCaption = ({ post }) => {
       <div>
         {isReadMore ? (
           <div className="scrollInView">
-            <p className="p-content mb-1">{post?.post?.message}</p>
+            <p className="p-content mb-1">{post?.message}</p>
             <p className="tags text-muted">
-              {post?.post?.tags.map((tag) => `#${tag} `)}
+              {post?.tags.map((tag) => `#${tag} `)}
             </p>
           </div>
         ) : (
           <p className="p-content mb-0 d-inline-block text-muted">
-            {post?.post?.message.slice(0, 165)}
+            {post?.message.slice(0, 165)}
           </p>
         )}
         <p onClick={handleReadMore} className="readMore mb-0">

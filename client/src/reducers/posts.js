@@ -82,9 +82,7 @@ export default (state = { posts: [], isLoading: true }, action) => {
     case DELETE_USER_POST:
       return {
         ...state,
-        delPosts: state.userPosts.userPosts.filter(
-          (post) => post._id !== action.payload
-        ),
+        posts: state.posts.filter((post) => post._id !== action.payload),
       };
     default:
       return state;

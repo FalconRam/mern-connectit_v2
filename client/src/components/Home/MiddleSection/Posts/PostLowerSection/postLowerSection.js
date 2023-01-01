@@ -29,16 +29,16 @@ const PostLowerSection = ({ post }) => {
             <div className=" d-flex flex-row align-items-center gap-2">
               <img
                 src={
-                  post?.creatorProfilePicture === ""
-                    ? post?.post?.name.charAt(0).toUpperCase()
-                    : post?.creatorProfilePicture ||
+                  post?.profilePicture === ""
+                    ? post?.name.charAt(0).toUpperCase()
+                    : post?.profilePicture ||
                       "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
                 }
                 className="img-thumbnail rounded-circle miniPostProfilePic d-flex align-items-center justify-content-center"
-                alt={post?.post?.name.charAt(0).toUpperCase()}
+                alt={post?.name.charAt(0).toUpperCase()}
               ></img>
               <div>
-                <h6 className="mb-0 postCreator">{post?.post?.name}</h6>
+                <h6 className="mb-0 postCreator">{post?.name}</h6>
               </div>
             </div>
 
@@ -70,7 +70,7 @@ const PostLowerSection = ({ post }) => {
               : "card-text postContent"
           }
         >
-          <h6 className="mt-1 mb-0 title">{post?.post?.title}</h6>
+          <h6 className="mt-1 mb-0 title">{post?.title}</h6>
           <PostCaption
             post={post}
             isReadMore={isReadMore}

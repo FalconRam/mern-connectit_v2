@@ -12,7 +12,7 @@ const PostCommentSection = ({ post }) => {
 
   const [isPostingComment, setIsPostingComment] = useState(false);
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState(post?.post?.commentsInfo);
+  const [comments, setComments] = useState(post?.commentsInfo);
 
   let postComment = [];
   let [commenterId, commenterName] = [user.result._id, user.result.name];
@@ -22,10 +22,11 @@ const PostCommentSection = ({ post }) => {
   const handleComment = async () => {
     setIsPostingComment(true);
     const updatedPostWithComment = await dispatch(
-      commentPostWithUserDetails(post?.post?._id, resultComment)
+      commentPostWithUserDetails(post?._id, resultComment)
     );
     setComment("");
     setIsPostingComment(false);
+    console.log(updatedPostWithComment);
     setComments(updatedPostWithComment);
   };
 

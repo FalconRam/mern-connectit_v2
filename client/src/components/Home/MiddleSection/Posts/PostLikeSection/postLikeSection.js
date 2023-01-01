@@ -14,15 +14,15 @@ const PostLikeSection = ({ post }) => {
 
   const [isLiked, setIsLiked] = useState(false);
   const [isLikeUpdating, setIsLikeUpdating] = useState(false);
-  const [likes, setLikes] = useState(post?.post?.likes.length);
+  const [likes, setLikes] = useState(post?.likes.length);
 
   useEffect(() => {
-    if (post?.post?.likes.includes(userId)) {
+    if (post?.likes.includes(userId)) {
       setIsLiked(true);
     } else {
       setIsLiked(false);
     }
-  }, [post.post.likes, userId]);
+  }, [post?.likes, userId]);
 
   const handleLike = () => {
     setIsLikeUpdating(true);
@@ -30,11 +30,11 @@ const PostLikeSection = ({ post }) => {
     if (isLiked) {
       setIsLiked(false);
       setLikes((currentLikeCount) => currentLikeCount - 1);
-      dispatch(unLikePost(post?.post?._id));
+      dispatch(unLikePost(post?._id));
     } else {
       setIsLiked(true);
       setLikes((currentLikeCount) => currentLikeCount + 1);
-      dispatch(likePost(post?.post?._id));
+      dispatch(likePost(post?._id));
     }
 
     setIsLikeUpdating(false);

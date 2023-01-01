@@ -91,8 +91,10 @@ export const createPost = (post, history) => async (dispatch) => {
 
     const { data } = await api.createPost(post);
 
-    history.push(`/posts/${data._id}`);
+    // history.push(`/posts/${data._id}`);
     dispatch({ type: CREATE_POST, payload: data });
+
+    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error);
   }
@@ -122,7 +124,7 @@ export const deleteUserPost = (id) => async (dispatch) => {
     await api.deletePost(id);
     dispatch({ type: DELETE_USER_POST, payload: id });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
 };
 

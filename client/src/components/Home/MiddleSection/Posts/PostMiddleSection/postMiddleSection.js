@@ -13,10 +13,11 @@ const PostMiddleSection = ({ post }) => {
 
   return (
     <>
-      <div onClick={() => handleprofileDetails(post?.post?._id)}>
+      <div onClick={() => handleprofileDetails(post?._id)}>
         <img
           src={
-            post?.post?.selectedFile ||
+            post?.selectedFile ||
+            post?.selectedFile ||
             "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
           }
           className="card-img-top postImage"
