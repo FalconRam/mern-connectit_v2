@@ -1,5 +1,7 @@
 import React from "react";
 
+import ShareModal from "../ShareModal/shareModal";
+
 import "./shareCard.css";
 
 const ShareCard = ({ profileDetails }) => {
@@ -19,24 +21,32 @@ const ShareCard = ({ profileDetails }) => {
                 className="img-thumbnail rounded-circle profilePic-share d-flex align-items-center justify-content-center"
                 alt={profileDetails?.userDetails?.name.charAt(0).toUpperCase()}
               ></img>
-              <div class="mb-2 w-100">
-                <span class="form-control rounded-pill shareCard-input text-muted">
+              <div className="mb-2 w-100">
+                <button
+                  type="button"
+                  className="form-control rounded-pill shareCard-input text-muted text-start"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                >
                   Share a Post
-                </span>
+                </button>
               </div>
+
+              {/* Modal */}
+              <ShareModal />
             </div>
-            {/* shareCardLowerrPart */}
+            {/* shareCardLowerPart */}
             <div className="d-flex align-items-center justify-content-between ms-2 me-2 shareIcon-text">
               <span className="d-flex align-items-center gap-2">
-                <i class="bi bi-image text-primary"></i>
+                <i className="bi bi-image text-primary"></i>
                 <p className="mb-0 text-muted">Photo</p>
               </span>
               <span className="d-flex align-items-center gap-2">
-                <i class="bi bi-play-btn-fill text-success"></i>
+                <i className="bi bi-play-btn-fill text-success"></i>
                 <p className="mb-0 text-muted">Video</p>
               </span>
               <span className="d-flex align-items-center gap-2">
-                <i class="bi bi-calendar-event text-warning"></i>
+                <i className="bi bi-calendar-event text-warning"></i>
                 <p className="mb-0 text-muted">Event</p>
               </span>
             </div>
