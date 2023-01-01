@@ -300,11 +300,12 @@ export const addCommentByPost = async (req, res) => {
       },
     ]);
 
-    res.status(201).json({ status: true, data: updatedPostWithprofPic[0] });
+    res.status(201).json(updatedPostWithprofPic[0]);
   } catch (error) {
     res.status(409).json({ status: false, message: error.message });
   }
 };
+
 export const deletePost = async (req, res) => {
   const { id: _id } = req.params;
 
