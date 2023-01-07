@@ -39,7 +39,7 @@ const PostUpperSection = ({ post }) => {
         </div>
         {/* three dots */}
         <div>
-          <div className="d-md-none dropdown">
+          <div className="dropdown">
             <button
               className="btn"
               type="button"
