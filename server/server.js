@@ -32,6 +32,12 @@ app.use("/profile", profileRoutes);
 const port = process.env.PORT;
 const dbUri = process.env.CONNECTION_URL;
 
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "/client/build")));
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "/client/build/index.html"))
+);
+
 mongoose
   .connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
