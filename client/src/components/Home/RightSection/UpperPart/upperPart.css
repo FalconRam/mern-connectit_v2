@@ -1,0 +1,27 @@
+.news-bullet {
+  border-radius: 50%;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 1.2rem 2px 14px;
+  border: 3px solid darkgray;
+}
+
+.news {
+  list-style-type: none;
+}
+
+.news li > a {
+  text-decoration: none;
+  color: black;
+  font-size: 0.8rem;
+}
+
+.date-count {
+  font-size: 0.6rem;
+  margin-left: 2.3rem;
+}
+
+.news > li:hover {
+  background-color: rgb(232, 232, 232) !important;
+}

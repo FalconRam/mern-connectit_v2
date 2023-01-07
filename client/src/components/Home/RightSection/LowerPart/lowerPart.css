@@ -1,0 +1,32 @@
+.footerLinks {
+  list-style-type: none;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.footerLinks > li {
+  line-height: 1.3rem;
+}
+
+.footerLinks li > a {
+  text-decoration: none;
+  color: black;
+  opacity: 0.6;
+  font-size: 0.7rem;
+}
+
+.footerLinks li > a:hover {
+  text-decoration: underline;
+  color: var(--bs-link-color);
+  opacity: 1;
+}
+
+.branding {
+  font-size: 0.75rem;
+  font-weight: light;
+}
+
+.branding > img {
+  height: 1rem;
+  width: 1rem;
+}
