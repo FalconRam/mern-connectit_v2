@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { logIn } from "../../../actions/auth";
 import { findLoginFormErrors } from "../../../errorHandling/authFormEH";
 
-import "./logIn.css";
+import "./login.css";
 
 const LogIn = ({ isLogin, setIsLogin }) => {
   const dispatch = useDispatch();
