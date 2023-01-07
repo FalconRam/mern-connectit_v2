@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import "./auth.css";
-import LogIn from "./Login/logIn";
+import LogIn from "./Login/login";
 import SignUp from "./SignUp/signUp";
 
 const Auth = () => {
