@@ -1,0 +1,24 @@
+{
+    "name": "mern-connectit_v2",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "build": "echo \"No build specified\" && exit 1",
+        "test": "echo \"No test specified\" && exit 1",
+        "start": "node index.js"
+
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/FalconRam/mern-connectit_v2.git"
+
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/FalconRam/mern-connectit_v2/issues"
+
+    },
+    "homepage": "https://github.com/FalconRam/mern-connectit_v2#readme"
+
+}
