@@ -8,7 +8,7 @@ import SignUp from "./SignUp/signUp";
 
 const Auth = () => {
   const history = useHistory();
-  
+
   const [isLogin, setIsLogin] = useState(true);
 
   const user = JSON.parse(localStorage.getItem("profile"));
