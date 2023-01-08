@@ -55,12 +55,10 @@ export const findSigninFormErrors = (signInData) => {
   if (!confirmPassword || confirmPassword === "")
     newErrors.confirmPassword = "Please confirm your Password.";
   else if (
-    password.length &&
-    confirmPassword.length > 5 &&
+    password.length !== confirmPassword.length ||
     confirmPassword !== password
   )
     newErrors.confirmPassword = "Password is not Matching!";
-  else newErrors.confirmPassword = "Password is not Matching!";
 
   return newErrors;
 };
