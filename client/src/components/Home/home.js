@@ -32,14 +32,17 @@ const Home = () => {
     <>
       <div className="container-md customMargin">
         <div className="row">
-          <div className="col-sm-12 col-md-3 mb-3">
+          <div className="col-sm-12 col-md-4 mb-3 col-lg-3">
             <LeftSection profileDetails={profileDetails} />
           </div>
-          <div className="col-sm-12 col-md-6">
+          <div className="col-sm-12 col-md-8 col-lg-6">
             <ShareCard profileDetails={profileDetails} />
             <MiddleSection posts={posts} isLoading={isLoading} />
+            <div className="col-md-12 d-none d-md-block d-lg-none">
+              <RightSection />
+            </div>
           </div>
-          <div className="col-sm-12 col-md-3">
+          <div className="col-sm-12 col-lg-3 d-block d-md-none d-lg-block">
             <RightSection />
           </div>
         </div>
