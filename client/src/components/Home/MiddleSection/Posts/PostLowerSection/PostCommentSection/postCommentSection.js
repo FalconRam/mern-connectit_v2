@@ -37,7 +37,7 @@ const PostCommentSection = ({ post }) => {
     <>
       <div className="card-footer p-1 pt-1">
         <div>
-          {!sortedComment.length ? (
+          {!sortedComment?.length ? (
             <p className="text-start text-muted ms-2 mb-0 pb-1 p-like">
               Be first to comment...
             </p>

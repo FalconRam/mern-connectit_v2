@@ -17,7 +17,7 @@ const PostLikeSection = ({ post }) => {
   const [likes, setLikes] = useState(post?.likes?.length);
 
   useEffect(() => {
-    if (post?.likes.includes(userId)) {
+    if (post?.likes?.includes(userId)) {
       setIsLiked(true);
     } else {
       setIsLiked(false);
