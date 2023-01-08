@@ -7,7 +7,7 @@ import { findLoginFormErrors } from "../../../errorHandling/authFormEH";
 
 import "./login.css";
 
-const LogIn = ({ isLogin, setIsLogin }) => {
+const LogIn = ({ isLogin, setIsLogin, isLoginLoading, setIsLoginLoading }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -41,7 +41,6 @@ const LogIn = ({ isLogin, setIsLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const newErrors = findLoginFormErrors(loginCred);
     // Conditional logic:
     if (Object.keys(newErrors).length > 0) {
@@ -49,10 +48,12 @@ const LogIn = ({ isLogin, setIsLogin }) => {
       setErrors(newErrors);
       setShowFormError(true);
     } else {
+      setIsLoginLoading(!isLoginLoading);
       // No errors!
       // step : 1 - dispatching the action ; check step to in actions/auth
       dispatch(logIn(loginCred, history));
       clearForm();
+      setIsLoginLoading(!isLoginLoading);
     }
   };
 
@@ -119,6 +120,7 @@ const LogIn = ({ isLogin, setIsLogin }) => {
                 )}
               </div>
               <button
+                disabled={isLoginLoading}
                 type="submit"
                 className="btn btn-primary d-grid col-sm-12 col-md-5 col-lg-4 mx-auto"
                 onClick={handleSubmit}
