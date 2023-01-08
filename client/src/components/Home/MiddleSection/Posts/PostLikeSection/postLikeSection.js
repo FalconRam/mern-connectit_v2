@@ -14,7 +14,7 @@ const PostLikeSection = ({ post }) => {
 
   const [isLiked, setIsLiked] = useState(false);
   const [isLikeUpdating, setIsLikeUpdating] = useState(false);
-  const [likes, setLikes] = useState(post?.likes.length);
+  const [likes, setLikes] = useState(post?.likes?.length);
 
   useEffect(() => {
     if (post?.likes.includes(userId)) {

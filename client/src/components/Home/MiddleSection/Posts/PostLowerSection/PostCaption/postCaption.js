@@ -15,12 +15,12 @@ const PostCaption = ({ post }) => {
           <div className="scrollInView">
             <p className="p-content mb-1">{post?.message}</p>
             <p className="tags text-muted">
-              {post?.tags.map((tag) => `#${tag} `)}
+              {post?.tags?.map((tag) => `#${tag} `)}
             </p>
           </div>
         ) : (
           <p className="p-content mb-0 d-inline-block text-muted">
-            {post?.message.slice(0, 165)}
+            {post?.message?.slice(0, 165)}
           </p>
         )}
         <p onClick={handleReadMore} className="readMore mb-0">

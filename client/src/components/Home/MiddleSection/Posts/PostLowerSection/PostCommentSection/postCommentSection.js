@@ -30,7 +30,7 @@ const PostCommentSection = ({ post }) => {
     setComments(updatedPostWithComment);
   };
 
-  let sortedComment = comments.postComment
+  let sortedComment = comments?.postComment
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 1);
   return (
@@ -47,10 +47,10 @@ const PostCommentSection = ({ post }) => {
                 <div className="d-flex align-items-center ms-1 gap-2 ">
                   <i className="bi bi-chat-left likeIcon text-success "></i>
                   <h5 className="mb-0 commenterName">
-                    {sortedComment.map((comment) => comment.commenterName)}
+                    {sortedComment?.map((comment) => comment.commenterName)}
                   </h5>
                   <p className="mb-0 commenterCmt">
-                    {sortedComment.map((comment) => comment.comment)}
+                    {sortedComment?.map((comment) => comment.comment)}
                   </p>
                 </div>
                 <div>

@@ -23,12 +23,12 @@ const PostUpperSection = ({ post }) => {
           <img
             src={
               post?.profilePicture === ""
-                ? post?.name.charAt(0).toUpperCase()
+                ? post?.name?.charAt(0).toUpperCase()
                 : post?.profilePicture ||
                   "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
             }
             className="img-thumbnail rounded-circle postProfilePic d-flex align-items-center justify-content-center"
-            alt={post?.name.charAt(0).toUpperCase()}
+            alt={post?.name?.charAt(0).toUpperCase()}
           ></img>
           <div>
             <h6 className="mb-0 postCreator">{post?.name}</h6>
