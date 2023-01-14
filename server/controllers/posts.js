@@ -146,7 +146,7 @@ export const getPostsById = async (req, res) => {
       },
       {
         $addFields: {
-          creator: { $toString: post.creator },
+          creator: { $toObjectId: post.creator },
         },
       },
       {
@@ -170,6 +170,7 @@ export const getPostsById = async (req, res) => {
           commentsInfo: 1,
           createdAt: 1,
           profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
+          creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
         },
       },
     ]);
