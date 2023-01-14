@@ -19,6 +19,11 @@ const PostLowerSection = ({ post }) => {
   const handleReadMore = () => {
     setIsReadMore(!isReadMore);
   };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
+  };
+
   return (
     <>
       <div className="card-body p-2">
@@ -44,11 +49,14 @@ const PostLowerSection = ({ post }) => {
 
             <PostLikeSection post={post} />
 
-            <span className="d-flex align-items-center gap-1">
+            <span className="d-flex align-items-center gap-1 likeBtn">
               <i className="bi bi-chat-left likeIcon"></i>
               <p className="mb-0 p-like">Comment</p>
             </span>
-            <span className="d-flex align-items-center gap-1">
+            <span
+              className="d-flex align-items-center gap-1 likeBtn"
+              onClick={handleCopy}
+            >
               <i className="bi bi-send"></i>
               <p className="mb-0 p-like">Share</p>
             </span>

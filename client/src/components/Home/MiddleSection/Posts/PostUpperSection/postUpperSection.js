@@ -12,8 +12,16 @@ const PostUpperSection = ({ post }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const user = JSON.parse(localStorage.getItem("profile"));
+
+  let isCreator = post?.creator === user?.result?._id;
+
   const handleEdit = () => {
     history.push("/");
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
   };
 
   return (
@@ -49,23 +57,37 @@ const PostUpperSection = ({ post }) => {
               <i className="bi bi-three-dots"></i>
             </button>
             <ul className="dropdown-menu dropdown-menu-custom text-center">
+              {isCreator && (
+                <div>
+                  <li>
+                    <a className="dropdown-item">
+                      <button
+                        className="btn dropdown-item-custom"
+                        onClick={handleEdit}
+                      >
+                        Edit
+                      </button>
+                    </a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item">
+                      <button
+                        className="btn dropdown-item-custom"
+                        onClick={() => dispatch(deleteUserPost(post?._id))}
+                      >
+                        Delete
+                      </button>
+                    </a>
+                  </li>
+                </div>
+              )}
               <li>
                 <a className="dropdown-item">
                   <button
                     className="btn dropdown-item-custom"
-                    onClick={handleEdit}
+                    onClick={handleCopy}
                   >
-                    Edit
-                  </button>
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item">
-                  <button
-                    className="btn dropdown-item-custom"
-                    onClick={() => dispatch(deleteUserPost(post?._id))}
-                  >
-                    Delete
+                    Copy link
                   </button>
                 </a>
               </li>
