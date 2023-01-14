@@ -1,4 +1,14 @@
+.postImage-container {
+  margin: 0 auto;
+}
+
 .postImage {
   border-radius: 0;
   cursor: pointer;
+}
+
+.post-image-btn {
+  background: none;
+  border: none;
+  padding: 0;
 }
