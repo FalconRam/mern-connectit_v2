@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import PostLikeSection from "../PostLikeSection/postLikeSection";
 
@@ -10,6 +11,7 @@ import PostCommentSection from "./PostCommentSection/postCommentSection";
 
 const PostLowerSection = ({ post }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [isPostSaved, setIsPostSaved] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
@@ -24,6 +26,10 @@ const PostLowerSection = ({ post }) => {
     navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
   };
 
+  const handleProfile = () => {
+    history.push(`/profile/details?profileId=${post.creator}`);
+  };
+
   return (
     <>
       <div className="card-body p-2">
@@ -31,7 +37,10 @@ const PostLowerSection = ({ post }) => {
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center gap-3">
             {/* Mini Profile Picture */}
-            <div className=" d-flex flex-row align-items-center gap-2">
+            <div
+              className=" d-flex flex-row align-items-center gap-2 likeBtn"
+              onClick={handleProfile}
+            >
               <img
                 src={
                   post?.profilePicture === ""

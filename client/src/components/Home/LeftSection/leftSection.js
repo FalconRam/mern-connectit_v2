@@ -4,7 +4,9 @@ import { useHistory } from "react-router-dom";
 
 import "./leftSection.css";
 
-const LeftSection = ({ profileDetails }) => {
+const LeftSection = ({ profileDetails, id, profileId, post }) => {
+  const user = JSON.parse(localStorage.getItem("profile"));
+
   const history = useHistory();
 
   const handleFollowFollows = (id) => {
@@ -22,6 +24,10 @@ const LeftSection = ({ profileDetails }) => {
   const handleSavedItems = () => {
     history.push("/");
   };
+
+  let isCreator = true;
+  if (id !== undefined && profileId !== undefined)
+    isCreator = post?.creator === user?.result?._id;
 
   return (
     <>
@@ -77,28 +83,32 @@ const LeftSection = ({ profileDetails }) => {
               </span>
             </div>
           </li>
-          <li className="list-group-item text-muted">
-            <div className="text-center">
-              <span
-                className="card-link profileCardLinks"
-                onClick={handleProfile}
-              >
-                My Profile
-              </span>
-              <span
-                className="card-link profileCardLinks"
-                onClick={handleSettings}
-              >
-                Settings
-              </span>
-            </div>
-          </li>
+          {isCreator && (
+            <div>
+              <li className="list-group-item text-muted">
+                <div className="text-center">
+                  <span
+                    className="card-link profileCardLinks"
+                    onClick={handleProfile}
+                  >
+                    My Profile
+                  </span>
+                  <span
+                    className="card-link profileCardLinks"
+                    onClick={handleSettings}
+                  >
+                    Settings
+                  </span>
+                </div>
+              </li>
 
-          <li className="list-group-item text-center text-muted savedItems liLeft">
-            <div onClick={handleSavedItems}>
-              <i className="bi bi-bookmark-fill"></i> My items
+              <li className="list-group-item text-center text-muted savedItems liLeft">
+                <div onClick={handleSavedItems}>
+                  <i className="bi bi-bookmark-fill"></i> My items
+                </div>
+              </li>
             </div>
-          </li>
+          )}
         </ul>
       </div>
     </>

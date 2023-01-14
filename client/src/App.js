@@ -5,6 +5,7 @@ import "./App.css";
 import NavBar from "./components/NavBar/navBar";
 import Auth from "./components/Auth/auth";
 import Home from "./components/Home/home";
+import PostDetailsWithProfile from "./components/pages/PostDetailsWithProfile/postDetailsWithProfile";
 
 const App = () => {
   let user = false;
@@ -19,6 +20,7 @@ const App = () => {
           component={() => (!user ? <Auth /> : <Redirect to="/feeds" />)}
         />
         <Route path="/feeds" exact component={Home} />
+        <Route path="/post/:id" exact component={PostDetailsWithProfile} />
       </Switch>
     </BrowserRouter>
   );

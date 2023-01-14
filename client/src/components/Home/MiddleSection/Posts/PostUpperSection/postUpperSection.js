@@ -4,7 +4,7 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { deletePost, deleteUserPost } from "../../../../../actions/posts";
+import { deleteUserPost } from "../../../../../actions/posts";
 
 import "./postUpperSection.css";
 
@@ -24,9 +24,20 @@ const PostUpperSection = ({ post }) => {
     navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
   };
 
+  const handleProfile = (id) => {
+    history.push(`/profile/details?profileId=${post.creator}`);
+  };
+
+  const openPost = () => {
+    history.push(`/post/${post._id}`);
+  };
+
   return (
     <>
-      <div className="card-header d-flex align-items-center justify-content-between">
+      <div
+        className="card-header d-flex align-items-center justify-content-between likeBtn"
+        onClick={openPost}
+      >
         <div className=" d-flex flex-row align-items-center gap-2">
           <img
             src={

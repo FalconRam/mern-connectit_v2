@@ -15,7 +15,7 @@ import {
   COMMENT_POST_WITH_USER_DETAILS,
 } from "../constants/actionTypes";
 
-export default (state = { posts: [], isLoading: true }, action) => {
+export default (state = { posts: [], post: {}, isLoading: true }, action) => {
   switch (action.type) {
     case START_LOADING:
       return { ...state, isLoading: true };
@@ -34,7 +34,7 @@ export default (state = { posts: [], isLoading: true }, action) => {
         posts: action.payload.data,
       };
     case FETCH_POST_BY_ID:
-      return { ...state, post: action.payload };
+      return { ...state, post: action.payload.data };
     case FETCH_POST_BY_USER:
       return { ...state, userPosts: action.payload.data };
     case FETCH_BY_SEARCH:
