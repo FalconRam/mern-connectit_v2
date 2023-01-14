@@ -52,6 +52,7 @@ export const getPostsByFollowing = async (req, res) => {
           // Use the $arrayElemAt operator to retrieve the first element in the "userInfo" array
           // (since we expect there to be only one element in the array)
           profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
+          creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
         },
       },
     ]);
@@ -145,7 +146,7 @@ export const getPostsById = async (req, res) => {
       },
       {
         $addFields: {
-          creator: user._id,
+          creator: { $toString: post.creator },
         },
       },
       {
@@ -240,6 +241,7 @@ export const updatePost = async (req, res) => {
           commentsInfo: 1,
           createdAt: 1,
           profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
+          creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
         },
       },
     ]);
@@ -272,7 +274,7 @@ export const addCommentByPost = async (req, res) => {
       },
       {
         $addFields: {
-          creator: user._id,
+          creator: { $toObjectId: updatedCommentInfo.creator },
         },
       },
       {
@@ -296,6 +298,7 @@ export const addCommentByPost = async (req, res) => {
           commentsInfo: 1,
           createdAt: 1,
           profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
+          creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
         },
       },
     ]);
@@ -358,7 +361,7 @@ export const likePost = async (req, res) => {
       },
       {
         $addFields: {
-          creator: user._id,
+          creator: { $toObjectId: updatedPost.creator },
         },
       },
       {
@@ -382,6 +385,7 @@ export const likePost = async (req, res) => {
           commentsInfo: 1,
           createdAt: 1,
           profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
+          creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
         },
       },
     ]);
