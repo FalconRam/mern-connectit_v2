@@ -34,12 +34,12 @@ const UpperPart = () => {
   return (
     <>
       <div>
-        <div class="card">
+        <div className="card">
           <h5 className="card-title mt-3 ms-3 fs-6 ">ConnectIT News</h5>
-          <div class="card-body p-0">
+          <div className="card-body p-0">
             <ul className="news ps-0">
-              {news.map((el) => (
-                <li className="mb-1">
+              {news.map((el, i) => (
+                <li key={i} className="mb-1">
                   <a href="">
                     <div>
                       <span className="news-bullet"></span>

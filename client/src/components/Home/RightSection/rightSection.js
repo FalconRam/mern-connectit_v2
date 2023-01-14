@@ -11,8 +11,8 @@ const RightSection = () => {
         <div className="h-auto">
           <UpperPart />
         </div>
-        <div class="text-primary">
-          <hr className="m-0"/>
+        <div className="text-primary">
+          <hr className="m-0" />
         </div>
 
         <div className="sticky-md-top sticky-lg-top position-sticky-top h-auto">
