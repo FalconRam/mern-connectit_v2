@@ -26,7 +26,6 @@ const PostCommentSection = ({ post }) => {
     );
     setComment("");
     setIsPostingComment(false);
-    console.log(updatedPostWithComment);
     setComments(updatedPostWithComment);
   };
 
