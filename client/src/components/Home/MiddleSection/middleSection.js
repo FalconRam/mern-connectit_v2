@@ -8,10 +8,12 @@ import Posts from "./Posts/posts";
 import "./middleSection.css";
 
 const MiddleSection = ({ posts, isLoading }) => {
+  const user = JSON.parse(localStorage.getItem("profile"));
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPostsByFollowing());
+    user && dispatch(getPostsByFollowing());
   }, []);
 
   return (

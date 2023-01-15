@@ -25,7 +25,7 @@ const Home = () => {
   }
 
   useEffect(() => {
-    dispatch(getProfileDetails(id));
+    user && dispatch(getProfileDetails(id));
   }, []);
 
   return (
