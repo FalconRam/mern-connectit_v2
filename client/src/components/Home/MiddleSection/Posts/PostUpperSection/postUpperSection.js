@@ -69,28 +69,28 @@ const PostUpperSection = ({ post }) => {
             </button>
             <ul className="dropdown-menu dropdown-menu-custom text-center">
               {isCreator && (
-                <div>
-                  <li>
-                    <a className="dropdown-item">
-                      <button
-                        className="btn dropdown-item-custom"
-                        onClick={handleEdit}
-                      >
-                        Edit
-                      </button>
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item">
-                      <button
-                        className="btn dropdown-item-custom"
-                        onClick={() => dispatch(deleteUserPost(post?._id))}
-                      >
-                        Delete
-                      </button>
-                    </a>
-                  </li>
-                </div>
+                <li>
+                  <a className="dropdown-item">
+                    <button
+                      className="btn dropdown-item-custom"
+                      onClick={handleEdit}
+                    >
+                      Edit
+                    </button>
+                  </a>
+                </li>
+              )}
+              {isCreator && (
+                <li>
+                  <a className="dropdown-item">
+                    <button
+                      className="btn dropdown-item-custom"
+                      onClick={() => dispatch(deleteUserPost(post?._id))}
+                    >
+                      Delete
+                    </button>
+                  </a>
+                </li>
               )}
               <li>
                 <a className="dropdown-item">
@@ -98,7 +98,7 @@ const PostUpperSection = ({ post }) => {
                     className="btn dropdown-item-custom"
                     onClick={handleCopy}
                   >
-                    Copy link
+                    Copy Link
                   </button>
                 </a>
               </li>

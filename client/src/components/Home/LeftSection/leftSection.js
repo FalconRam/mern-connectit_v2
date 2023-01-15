@@ -84,30 +84,29 @@ const LeftSection = ({ profileDetails, id, profileId, post }) => {
             </div>
           </li>
           {isCreator && (
-            <div>
-              <li className="list-group-item text-muted">
-                <div className="text-center">
-                  <span
-                    className="card-link profileCardLinks"
-                    onClick={handleProfile}
-                  >
-                    My Profile
-                  </span>
-                  <span
-                    className="card-link profileCardLinks"
-                    onClick={handleSettings}
-                  >
-                    Settings
-                  </span>
-                </div>
-              </li>
-
-              <li className="list-group-item text-center text-muted savedItems liLeft">
-                <div onClick={handleSavedItems}>
-                  <i className="bi bi-bookmark-fill"></i> My items
-                </div>
-              </li>
-            </div>
+            <li className="list-group-item text-muted">
+              <div className="text-center">
+                <span
+                  className="card-link profileCardLinks"
+                  onClick={handleProfile}
+                >
+                  My Profile
+                </span>
+                <span
+                  className="card-link profileCardLinks"
+                  onClick={handleSettings}
+                >
+                  Settings
+                </span>
+              </div>
+            </li>
+          )}
+          {isCreator && (
+            <li className="list-group-item text-center text-muted savedItems liLeft">
+              <div onClick={handleSavedItems}>
+                <i className="bi bi-bookmark-fill"></i> My items
+              </div>
+            </li>
           )}
         </ul>
       </div>
