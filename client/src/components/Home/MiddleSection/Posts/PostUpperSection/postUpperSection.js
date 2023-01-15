@@ -24,7 +24,7 @@ const PostUpperSection = ({ post }) => {
     navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
   };
 
-  const handleProfile = (id) => {
+  const handleProfile = () => {
     history.push(`/profile/details?profileId=${post.creator}`);
   };
 
@@ -34,11 +34,11 @@ const PostUpperSection = ({ post }) => {
 
   return (
     <>
-      <div
-        className="card-header d-flex align-items-center justify-content-between likeBtn"
-        onClick={openPost}
-      >
-        <div className=" d-flex flex-row align-items-center gap-2">
+      <div className="card-header d-flex align-items-center justify-content-between">
+        <div
+          className="d-flex flex-row align-items-center gap-2 likeBtn"
+          onClick={handleProfile}
+        >
           <img
             src={
               post?.profilePicture === ""
