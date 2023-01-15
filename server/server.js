@@ -34,6 +34,13 @@ const port = process.env.PORT;
 const dbUri = process.env.CONNECTION_URL;
 
 const __dirname = path.resolve();
+app.use((req, res, next) => {
+  res.set(
+    "Content-Type",
+    "application/javascript, application/json, text/plain, */*"
+  );
+  next();
+});
 app.use(express.static(path.join(__dirname, "/client/build")));
 app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "/client/build/index.html"))
