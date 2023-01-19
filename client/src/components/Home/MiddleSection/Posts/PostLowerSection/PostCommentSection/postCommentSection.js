@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import { commentPostWithUserDetails } from "../../../../../../actions/posts";
@@ -13,6 +13,10 @@ const PostCommentSection = ({ post }) => {
   const [isPostingComment, setIsPostingComment] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState(post?.commentsInfo);
+
+  useEffect(() => {
+    setComments(post?.commentsInfo);
+  }, [post]);
 
   let postComment = [];
   let [commenterId, commenterName] = [user.result._id, user.result.name];
