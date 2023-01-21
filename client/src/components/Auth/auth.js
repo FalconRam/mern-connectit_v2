@@ -6,7 +6,7 @@ import "./auth.css";
 import LogIn from "./Login/login";
 import SignUp from "./SignUp/signUp";
 
-const Auth = () => {
+const Auth = ({ isAuth, setIsAuth }) => {
   const history = useHistory();
 
   const [isLogin, setIsLogin] = useState(true);
@@ -29,6 +29,8 @@ const Auth = () => {
               setIsLogin={setIsLogin}
               isLoginLoading={isLoginLoading}
               setIsLoginLoading={setIsLoginLoading}
+              isAuth={isAuth}
+              setIsAuth={setIsAuth}
             />
           ) : (
             <SignUp
@@ -36,6 +38,8 @@ const Auth = () => {
               setIsLogin={setIsLogin}
               isLoginLoading={isLoginLoading}
               setIsLoginLoading={setIsLoginLoading}
+              isAuth={isAuth}
+              setIsAuth={setIsAuth}
             />
           )}
         </div>

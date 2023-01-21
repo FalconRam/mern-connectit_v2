@@ -1,7 +1,6 @@
 import React from "react";
 
 import { useHistory } from "react-router-dom";
-import ShareModal from "../../../Home/MiddleSection/SharePost/ShareModal/shareModal";
 
 import "./leftSideProfilePage.css";
 
@@ -27,10 +26,6 @@ const LeftSideProfilePage = () => {
   const handleSettings = () => {
     history.push("/profile/settings");
   };
-
-  // const handleCreate = () => {
-  //   ShareModal();
-  // };
 
   return (
     <>

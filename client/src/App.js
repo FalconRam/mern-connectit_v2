@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
 import "./App.css";
@@ -14,7 +15,14 @@ import Search from "./components/pages/Search/search";
 import Messages from "./components/pages/Messages/messages";
 
 const App = () => {
-  let user = false;
+  let user = JSON.parse(localStorage.getItem("profile"));
+
+  const [isAuth, setIsAuth] = useState(true);
+
+  useEffect(() => {
+    window.location.pathname !== "/auth" && setIsAuth(!isAuth);
+  }, [window.location]);
+
   return (
     <BrowserRouter>
       <NavBar />
@@ -23,7 +31,13 @@ const App = () => {
         <Route
           path="/auth"
           exact
-          component={() => (!user ? <Auth /> : <Redirect to="/feeds" />)}
+          component={() =>
+            !user ? (
+              <Auth isAuth={isAuth} setIsAuth={setIsAuth} />
+            ) : (
+              <Redirect to="/feeds" />
+            )
+          }
         />
         <Route path="/feeds" exact component={Home} />
         <Route path="/post/:id" exact component={PostDetailsWithProfile} />
@@ -33,7 +47,7 @@ const App = () => {
         <Route path="/notification" exact component={Notification} />
         <Route path="/search" exact component={Search} />
       </Switch>
-      <MobileNavigationBar />
+      {!isAuth && <MobileNavigationBar />}
     </BrowserRouter>
   );
 };

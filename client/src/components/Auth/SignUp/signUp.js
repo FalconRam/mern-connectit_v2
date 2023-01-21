@@ -7,7 +7,14 @@ import { findSigninFormErrors } from "../../../errorHandling/authFormEH";
 
 import "./signUp.css";
 
-const SignUp = ({ isLogin, setIsLogin, isLoginLoading, setIsLoginLoading }) => {
+const SignUp = ({
+  isLogin,
+  setIsLogin,
+  isLoginLoading,
+  setIsLoginLoading,
+  isAuth,
+  setIsAuth,
+}) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -65,6 +72,7 @@ const SignUp = ({ isLogin, setIsLogin, isLoginLoading, setIsLoginLoading }) => {
       // step : 1 - dispatching the action ; check step to in actions/auth
       dispatch(signUp(signInData, history));
       clearForm();
+      setIsAuth(!isAuth);
       setIsLoginLoading(!isLoginLoading);
     }
   };

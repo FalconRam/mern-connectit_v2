@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./profilePage.css";
@@ -18,8 +18,12 @@ function useQuery() {
 const ProfilePage = () => {
   const query = useQuery();
   const profileId = query.get("profileId");
+  const history = useHistory();
 
-  const user = JSON.parse(localStorage.getItem("profile"));
+  let user = JSON.parse(localStorage.getItem("profile"));
+  if (!user) {
+    history.push("/auth");
+  }
 
   const dispatch = useDispatch();
 
