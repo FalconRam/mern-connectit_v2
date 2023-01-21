@@ -7,7 +7,7 @@ import PostCommentSection from "../../../Home/MiddleSection/Posts/PostLowerSecti
 
 import "../../../Home/MiddleSection/Posts/PostLowerSection/postLowerSection.css";
 
-const PostLowerSectionModal = ({ post }) => {
+const PostLowerSectionModal = ({ post, profileDetails }) => {
   const dispatch = useDispatch();
 
   const [isPostSaved, setIsPostSaved] = useState(false);
@@ -25,9 +25,11 @@ const PostLowerSectionModal = ({ post }) => {
         <div className=" d-flex align-items-center justify-content-start gap-2">
           <img
             src={
-              post?.profilePicture === ""
+              post?.profilePicture === "" ||
+              profileDetails?.userDetails?.profilePicture === ""
                 ? post?.name?.charAt(0).toUpperCase()
                 : post?.profilePicture ||
+                  profileDetails?.userDetails?.profilePicture ||
                   "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
             }
             className="img-thumbnail rounded-circle miniPostProfilePic"
@@ -36,13 +38,22 @@ const PostLowerSectionModal = ({ post }) => {
           <div>
             <h6 className="mb-0 postCreator">{post?.name}</h6>
             <p className="p-content mb-0 d-sm-block d-md-none">
-              {post?.creatorBio?.slice(0, 32)}...
+              {profileDetails?.userDetails
+                ? profileDetails?.userDetails?.bio.slice(0, 43)
+                : post?.creatorBio?.slice(0, 43)}
+              ...
             </p>
             <p className="p-content mb-0 d-none d-md-block d-lg-none">
-              {post?.creatorBio?.slice(0, 45)}...
+              {profileDetails?.userDetails
+                ? profileDetails?.userDetails?.bio.slice(0, 51)
+                : post?.creatorBio?.slice(0, 51)}
+              ...
             </p>
             <p className="p-content mb-0 d-none d-lg-block">
-              {post?.creatorBio?.slice(0, 86)}...
+              {profileDetails?.userDetails
+                ? profileDetails?.userDetails?.bio.slice(0, 89)
+                : post?.creatorBio?.slice(0, 89)}
+              ...
             </p>
           </div>
         </div>

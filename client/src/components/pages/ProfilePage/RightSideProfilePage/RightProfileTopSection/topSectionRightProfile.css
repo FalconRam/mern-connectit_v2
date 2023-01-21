@@ -1,0 +1,28 @@
+.user-details-card {
+  background-size: cover;
+  z-index: 1;
+}
+
+.profilePicture {
+  height: 5rem;
+  width: 5rem;
+}
+
+.profName {
+  font-size: 0.8rem;
+}
+
+.profEdit,
+.profBio,
+.profPost,
+.profFollowCount,
+.profLocation,
+.profCreated {
+  font-size: 0.7rem;
+  margin-bottom: 0;
+}
+
+.profEdit {
+  font-size: 0.7rem;
+  border: none;
+}

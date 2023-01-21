@@ -15,7 +15,10 @@ import {
   COMMENT_POST_WITH_USER_DETAILS,
 } from "../constants/actionTypes";
 
-export default (state = { posts: [], post: {}, isLoading: true }, action) => {
+export default (
+  state = { posts: [], post: {}, userPosts: [], isLoading: true },
+  action
+) => {
   switch (action.type) {
     case START_LOADING:
       return { ...state, isLoading: true };

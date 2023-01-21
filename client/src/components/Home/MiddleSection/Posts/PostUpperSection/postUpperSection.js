@@ -8,7 +8,7 @@ import { deleteUserPost } from "../../../../../actions/posts";
 
 import "./postUpperSection.css";
 
-const PostUpperSection = ({ post }) => {
+const PostUpperSection = ({ post, profileDetails }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -41,9 +41,11 @@ const PostUpperSection = ({ post }) => {
         >
           <img
             src={
-              post?.profilePicture === ""
+              post?.profilePicture === "" ||
+              profileDetails?.userDetails?.profilePicture === ""
                 ? post?.name?.charAt(0).toUpperCase()
                 : post?.profilePicture ||
+                  profileDetails?.userDetails?.profilePicture ||
                   "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
             }
             className="img-thumbnail rounded-circle postProfilePic d-flex align-items-center justify-content-center"

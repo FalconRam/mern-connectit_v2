@@ -1,0 +1,17 @@
+.customMargin2 {
+  margin-top: 4.5rem;
+}
+
+.customFontSideNav {
+  font-size: 1.1rem;
+}
+
+.sideNavButton {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 576px) {
+  .customMargin2 {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,59 @@
+.customPostCard {
+  height: 15rem;
+  width: 15rem;
+}
+
+.image-only {
+  object-fit: contain;
+  height: 15rem;
+  width: 15rem;
+}
+
+.imageHover {
+  position: relative;
+  overflow: hidden;
+}
+
+.imageHover:hover .hoverDiv {
+  cursor: pointer;
+  display: block !important;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.hoverDiv {
+  display: none !important;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(99, 99, 99, 0.4);
+}
+
+.hoverDiv-likeIcon {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.hoverDiv-commentIcon {
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+}
+
+@media screen and (min-width: 768px) {
+  .customPostCard {
+    height: 14rem;
+    width: 14rem;
+  }
+
+  .image-only {
+    height: 14rem;
+    width: 14rem;
+  }
+}

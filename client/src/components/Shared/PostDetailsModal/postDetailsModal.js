@@ -4,7 +4,7 @@ import PostDetails from "../PostDetails/postDetails";
 
 import "./postDetailsModal.css";
 
-const PostDetailsModal = ({ post }) => {
+const PostDetailsModal = ({ post, profileDetails }) => {
   return (
     <>
       <div
@@ -26,7 +26,7 @@ const PostDetailsModal = ({ post }) => {
               ></button>
             </div>
             <div className="modal-body">
-              <PostDetails post={post} />
+              <PostDetails post={post} profileDetails={profileDetails} />
             </div>
           </div>
         </div>

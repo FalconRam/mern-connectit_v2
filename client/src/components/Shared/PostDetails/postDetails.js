@@ -5,7 +5,7 @@ import PostLowerSectionModal from "./PostLowerSectionModal/PostLowerSectionModal
 
 import "./postDetails.css";
 
-const PostDetails = ({ post }) => {
+const PostDetails = ({ post, profileDetails }) => {
   return (
     <>
       <div className="gap-3">
@@ -13,7 +13,7 @@ const PostDetails = ({ post }) => {
           <div className="d-flex flex-column flex-md-row">
             {/* Upper/Left Section */}
             <div className="col-sm-12 col-md-6 ps-0">
-              <PostUpperSection post={post} />
+              <PostUpperSection post={post} profileDetails={profileDetails} />
               <img
                 src={
                   post?.selectedFile ||
@@ -26,7 +26,10 @@ const PostDetails = ({ post }) => {
             </div>
             {/* Lower/Right Section */}
             <div className="col-sm-12 col-md-6">
-              <PostLowerSectionModal post={post} />
+              <PostLowerSectionModal
+                post={post}
+                profileDetails={profileDetails}
+              />
             </div>
           </div>
         </div>

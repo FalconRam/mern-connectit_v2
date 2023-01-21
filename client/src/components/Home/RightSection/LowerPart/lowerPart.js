@@ -6,7 +6,7 @@ import logo from "../../../../assets/logo.png";
 const LowerPart = () => {
   return (
     <>
-      <div className="text-center">
+      <div className="text-center mb-5">
         <div className="col">
           <ul className="footerLinks d-flex align-items-center justify-content-center gap-2  mb-1">
             <li>
