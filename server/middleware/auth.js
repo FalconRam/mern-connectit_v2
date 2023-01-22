@@ -9,7 +9,19 @@ const secretKey = process.env.SECRET_KEY;
 
 const auth = async (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    if (!req.headers.authorization) {
+      return res.status(401).json({ status: false, message: "Unauthorized" });
+    }
+
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ status: false, message: "Token not provided" });
+    }
+
     const isCustomAuth = token.length < 500;
 
     let decodedData;
