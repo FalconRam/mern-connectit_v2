@@ -11,17 +11,18 @@ const API = axios.create({ baseURL: URL });
 
 API.interceptors.request.use(async (req) => {
   let tokenFromCookie = await Cookies.get("userToken");
-  let localStorageToken = await JSON.parse(localStorage.getItem("profile"))
-    .token;
+
   try {
     if (tokenFromCookie) {
       req.headers.authorization = `Bearer ${tokenFromCookie}`;
-    } else {
-      req.headers.authorization = `Bearer ${localStorageToken}`;
+    } else if (localStorage.getItem("profile")) {
+      req.headers.Authorization = `Bearer ${
+        JSON.parse(localStorage.getItem("profile")).token
+      }`;
     }
     return req;
   } catch (error) {
-    return Promise.reject(error);
+    console.log(error.message);
   }
 });
 
