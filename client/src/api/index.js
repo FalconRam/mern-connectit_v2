@@ -10,12 +10,9 @@ let URL =
 const API = axios.create({ baseURL: URL });
 
 API.interceptors.request.use((req) => {
-  if (localStorage.getItem("profile")) {
-    req.headers.authorization = `Bearer ${
-      JSON.parse(localStorage.getItem("profile")).token
-    }`;
-  } else {
+  if (Cookies.get("userToken")) {
     let tokenFromCookie = Cookies.get("userToken");
+    console.log(`Cookie Token ${tokenFromCookie}`);
     req.headers.authorization = `Bearer ${tokenFromCookie}`;
   }
   return req;
