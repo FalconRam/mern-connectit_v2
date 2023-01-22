@@ -12,11 +12,7 @@ const API = axios.create({ baseURL: URL });
 API.interceptors.request.use((req) => {
   if (Cookies.get("userToken")) {
     let tokenFromCookie = Cookies.get("userToken");
-    console.log(`Cookie Token ${tokenFromCookie}`);
     req.headers.authorization = `Bearer ${tokenFromCookie}`;
-    console.log(
-      `Added token to req.headers.authorization = ${req.headers.authorization}`
-    );
   }
   return req;
 });
