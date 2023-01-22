@@ -1,9 +1,12 @@
 import axios from "axios";
 
-// http://localhost:5000/
-const API = axios.create({ baseURL: "https://connectit.onrender.com/" });
+let localURL = "http://localhost:5000/";
+let productionURL = "https://connectit.onrender.com/";
 
-// const url = "http://localhost:5000/posts";
+let URL =
+  window.location.origin === "http://localhost:3000" ? localURL : productionURL;
+
+const API = axios.create({ baseURL: URL });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {

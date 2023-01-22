@@ -41,12 +41,7 @@ const App = () => {
         />
         <Route path="/feeds" exact component={Home} />
         <Route path="/post/:id" exact component={PostDetailsWithProfile} />
-        {/* <Route path="/profile/details" exact component={ProfilePage} /> */}
-        <Route
-          path="/profile/details"
-          exact
-          render={(props) => <ProfilePage {...props} user={user} />}
-        />
+        <Route path="/profile/details" exact component={ProfilePage} />
         <Route path="/profile/settings" exact component={Settings} />
         <Route path="/chats" exact component={Messages} />
         <Route path="/notification" exact component={Notification} />
