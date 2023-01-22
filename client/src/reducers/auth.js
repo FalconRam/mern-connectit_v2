@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { AUTH, LOGOUT } from "../constants/actionTypes";
 
 const authReducer = (state = { authData: null }, action) => {
@@ -7,6 +8,7 @@ const authReducer = (state = { authData: null }, action) => {
       return { ...state, authData: action?.data, loading: false, errors: null };
     case LOGOUT:
       localStorage.clear();
+      Cookies.remove("userToken");
       return { ...state, authData: null };
     default:
       return state;

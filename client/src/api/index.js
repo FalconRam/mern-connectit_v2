@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 let localURL = "http://localhost:5000/";
 let productionURL = "https://connectit.onrender.com/";
@@ -13,6 +14,9 @@ API.interceptors.request.use((req) => {
     req.headers.authorization = `Bearer ${
       JSON.parse(localStorage.getItem("profile")).token
     }`;
+  } else {
+    let tokenFromCookie = Cookies.get("userToken");
+    req.headers.authorization = `Bearer ${tokenFromCookie}`;
   }
   return req;
 });

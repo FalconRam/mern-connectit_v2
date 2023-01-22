@@ -1,5 +1,6 @@
 import * as api from "../api";
 import { AUTH } from "../constants/actionTypes";
+import Cookies from "js-cookie";
 
 // action creators
 export const signUp = (formData, history) => async (dispatch) => {
@@ -19,6 +20,8 @@ export const logIn = (formData, history) => async (dispatch) => {
   try {
     // login user
     const { data } = await api.logIn(formData);
+    // Save token in a cookie
+    Cookies.set("userToken", data.token);
     dispatch({ type: AUTH, data });
     history.push("/");
   } catch (error) {
