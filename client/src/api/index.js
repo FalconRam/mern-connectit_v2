@@ -9,12 +9,20 @@ let URL =
 
 const API = axios.create({ baseURL: URL });
 
-API.interceptors.request.use((req) => {
-  if (Cookies.get("userToken")) {
-    let tokenFromCookie = Cookies.get("userToken");
-    req.headers.authorization = `Bearer ${tokenFromCookie}`;
+API.interceptors.request.use(async (req) => {
+  let tokenFromCookie = await Cookies.get("userToken");
+  let localStorageToken = await JSON.parse(localStorage.getItem("profile"))
+    .token;
+  try {
+    if (tokenFromCookie) {
+      req.headers.authorization = `Bearer ${tokenFromCookie}`;
+    } else {
+      req.headers.authorization = `Bearer ${localStorageToken}`;
+    }
+    return req;
+  } catch (error) {
+    return Promise.reject(error);
   }
-  return req;
 });
 
 export const fetchPostsByFollowing = () => API.get(`/posts/feeds`);
