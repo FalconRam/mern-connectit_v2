@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Cookies from "js-cookie";
 
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,11 +31,12 @@ const ProfilePage = () => {
 
   const { userPosts } = useSelector((state) => state.posts);
   const { profileDetails } = useSelector((state) => state.profile);
+  let tokenFromCookie = Cookies.get("userToken");
 
   useEffect(() => {
     if (user) {
       dispatch(getPostByUser(profileId));
-      dispatch(getProfileDetails(profileId));
+      dispatch(getProfileDetails(profileId, tokenFromCookie));
     }
   }, []);
 

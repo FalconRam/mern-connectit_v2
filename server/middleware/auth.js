@@ -9,12 +9,14 @@ const secretKey = process.env.SECRET_KEY;
 
 const auth = async (req, res, next) => {
   try {
-    if (!req.headers.authorization) {
+    if (!req.headers.authorization && !req.body.token) {
       return res.status(401).json({ status: false, message: "Unauthorized" });
     }
 
     const token =
-      req.headers.authorization && req.headers.authorization.split(" ")[1];
+      req.headers.authorization === undefined
+        ? req.body.token
+        : req.headers.authorization.split(" ")[1];
 
     if (!token) {
       return res

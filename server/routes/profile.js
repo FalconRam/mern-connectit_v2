@@ -16,6 +16,6 @@ router.get("/following/details", auth, followingProfileDetails);
 
 router.get("/followers/details", auth, followersProfileDetails);
 
-router.get("/details", auth, userDetails);
+router.post("/details", auth, userDetails);
 
 export default router;

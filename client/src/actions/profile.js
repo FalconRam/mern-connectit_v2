@@ -47,15 +47,15 @@ export const getFollowersProfileDetails = (id) => async (dispatch) => {
   }
 };
 
-export const getProfileDetails = (id) => async (dispatch) => {
+export const getProfileDetails = (id, tokenFromCookie) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
 
-    const { data } = await api.fetchProfileDetails(id);
+    const { data } = await api.fetchProfileDetails(id, tokenFromCookie);
     dispatch({ type: GET_PROFILE_DETAILS, payload: data });
 
     dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error);
   }
-}
+};

@@ -11,7 +11,6 @@ const API = axios.create({ baseURL: URL });
 
 API.interceptors.request.use(async (req) => {
   let tokenFromCookie = await Cookies.get("userToken");
-
   try {
     if (tokenFromCookie) {
       req.headers.authorization = `Bearer ${tokenFromCookie}`;
@@ -64,7 +63,7 @@ export const fetchFollowingProfileDetails = (id) =>
 export const fetchFollowersProfileDetails = (id) =>
   API.get(`/profile/followers/details?profileId=${id}`);
 
-export const fetchProfileDetails = (id) =>
-  API.get(`/profile/details?profileId=${id}`);
+export const fetchProfileDetails = (id, tokenFromCookie) =>
+  API.post(`/profile/details?profileId=${id}`, { token: tokenFromCookie });
 
 export const fetchPostByUser = (id) => API.get(`/posts/user-posts/${id}`);
