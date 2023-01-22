@@ -15,12 +15,12 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const ProfilePage = () => {
+const ProfilePage = ({ user }) => {
   const query = useQuery();
   const profileId = query.get("profileId");
   const history = useHistory();
 
-  let user = JSON.parse(localStorage.getItem("profile"));
+  // let user = JSON.parse(localStorage.getItem("profile"));
   if (!user) {
     history.push("/auth");
   }
