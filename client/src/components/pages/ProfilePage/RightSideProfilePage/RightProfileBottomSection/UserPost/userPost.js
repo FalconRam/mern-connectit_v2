@@ -34,7 +34,7 @@ const UserPost = ({ post, profileDetails }) => {
               <i className="bi bi-heart-fill text-danger" /> {postLikesCount}
             </p>
             <p className="hoverDiv-commentIcon">
-              <i class="bi bi-chat-fill text-danger" /> {postCommentsCount}
+              <i className="bi bi-chat-fill text-danger" /> {postCommentsCount}
             </p>
           </div>
         </div>
