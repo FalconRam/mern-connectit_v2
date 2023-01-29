@@ -25,6 +25,7 @@ API.interceptors.request.use(async (req) => {
   }
 });
 
+// Post Related APIs
 export const fetchPostsByFollowing = () => API.get(`/posts/feeds`);
 
 export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
@@ -38,6 +39,9 @@ export const fetchPostsBySearch = (searchQuery) =>
     }`
   );
 
+export const fetchPostByUser = (id) => API.get(`/posts/user-posts/${id}`);
+
+// Post CRUD APIs
 export const createPost = (newPost) => API.post("/posts/create", newPost);
 
 export const updatePost = (id, updatedPost) =>
@@ -50,10 +54,12 @@ export const likePost = (id) => API.patch(`/posts/like/${id}`);
 export const commentPostWithUserDetails = (id, resultComment) =>
   API.patch(`/posts/${id}/addComment/byPost`, resultComment);
 
+// Login/Signup APIs
 export const logIn = (formData) => API.post("/user/login-user", formData);
 
 export const signUp = (formData) => API.post("/user/create-user", formData);
 
+// Profile APIs
 export const fetchFollowingAndFollowersCount = (id) =>
   API.get(`/profile/following-followers/count?profileId=${id}`);
 
@@ -66,4 +72,8 @@ export const fetchFollowersProfileDetails = (id) =>
 export const fetchProfileDetails = (id, tokenFromCookie) =>
   API.post(`/profile/details?profileId=${id}`, { token: tokenFromCookie });
 
-export const fetchPostByUser = (id) => API.get(`/posts/user-posts/${id}`);
+export const updateProfileDetails = (id, userData) =>
+  API.patch(`/profile/update/${id}`, userData);
+
+  export const updateProfilePassword = (id, newUpdatePassword) =>
+    API.patch(`/profile/update/password/${id}`, newUpdatePassword);

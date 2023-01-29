@@ -5,6 +5,8 @@ import {
   GET_FOLLOWERS_PROFILE_DETAILS,
   GET_FOLLOWING_PROFILE_DETAILS,
   GET_PROFILE_DETAILS,
+  UPDATE_PROFILE_DETAILS,
+  // UPDATE_PROFILE_PASSWORD,
 } from "../constants/actionTypes";
 
 const initState = {
@@ -40,6 +42,24 @@ export default (state = initState, action) => {
         ...state,
         profileDetails: action.payload.data,
       };
+    case UPDATE_PROFILE_DETAILS:
+      return {
+        ...state,
+        profileDetails:
+          state.profileDetails.userDetails._id ===
+          action.payload.data.userDetails._id
+            ? action.payload.data
+            : state.profileDetails.userDetails,
+      };
+    // case UPDATE_PROFILE_PASSWORD:
+    //   return {
+    //     ...state,
+    //     profileDetails:
+    //       state.profileDetails.userDetails._id ===
+    //       action.payload.data.userDetails._id
+    //         ? action.payload.data
+    //         : state.profileDetails.userDetails,
+    //   };
     default:
       return state;
   }

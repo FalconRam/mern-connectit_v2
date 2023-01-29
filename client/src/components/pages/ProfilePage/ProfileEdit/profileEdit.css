@@ -1,0 +1,41 @@
+.edit {
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.profilePicture-2 {
+  height: 8rem;
+  width: 8rem;
+}
+
+.form-control-sm-custom {
+  height: calc(1.2em + 0.5rem + 2px);
+  height: 1.6rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+.text-area {
+  height: 3.5rem;
+}
+
+.form-control-custom {
+  display: block;
+  width: 100%;
+  color: #212529;
+  background: transparent;
+  background-clip: padding-box;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  border-bottom: 1px solid #ced4da;
+  appearance: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control-custom:focus {
+  border-bottom: 1px solid #ced4da;
+  border-bottom-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 2px 3px -1px rgba(13, 110, 253, 0.25);
+}

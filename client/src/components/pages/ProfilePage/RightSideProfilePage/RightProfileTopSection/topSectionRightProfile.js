@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import moment from "moment";
 
 import "./topSectionRightProfile.css";
 
 const TopSectionRightProfile = ({ profileDetails, postCount }) => {
+  const history = useHistory();
+
   // useEffect(() => {
   //   loadBgWall();
   // }, [profileDetails?.userDetails?.profileBgWallPicture]);
@@ -14,6 +17,10 @@ const TopSectionRightProfile = ({ profileDetails, postCount }) => {
   //   userDetailsCard.style.backgroundImage = `url(${bgImageUrl})`;
   //   userDetailsCard.style.backgroundSize = "cover";
   // };
+
+  const handleProfileEdit = () => {
+    history.push(`/profile/edit/${profileDetails?.userDetails?._id}`);
+  };
 
   return (
     <>
@@ -45,6 +52,7 @@ const TopSectionRightProfile = ({ profileDetails, postCount }) => {
                   <button
                     className="btn btn-outline-dark profEdit"
                     type="button"
+                    onClick={handleProfileEdit}
                   >
                     <i className="bi bi-pencil"></i> Edit
                   </button>

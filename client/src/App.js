@@ -13,6 +13,7 @@ import Settings from "./components/pages/Settings/settings";
 import Notification from "./components/pages/Notification/notification";
 import Search from "./components/pages/Search/search";
 import Messages from "./components/pages/Messages/messages";
+import ProfileEdit from "./components/pages/ProfilePage/ProfileEdit/profileEdit";
 
 const App = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
@@ -42,6 +43,7 @@ const App = () => {
         <Route path="/feeds" exact component={Home} />
         <Route path="/post/:id" exact component={PostDetailsWithProfile} />
         <Route path="/profile/details" exact component={ProfilePage} />
+        <Route path="/profile/edit/:id" exact component={ProfileEdit} />
         <Route path="/profile/settings" exact component={Settings} />
         <Route path="/chats" exact component={Messages} />
         <Route path="/notification" exact component={Notification} />

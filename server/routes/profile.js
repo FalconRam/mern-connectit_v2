@@ -4,6 +4,8 @@ import {
   followingProfileDetails,
   followingAndFollowersCount,
   userDetails,
+  updateUserDetails,
+  updateUserPassword,
 } from "../controllers/profile.js";
 
 import auth from "../middleware/auth.js";
@@ -17,5 +19,9 @@ router.get("/following/details", auth, followingProfileDetails);
 router.get("/followers/details", auth, followersProfileDetails);
 
 router.post("/details", auth, userDetails);
+
+router.patch("/update/:id", auth, updateUserDetails);
+
+router.patch("/update/password/:id", auth, updateUserPassword);
 
 export default router;
