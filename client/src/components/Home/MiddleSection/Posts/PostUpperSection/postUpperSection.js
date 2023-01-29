@@ -14,7 +14,7 @@ const PostUpperSection = ({ post, profileDetails }) => {
 
   const user = JSON.parse(localStorage.getItem("profile"));
 
-  let isCreator = post?.creator === user?.result?._id;
+  let isCreator = post?.creator === user?.id;
 
   const handleEdit = () => {
     history.push("/");

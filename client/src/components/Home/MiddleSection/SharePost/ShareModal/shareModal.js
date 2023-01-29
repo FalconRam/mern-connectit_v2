@@ -26,15 +26,15 @@ const ShareModal = () => {
 
     // if (currentId) {
     //   dispatch(
-    //     updatePost(currentId, { ...postData, name: user?.result?.name }, history)
+    //     updatePost(currentId, { ...postData, name: user?.name }, history)
     //   );
     //   clear();
     // } else {
-    //   dispatch(createPost({ ...postData, name: user?.result?.name }, history));
+    //   dispatch(createPost({ ...postData, name: user?.name }, history));
     //   clear();
     // }
 
-    dispatch(createPost({ ...postData, name: user?.result?.name }, history));
+    dispatch(createPost({ ...postData, name: user?.name }, history));
     clear();
   };
   const clear = () => {

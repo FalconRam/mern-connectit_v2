@@ -27,7 +27,7 @@ const LeftSection = ({ profileDetails, id, profileId, post }) => {
 
   let isCreator = true;
   if (id !== undefined && profileId !== undefined)
-    isCreator = post?.creator === user?.result?._id;
+    isCreator = post?.creator === user?.id;
 
   return (
     <>

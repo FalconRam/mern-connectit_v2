@@ -21,7 +21,10 @@ export const logIn = (formData, history) => async (dispatch) => {
     // login user
     const { data } = await api.logIn(formData);
     // Save token in a cookie
-    Cookies.set("userToken", data.token, { sameSite: "None", secure: true });
+    Cookies.set("userToken", data.data.token, {
+      sameSite: "None",
+      secure: true,
+    });
     dispatch({ type: AUTH, data });
     history.push("/");
   } catch (error) {

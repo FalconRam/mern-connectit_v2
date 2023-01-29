@@ -12,7 +12,7 @@ import ShareCard from "./MiddleSection/SharePost/ShareCard/shareCard";
 
 const Home = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
-  const id = user?.result?._id;
+  const id = user?.id;
 
   const history = useHistory();
   const dispatch = useDispatch();

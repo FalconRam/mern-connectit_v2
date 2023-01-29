@@ -27,7 +27,7 @@ export const logIn = async (req, res) => {
     );
 
     if (!isPasswordCorrect)
-      return res.status(404).json({ message: "Password is incorrect." });
+      return res.status(400).json({ message: "Password is incorrect." });
 
     // If User is authorized one...
     const token = jwt.sign(
@@ -36,9 +36,16 @@ export const logIn = async (req, res) => {
       { expiresIn: "2h" }
     );
 
-    res.status(200).json({ result: existingUser, token });
+    let result = {
+      id: existingUser._id,
+      name: existingUser.name,
+      email: existingUser.email,
+      token: token,
+    };
+
+    res.status(200).json({ status: true, data: result });
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong. " + error });
+    res.status(500).json({ status: false, message: error.message });
   }
 };
 
@@ -76,8 +83,15 @@ export const signUp = async (req, res) => {
       expiresIn: "2h",
     });
 
-    res.status(200).json({ result, token });
+    let resultUser = {
+      id: _id,
+      name: result.name,
+      email: result.email,
+      token: token,
+    };
+
+    res.status(200).json({ status: true, data: resultUser });
   } catch (error) {
-    res.status(500).json({ status: false, data: { message: error } });
+    res.status(500).json({ status: false, message: error.message });
   }
 };

@@ -10,7 +10,7 @@ import "./postLikeSection.css";
 const PostLikeSection = ({ post }) => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
-  const userId = user?.result?._id || user?.result?.googleId;
+  const userId = user?.id || user?.googleId;
 
   const [isLiked, setIsLiked] = useState(false);
   const [isLikeUpdating, setIsLikeUpdating] = useState(false);

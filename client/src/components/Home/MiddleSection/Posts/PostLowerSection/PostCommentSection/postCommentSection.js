@@ -19,7 +19,7 @@ const PostCommentSection = ({ post }) => {
   }, [post]);
 
   let postComment = [];
-  let [commenterId, commenterName] = [user.result._id, user.result.name];
+  let [commenterId, commenterName] = [user.id, user.name];
   postComment[0] = { commenterId, commenterName, comment };
   const resultComment = { postComment };
 

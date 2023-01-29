@@ -49,7 +49,7 @@ const NavBar = () => {
           </a>
 
           {/* From Medium to xxl Devices Component*/}
-          {user?.result && (
+          {user && (
             <div role="navigation " className="d-none d-sm-none d-md-block">
               <ul className="nav justify-content-end nav-listItems me-2">
                 <li className="nav-item ">
@@ -79,7 +79,7 @@ const NavBar = () => {
           )}
 
           {/* Mobile and below mobile Component */}
-          {user?.result && (
+          {user && (
             <div className="d-md-none dropdown me-4 ">
               <button
                 className="btn"
