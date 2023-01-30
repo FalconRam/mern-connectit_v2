@@ -75,5 +75,8 @@ export const fetchProfileDetails = (id, tokenFromCookie) =>
 export const updateProfileDetails = (id, userData) =>
   API.patch(`/profile/update/${id}`, userData);
 
-  export const updateProfilePassword = (id, newUpdatePassword) =>
-    API.patch(`/profile/update/password/${id}`, newUpdatePassword);
+export const updateProfilePassword = (id, newUpdatePassword) =>
+  API.patch(`/profile/update/password/${id}`, newUpdatePassword);
+
+  export const updateProfilePictures = (id, newPictures) =>
+    API.patch(`/profile/update/profile-pictures/${id}`, newPictures);

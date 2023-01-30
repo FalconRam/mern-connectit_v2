@@ -8,6 +8,7 @@ import {
   GET_PROFILE_DETAILS,
   UPDATE_PROFILE_DETAILS,
   // UPDATE_PROFILE_PASSWORD,
+  UPDATE_PROFILE_PICTURES,
 } from "../constants/actionTypes";
 
 export const getFollowingAndFollowersCount = (id) => async (dispatch) => {
@@ -80,6 +81,19 @@ export const updateProfilePassword = (id, newUpdatePassword) => async (dispatch)
 
     const { data } = await api.updateProfilePassword(id, newUpdatePassword);
     // dispatch({ type: UPDATE_PROFILE_PASSWORD, payload: data });
+
+    dispatch({ type: END_LOADING });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateProfilePictures = (id, newPictures) => async (dispatch) => {
+  try {
+    dispatch({ type: START_LOADING });
+
+    const { data } = await api.updateProfilePictures(id, newPictures);
+    dispatch({ type: UPDATE_PROFILE_PICTURES, payload: data });
 
     dispatch({ type: END_LOADING });
   } catch (error) {

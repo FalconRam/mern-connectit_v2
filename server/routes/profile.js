@@ -6,6 +6,7 @@ import {
   userDetails,
   updateUserDetails,
   updateUserPassword,
+  updateUserProfilePictures,
 } from "../controllers/profile.js";
 
 import auth from "../middleware/auth.js";
@@ -23,5 +24,7 @@ router.post("/details", auth, userDetails);
 router.patch("/update/:id", auth, updateUserDetails);
 
 router.patch("/update/password/:id", auth, updateUserPassword);
+
+router.patch("/update/profile-pictures/:id", auth, updateUserProfilePictures);
 
 export default router;

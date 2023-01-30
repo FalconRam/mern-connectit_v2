@@ -7,6 +7,7 @@ import {
   GET_PROFILE_DETAILS,
   UPDATE_PROFILE_DETAILS,
   // UPDATE_PROFILE_PASSWORD,
+  UPDATE_PROFILE_PICTURES,
 } from "../constants/actionTypes";
 
 const initState = {
@@ -60,6 +61,15 @@ export default (state = initState, action) => {
     //         ? action.payload.data
     //         : state.profileDetails.userDetails,
     //   };
+    case UPDATE_PROFILE_PICTURES:
+      return {
+        ...state,
+        profileDetails:
+          state.profileDetails.userDetails._id ===
+          action.payload.data.userDetails._id
+            ? action.payload.data
+            : state.profileDetails.userDetails,
+      };
     default:
       return state;
   }

@@ -8,6 +8,11 @@
   width: 8rem;
 }
 
+.profileBgWallPicture {
+  height: 8rem;
+  width: 16rem;
+}
+
 .form-control-sm-custom {
   height: calc(1.2em + 0.5rem + 2px);
   height: 1.6rem;
@@ -17,6 +22,7 @@
 
 .text-area {
   height: 3.5rem;
+  resize: both;
 }
 
 .form-control-custom {
@@ -38,4 +44,35 @@
   border-bottom-color: #86b7fe;
   outline: 0;
   box-shadow: 0 2px 3px -1px rgba(13, 110, 253, 0.25);
+}
+
+.hoverDiv-imageIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.fileBase input[type="file"] {
+  max-width: 8rem;
+}
+
+.fileBase input[type="file"]::file-selector-button {
+  font-size: 0.5rem;
+  margin-right: 20px;
+  border: none;
+  background: #0d6efd;
+  padding: 5px 6px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.fileBase input[type="file"] {
+  font-size: 0.5rem;
+}
+
+.bgWallName input[type="file"] {
+  max-width: 16rem;
 }

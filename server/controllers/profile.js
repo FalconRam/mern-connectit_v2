@@ -86,7 +86,7 @@ export const updateUserDetails = async (req, res) => {
         new: true,
       }
     );
-
+    updatedUserDetails.password = undefined;
     res
       .status(200)
       .json({ status: true, data: { userDetails: updatedUserDetails } });
@@ -131,5 +131,41 @@ export const updateUserPassword = async (req, res) => {
       .json({ status: true, message: "Password updated Successfully" });
   } catch (error) {
     res.status(500).json({ status: false, message: error.message });
+  }
+};
+
+export const updateUserProfilePictures = async (req, res) => {
+  const userId = req.userId;
+  const newPictures = req.body;
+  let { bgWallPicture, profilePicture } = newPictures;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(userId))
+      return res.status(404).json({ status: false, message: "User not Found" });
+    let user = await User.findById(userId);
+
+    user.profilePicture = profilePicture;
+    user.profileBgWallPicture = bgWallPicture;
+
+    const updatedUserDetails = await User.findByIdAndUpdate(userId, user, {
+      new: true,
+    });
+
+    updatedUserDetails.password = undefined;
+
+    res.status(200).json({
+      status: true,
+      data: {
+        message: "BgWall and Profile Pictures Updated",
+        userDetails: updatedUserDetails,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      data: {
+        message: "BgWall and Profile Pictures Not Updated",
+        errorMessage: error.message,
+      },
+    });
   }
 };
