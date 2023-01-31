@@ -1,10 +1,21 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import moment from "moment";
 
 import "./topSectionRightProfile.css";
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const TopSectionRightProfile = ({ profileDetails, postCount }) => {
+  const user = JSON.parse(localStorage.getItem("profile"));
+
+  const query = useQuery();
+  const profileId = query.get("profileId");
+
+  let isUser = user.id === profileId;
+
   const history = useHistory();
 
   // useEffect(() => {
@@ -49,13 +60,15 @@ const TopSectionRightProfile = ({ profileDetails, postCount }) => {
                   <h5 className="profName mb-0 text-primary">
                     {profileDetails?.userDetails?.name}
                   </h5>
-                  <button
-                    className="btn btn-outline-dark profEdit"
-                    type="button"
-                    onClick={handleProfileEdit}
-                  >
-                    <i className="bi bi-pencil"></i> Edit
-                  </button>
+                  {isUser && (
+                    <button
+                      className="btn btn-outline-dark profEdit"
+                      type="button"
+                      onClick={handleProfileEdit}
+                    >
+                      <i className="bi bi-pencil"></i> Edit
+                    </button>
+                  )}
                 </div>
 
                 {/* Post, Followers & Followings Count*/}

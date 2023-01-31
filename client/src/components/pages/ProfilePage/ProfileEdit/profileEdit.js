@@ -22,6 +22,8 @@ const ProfileEdit = () => {
     history.push("/auth");
   }
 
+  let isUser = user.id === id;
+
   let tokenFromCookie = Cookies.get("userToken");
 
   const dispatch = useDispatch();
@@ -259,7 +261,7 @@ const ProfileEdit = () => {
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModalCenter_profileBgWallPicture"
                   />
-                  {profileBgWallEdit && (
+                  {isUser && profileBgWallEdit && (
                     <div className="fileBase bgWallName">
                       <FileBase
                         type="file"
@@ -272,7 +274,7 @@ const ProfileEdit = () => {
                   )}
 
                   {/*  */}
-                  {!profileBgWallEdit && (
+                  {isUser && !profileBgWallEdit && (
                     <span
                       className="text-primary edit"
                       onClick={handleBgWallPicture}
@@ -301,7 +303,7 @@ const ProfileEdit = () => {
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModalCenterProfilePicture"
                   />
-                  {profilePictueEdit && (
+                  {isUser && profilePictueEdit && (
                     <div className="fileBase">
                       <FileBase
                         type="file"
@@ -317,7 +319,7 @@ const ProfileEdit = () => {
                   )}
 
                   {/*  */}
-                  {!profilePictueEdit && (
+                  {isUser && !profilePictueEdit && (
                     <span
                       className="text-primary edit"
                       onClick={handleProfilePicture}
@@ -330,7 +332,7 @@ const ProfileEdit = () => {
 
               {/* Image Update Button */}
               <div className="d-flex justify-content-start align-items-center mt-2 mb-2">
-                {editForPicture && (
+                {isUser && editForPicture && (
                   <>
                     <button
                       className="btn btn-outline-dark profEdit text-success"
@@ -360,7 +362,7 @@ const ProfileEdit = () => {
                         `${userData?.firstName} ${userData?.lastName}`}
                     </h5>
                   )}
-                  {nameEdit && (
+                  {isUser && nameEdit && (
                     <>
                       <input
                         type="text"
@@ -380,14 +382,18 @@ const ProfileEdit = () => {
                       />
                     </>
                   )}
-                  {!nameEdit ? (
-                    <span className="edit ms-2" onClick={handleNameEdit}>
-                      <i className="bi bi-pencil" />
-                    </span>
-                  ) : (
-                    <span className="edit ms-2" onClick={handleNameEdit}>
-                      <i className="bi bi-check-lg text-success"></i>
-                    </span>
+                  {isUser && (
+                    <div>
+                      {!nameEdit ? (
+                        <span className="edit ms-2" onClick={handleNameEdit}>
+                          <i className="bi bi-pencil" />
+                        </span>
+                      ) : (
+                        <span className="edit ms-2" onClick={handleNameEdit}>
+                          <i className="bi bi-check-lg text-success"></i>
+                        </span>
+                      )}
+                    </div>
                   )}
                 </div>
                 {/* Email */}
@@ -423,7 +429,7 @@ const ProfileEdit = () => {
                       {userData.bio !== undefined && userData.bio}
                     </p>
                   )}
-                  {bioEdit && (
+                  {isUser && bioEdit && (
                     <>
                       <textarea
                         type="text"
@@ -435,14 +441,18 @@ const ProfileEdit = () => {
                       />
                     </>
                   )}
-                  {!bioEdit ? (
-                    <span className="edit ms-2" onClick={handleBioEdit}>
-                      <i className="bi bi-pencil" />
-                    </span>
-                  ) : (
-                    <span className="edit ms-2" onClick={handleBioEdit}>
-                      <i className="bi bi-check-lg text-success"></i>
-                    </span>
+                  {isUser && (
+                    <div>
+                      {!bioEdit ? (
+                        <span className="edit ms-2" onClick={handleBioEdit}>
+                          <i className="bi bi-pencil" />
+                        </span>
+                      ) : (
+                        <span className="edit ms-2" onClick={handleBioEdit}>
+                          <i className="bi bi-check-lg text-success"></i>
+                        </span>
+                      )}
+                    </div>
                   )}
                 </div>
                 {/* User Location */}
@@ -454,7 +464,7 @@ const ProfileEdit = () => {
                       {userData.country !== undefined && userData.country}{" "}
                     </p>
                   )}
-                  {locationEdit && (
+                  {isUser && locationEdit && (
                     <>
                       <input
                         type="text"
@@ -474,17 +484,24 @@ const ProfileEdit = () => {
                       />
                     </>
                   )}
-                  {!locationEdit ? (
-                    <span className="edit ms-2" onClick={handleLocationEdit}>
-                      <i className="bi bi-pencil" />
-                    </span>
-                  ) : (
-                    <span
-                      className="edit ms-2 me-2"
-                      onClick={handleLocationEdit}
-                    >
-                      <i className="bi bi-check-lg text-success"></i>
-                    </span>
+                  {isUser && (
+                    <div>
+                      {!locationEdit ? (
+                        <span
+                          className="edit ms-2"
+                          onClick={handleLocationEdit}
+                        >
+                          <i className="bi bi-pencil" />
+                        </span>
+                      ) : (
+                        <span
+                          className="edit ms-2 me-2"
+                          onClick={handleLocationEdit}
+                        >
+                          <i className="bi bi-check-lg text-success"></i>
+                        </span>
+                      )}
+                    </div>
                   )}
                 </div>
                 <p className="profCreated fw-semibold me-2 mt-2 text-muted">
@@ -517,7 +534,7 @@ const ProfileEdit = () => {
             </div>
             {/* Password */}
             <div>
-              {!passwordEdit && (
+              {isUser && !passwordEdit && (
                 <span
                   className="text-primary edit"
                   onClick={handlePasswordEdit}
@@ -525,7 +542,7 @@ const ProfileEdit = () => {
                   Change Password ?
                 </span>
               )}
-              {passwordEdit && (
+              {isUser && passwordEdit && (
                 <>
                   <input
                     type="text"
@@ -537,7 +554,7 @@ const ProfileEdit = () => {
                     }
                   />
                   {showFormError && (
-                    <p className="formError">{errors.oldPassword}</p>
+                    <p className="formError">{errors?.oldPassword}</p>
                   )}
                   <div>
                     <input
@@ -550,7 +567,7 @@ const ProfileEdit = () => {
                       }
                     />
                     {showFormError && (
-                      <p className="formError">{errors.newPassword}</p>
+                      <p className="formError">{errors?.newPassword}</p>
                     )}
                     <input
                       type="text"
@@ -562,15 +579,15 @@ const ProfileEdit = () => {
                       }
                     />
                     {showFormError && (
-                      <p className="formError">{errors.confirmNewPassword}</p>
+                      <p className="formError">{errors?.confirmNewPassword}</p>
                     )}
                   </div>
                 </>
               )}
 
               {/* Password Update/Cancel Button */}
-              <div className="d-flex justify-content-center align-items-center mt-2">
-                {editForPassword && (
+              <div className="d-flex justify-content-center align-items-center mt-2 mb-4">
+                {isUser && editForPassword && (
                   <>
                     <button
                       className="btn btn-outline-dark profEdit text-success"
