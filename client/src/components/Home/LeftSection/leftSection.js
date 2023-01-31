@@ -13,8 +13,8 @@ const LeftSection = ({ profileDetails, id, profileId, post }) => {
     history.push(`/following-followers/details?profileId=${id}`);
   };
 
-  const handleProfile = (id) => {
-    history.push(`/profile/details?profileId=${id}`);
+  const handleProfile = () => {
+    history.push(`/profile/details?profileId=${user?.id}`);
   };
 
   const handleSettings = () => {

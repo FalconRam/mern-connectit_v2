@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import decode from "jwt-decode";
 
@@ -16,6 +16,7 @@ const NavBar = () => {
 
   const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     const token = user?.token;
@@ -29,6 +30,10 @@ const NavBar = () => {
   const logout = () => {
     dispatch({ type: LOGOUT });
     // window.location.href = "/auth";
+  };
+
+  const handleProfile = () => {
+    history.push(`/profile/details?profileId=${user?.id}`);
   };
   return (
     <>
@@ -58,7 +63,7 @@ const NavBar = () => {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" onClick={handleProfile}>
                     My Profile
                   </a>
                 </li>
