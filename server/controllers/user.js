@@ -17,9 +17,10 @@ export const logIn = async (req, res) => {
     const existingUser = await User.findOne({ email });
 
     // If User is Unauthorized one...
-
     if (!existingUser)
-      return res.status(404).json({ message: "User not found." });
+      return res
+        .status(400)
+        .json({ status: false, message: "Email or Password is incorrect." });
 
     const isPasswordCorrect = await bcrypt.compare(
       password,
@@ -27,7 +28,9 @@ export const logIn = async (req, res) => {
     );
 
     if (!isPasswordCorrect)
-      return res.status(400).json({ message: "Password is incorrect." });
+      return res
+        .status(400)
+        .json({ status: false, message: "Email or Password is incorrect." });
 
     // If User is authorized one...
     const token = jwt.sign(
