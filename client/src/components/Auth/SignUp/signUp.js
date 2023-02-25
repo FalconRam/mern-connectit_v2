@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { signUp } from "../../../actions/auth";
 import { findSigninFormErrors } from "../../../errorHandling/authFormEH";
+import LoaderMini from "../../Shared/utils/loaderMini";
 
 import "./signUp.css";
 
@@ -18,6 +19,7 @@ const SignUp = ({
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -58,7 +60,7 @@ const SignUp = ({
       });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = findSigninFormErrors(signInData);
     // Conditional logic:
@@ -67,12 +69,14 @@ const SignUp = ({
       setErrors(newErrors);
       setShowFormError(true);
     } else {
+      setIsLoading(!isLoading);
       setIsLoginLoading(!isLoginLoading);
       // No errors!
       // step : 1 - dispatching the action ; check step to in actions/auth
-      dispatch(signUp(signInData, history));
+      await dispatch(signUp(signInData, history));
       clearForm();
       setIsAuth(!isAuth);
+      setIsLoading(!isLoading);
       setIsLoginLoading(!isLoginLoading);
     }
   };
@@ -226,14 +230,21 @@ const SignUp = ({
                 <p className="formError">{errors.confirmPassword}</p>
               )}
             </div>
-            <button
-              disabled={isLoginLoading}
-              type="submit"
-              className="btn btn-primary d-grid col-sm-12 col-md-5 col-lg-4 mx-auto mt-3"
-              onClick={handleSubmit}
-            >
-              Sigin
-            </button>
+            {isLoading ? (
+              <button className="btn btn-primary d-grid col-sm-12 col-md-5 col-lg-4 mx-auto mt-3">
+                <LoaderMini />
+              </button>
+            ) : (
+              <button
+                disabled={isLoginLoading}
+                type="submit"
+                className="btn btn-primary d-grid col-sm-12 col-md-5 col-lg-4 mx-auto mt-3"
+                onClick={handleSubmit}
+              >
+                SignIn
+              </button>
+            )}
+
             <div className="d-flex flex-column flex-md-row justify-content-center ">
               <button onClick={switchMode} className="p-0 mt-3 switchButton">
                 {isLogin

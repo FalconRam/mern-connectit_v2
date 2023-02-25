@@ -1,9 +1,14 @@
 import React from "react";
+import Loader from "../../../../Shared/utils/loader";
 
 import "./bottomSectionRightProfile.css";
 import UserPost from "./UserPost/userPost";
 
-const BottomSectionRightProfile = ({ userPosts, profileDetails }) => {
+const BottomSectionRightProfile = ({
+  userPosts,
+  profileDetails,
+  isLoading,
+}) => {
   return (
     <>
       <div>
@@ -40,38 +45,42 @@ const BottomSectionRightProfile = ({ userPosts, profileDetails }) => {
         </ul>
 
         {/* Content - User Post */}
-        <div className="tab-content" id="myTabContent">
-          <div
-            className="tab-pane fade show active"
-            id="post-tab-pane"
-            role="tabpanel"
-            aria-labelledby="post-tab"
-            tabIndex="0"
-          >
-            <div className="container mt-3">
-              <div className="row">
-                <div className="d-flex justify-content-center flex-wrap gap-3">
-                  {userPosts?.userPosts?.map((post, i) => (
-                    <UserPost
-                      key={i}
-                      post={post}
-                      profileDetails={profileDetails}
-                    />
-                  ))}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div className="tab-content" id="myTabContent">
+            <div
+              className="tab-pane fade show active"
+              id="post-tab-pane"
+              role="tabpanel"
+              aria-labelledby="post-tab"
+              tabIndex="0"
+            >
+              <div className="container mt-3">
+                <div className="row">
+                  <div className="d-flex justify-content-center flex-wrap gap-3">
+                    {userPosts?.userPosts?.map((post, i) => (
+                      <UserPost
+                        key={i}
+                        post={post}
+                        profileDetails={profileDetails}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
+            <div
+              className="tab-pane fade"
+              id="saved-tab-pane"
+              role="tabpanel"
+              aria-labelledby="saved-tab"
+              tabIndex="0"
+            >
+              Saved
+            </div>
           </div>
-          <div
-            className="tab-pane fade"
-            id="saved-tab-pane"
-            role="tabpanel"
-            aria-labelledby="saved-tab"
-            tabIndex="0"
-          >
-            Saved
-          </div>
-        </div>
+        )}
       </div>
     </>
   );

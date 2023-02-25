@@ -29,7 +29,7 @@ const ProfilePage = () => {
 
   const dispatch = useDispatch();
 
-  const { userPosts } = useSelector((state) => state.posts);
+  const { userPosts, isLoading } = useSelector((state) => state.posts);
   const { profileDetails } = useSelector((state) => state.profile);
   let tokenFromCookie = Cookies.get("userToken");
 
@@ -54,6 +54,7 @@ const ProfilePage = () => {
             <RightSideProfilePage
               userPosts={userPosts}
               profileDetails={profileDetails}
+              isLoading={isLoading}
             />
           </div>
         </div>

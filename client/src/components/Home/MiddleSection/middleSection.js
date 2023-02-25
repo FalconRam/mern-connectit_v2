@@ -1,28 +1,23 @@
-import React, { useEffect } from "react";
-
-import { useDispatch } from "react-redux";
-
-import { getPostsByFollowing } from "../../../actions/posts";
+import React from "react";
 
 import Posts from "./Posts/posts";
 import "./middleSection.css";
+import Loader from "../../Shared/utils/loader";
 
 const MiddleSection = ({ posts, isLoading }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    user && dispatch(getPostsByFollowing());
-  }, []);
-
   return (
     <>
-      <div>
-        {posts?.map((post, i) => (
-          <Posts key={i} post={post} />
-        ))}
-      </div>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div>
+          {posts?.map((post, i) => (
+            <Posts key={i} post={post} />
+          ))}
+        </div>
+      )}
     </>
   );
 };

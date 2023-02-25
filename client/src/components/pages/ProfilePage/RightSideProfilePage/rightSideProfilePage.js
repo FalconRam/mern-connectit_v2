@@ -5,7 +5,7 @@ import TopSectionRightProfile from "./RightProfileTopSection/topSectionRightProf
 
 import "./rightSideProfilePage.css";
 
-const RightSideProfilePage = ({ userPosts, profileDetails }) => {
+const RightSideProfilePage = ({ userPosts, profileDetails, isLoading }) => {
   let postCount = userPosts?.userPosts?.length;
   return (
     <div className="">
@@ -19,6 +19,7 @@ const RightSideProfilePage = ({ userPosts, profileDetails }) => {
         <BottomSectionRightProfile
           userPosts={userPosts}
           profileDetails={profileDetails}
+          isLoading={isLoading}
         />
       </div>
     </div>

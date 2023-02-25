@@ -8,6 +8,7 @@ import PostDetails from "../../Shared/PostDetails/postDetails";
 
 import "../../Shared/PostDetails/postDetails.css";
 import { getPostById } from "../../../actions/posts";
+import Loader from "../../Shared/utils/loader";
 
 const PostDetailsWithProfile = () => {
   const dispatch = useDispatch();
@@ -38,21 +39,25 @@ const PostDetailsWithProfile = () => {
 
   return (
     <>
-      <div className="container d-flex align-items-center customMargin gap-3">
-        <div className="row">
-          <div className="col-lg-3 d-none d-lg-block d-xl-block d-xxl-block">
-            <LeftSection
-              profileDetails={profileDetails}
-              id={id}
-              profileId={profileId}
-              post={post}
-            />
-          </div>
-          <div className="col-12 col-lg-9">
-            <PostDetails post={post} />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className="container d-flex align-items-center customMargin gap-3">
+          <div className="row">
+            <div className="col-lg-3 d-none d-lg-block d-xl-block d-xxl-block">
+              <LeftSection
+                profileDetails={profileDetails}
+                id={id}
+                profileId={profileId}
+                post={post}
+              />
+            </div>
+            <div className="col-12 col-lg-9">
+              <PostDetails post={post} />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
