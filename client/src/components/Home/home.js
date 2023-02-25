@@ -9,6 +9,7 @@ import LeftSection from "./LeftSection/leftSection";
 import MiddleSection from "./MiddleSection/middleSection";
 import RightSection from "./RightSection/rightSection";
 import ShareCard from "./MiddleSection/SharePost/ShareCard/shareCard";
+import { getPostsByFollowing } from "../../actions/posts";
 
 const Home = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -27,6 +28,10 @@ const Home = () => {
   useEffect(() => {
     user && dispatch(getProfileDetails(id));
   }, []);
+
+  useEffect(() => {
+    user && dispatch(getPostsByFollowing());
+  }, [posts.length]);
 
   return (
     <>

@@ -10,6 +10,7 @@ import {
   // UPDATE_PROFILE_PASSWORD,
   UPDATE_PROFILE_PICTURES,
 } from "../constants/actionTypes";
+import { toast } from "react-toastify";
 
 export const getFollowingAndFollowersCount = (id) => async (dispatch) => {
   try {
@@ -20,7 +21,11 @@ export const getFollowingAndFollowersCount = (id) => async (dispatch) => {
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -33,7 +38,11 @@ export const getFollowingProfileDetails = (id) => async (dispatch) => {
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -46,20 +55,28 @@ export const getFollowersProfileDetails = (id) => async (dispatch) => {
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
 export const getProfileDetails = (id, tokenFromCookie) => async (dispatch) => {
   try {
-    dispatch({ type: START_LOADING });
+    // dispatch({ type: START_LOADING });
 
     const { data } = await api.fetchProfileDetails(id, tokenFromCookie);
     dispatch({ type: GET_PROFILE_DETAILS, payload: data });
 
-    dispatch({ type: END_LOADING });
+    // dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -72,21 +89,32 @@ export const updateProfileDetails = (id, userData) => async (dispatch) => {
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
-export const updateProfilePassword = (id, newUpdatePassword) => async (dispatch) => {
-  try {
-    dispatch({ type: START_LOADING });
+export const updateProfilePassword =
+  (id, newUpdatePassword) => async (dispatch) => {
+    try {
+      dispatch({ type: START_LOADING });
 
-    const { data } = await api.updateProfilePassword(id, newUpdatePassword);
-    // dispatch({ type: UPDATE_PROFILE_PASSWORD, payload: data });
+      const { data } = await api.updateProfilePassword(id, newUpdatePassword);
+      // dispatch({ type: UPDATE_PROFILE_PASSWORD, payload: data });
 
-    dispatch({ type: END_LOADING });
-  } catch (error) {
-    console.log(error);
-  }
-};
+      dispatch({ type: END_LOADING });
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+    }
+  };
 
 export const updateProfilePictures = (id, newPictures) => async (dispatch) => {
   try {
@@ -97,6 +125,10 @@ export const updateProfilePictures = (id, newPictures) => async (dispatch) => {
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };

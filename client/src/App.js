@@ -15,6 +15,9 @@ import Search from "./components/pages/Search/search";
 import Messages from "./components/pages/Messages/messages";
 import ProfileEdit from "./components/pages/ProfilePage/ProfileEdit/profileEdit";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const App = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
 
@@ -25,32 +28,35 @@ const App = () => {
   }, [window.location]);
 
   return (
-    <BrowserRouter>
-      <NavBar />
-      <Switch>
-        <Route path="/" exact component={() => <Redirect to="/feeds" />} />
-        <Route
-          path="/auth"
-          exact
-          component={() =>
-            !user ? (
-              <Auth isAuth={isAuth} setIsAuth={setIsAuth} />
-            ) : (
-              <Redirect to="/feeds" />
-            )
-          }
-        />
-        <Route path="/feeds" exact component={Home} />
-        <Route path="/post/:id" exact component={PostDetailsWithProfile} />
-        <Route path="/profile/details" exact component={ProfilePage} />
-        <Route path="/profile/edit/:id" exact component={ProfileEdit} />
-        <Route path="/profile/settings" exact component={Settings} />
-        <Route path="/chats" exact component={Messages} />
-        <Route path="/notification" exact component={Notification} />
-        <Route path="/search" exact component={Search} />
-      </Switch>
-      {!isAuth && <MobileNavigationBar />}
-    </BrowserRouter>
+    <>
+      <ToastContainer />
+      <BrowserRouter>
+        <NavBar />
+        <Switch>
+          <Route path="/" exact component={() => <Redirect to="/feeds" />} />
+          <Route
+            path="/auth"
+            exact
+            component={() =>
+              !user ? (
+                <Auth isAuth={isAuth} setIsAuth={setIsAuth} />
+              ) : (
+                <Redirect to="/feeds" />
+              )
+            }
+          />
+          <Route path="/feeds" exact component={Home} />
+          <Route path="/post/:id" exact component={PostDetailsWithProfile} />
+          <Route path="/profile/details" exact component={ProfilePage} />
+          <Route path="/profile/edit/:id" exact component={ProfileEdit} />
+          <Route path="/profile/settings" exact component={Settings} />
+          <Route path="/chats" exact component={Messages} />
+          <Route path="/notification" exact component={Notification} />
+          <Route path="/search" exact component={Search} />
+        </Switch>
+        {!isAuth && <MobileNavigationBar />}
+      </BrowserRouter>
+    </>
   );
 };
 

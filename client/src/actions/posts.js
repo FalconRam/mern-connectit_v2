@@ -15,6 +15,7 @@ import {
   FETCH_POST_BY_ID,
   FETCH_POST_BY_USER,
 } from "../constants/actionTypes";
+import { toast } from "react-toastify";
 
 // Action Creators
 
@@ -27,7 +28,11 @@ export const getPostsByFollowing = () => async (dispatch) => {
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -40,7 +45,11 @@ export const getPosts = (page) => async (dispatch) => {
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -53,7 +62,11 @@ export const getPostById = (id) => async (dispatch) => {
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -66,7 +79,11 @@ export const getPostByUser = (id) => async (dispatch) => {
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -81,7 +98,11 @@ export const getPostsBySearch = (search) => async (dispatch) => {
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -89,14 +110,20 @@ export const createPost = (post, history) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
 
-    const { data } = await api.createPost(post);
-
-    // history.push(`/posts/${data._id}`);
+    const { data } = await toast.promise(api.createPost(post), {
+      pending: "Posting...",
+      success: "Posted Successfully 👌",
+      error: "Posting Unsuccessfull 🤯",
+    });
     dispatch({ type: CREATE_POST, payload: data });
 
     dispatch({ type: END_LOADING });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -106,7 +133,11 @@ export const updatePost = (id, post, history) => async (dispatch) => {
     history.push(`/posts/${id}`);
     dispatch({ type: UPDATE_POST, payload: data });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -115,7 +146,11 @@ export const deletePost = (id) => async (dispatch) => {
     await api.deletePost(id);
     dispatch({ type: DELETE_POST, payload: id });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -133,7 +168,11 @@ export const likePost = (id) => async (dispatch) => {
     const { data } = await api.likePost(id);
     dispatch({ type: LIKE_POST, payload: data });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
@@ -142,7 +181,11 @@ export const unLikePost = (id) => async (dispatch) => {
     const { data } = await api.likePost(id);
     dispatch({ type: UNLIKE_POST, payload: data });
   } catch (error) {
-    console.log(error);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 };
 
