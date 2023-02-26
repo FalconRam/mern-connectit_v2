@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 
 import { useDispatch } from "react-redux";
@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { deleteUserPost } from "../../../../../actions/posts";
 
 import "./postUpperSection.css";
+import PostEditModal from "../../SharePost/ShareModal/postEditModal";
 
 const PostUpperSection = ({ post, profileDetails }) => {
   const dispatch = useDispatch();
@@ -16,9 +17,7 @@ const PostUpperSection = ({ post, profileDetails }) => {
 
   let isCreator = post?.creator === user?.id;
 
-  const handleEdit = () => {
-    history.push("/");
-  };
+  const handleEdit = () => {};
 
   const handleCopy = () => {
     navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
@@ -77,6 +76,8 @@ const PostUpperSection = ({ post, profileDetails }) => {
                     <button
                       className="btn dropdown-item-custom"
                       onClick={handleEdit}
+                      data-bs-toggle="modal"
+                      data-bs-target={`#staticBackdropEditPost${post._id}`}
                     >
                       Edit
                     </button>
@@ -108,6 +109,7 @@ const PostUpperSection = ({ post, profileDetails }) => {
             </ul>
           </div>
         </div>
+        <PostEditModal post={post} />
       </div>
     </>
   );

@@ -154,9 +154,14 @@ export const createPost = (post, history) => async (dispatch) => {
 
 export const updatePost = (id, post, history) => async (dispatch) => {
   try {
-    const { data } = await api.updatePost(id, post);
-    history.push(`/posts/${id}`);
+    const { data } = await toast.promise(api.updatePost(id, post), {
+      pending: "Updating Post...",
+      success: "Updated Successfully 👌",
+      error: "Updating Failed 🤯",
+    });
+    // history.push(`/posts/${id}`);
     dispatch({ type: UPDATE_POST, payload: data });
+    dispatch({ type: FETCH_POST_BY_ID, payload: data });
   } catch (error) {
     if (error.response.data.message === "jwt expired")
       window.location.href = "/auth";

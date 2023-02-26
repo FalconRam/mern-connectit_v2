@@ -1,80 +1,53 @@
 import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-
-import FileBase from "react-file-base64";
+import { updatePost } from "../../../../../actions/posts";
 
 import "./shareModal.css";
-import { createPost } from "../../../../../actions/posts";
 
-const ShareModal = ({ isEditModal, setIsEditModal }) => {
+const PostEditModal = ({ post }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
   const dispatch = useDispatch();
-  const history = useHistory();
+  // const history = useHistory();
 
   const [postData, setPostData] = useState({
-    title: "",
-    message: "",
-    tags: "",
-    selectedFile: "",
+    title: post?.title,
+    message: post?.message,
+    tags: post?.tags,
+    selectedFile: post?.selectedFile,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // if (currentId) {
-    //   dispatch(
-    //     updatePost(currentId, { ...postData, name: user?.name }, history)
-    //   );
-    //   clear();
-    // } else {
-    //   dispatch(createPost({ ...postData, name: user?.name }, history));
-    //   clear();
-    // }
-
-    dispatch(createPost({ ...postData, name: user?.name }, history));
-    clear();
-  };
-  const clear = () => {
-    // setCurrentId(0);
-    setPostData({
-      title: "",
-      message: "",
-      tags: "",
-      selectedFile: "",
-    });
-    // setModalOpened(false);
-  };
-
-  const handlePostShareModalClose = () => {
-    setIsEditModal(!isEditModal);
+    dispatch(updatePost(post?._id, postData));
   };
 
   return (
     <>
       <div
         className="modal fade"
-        id="staticBackdrop"
+        id={`staticBackdropEditPost${post._id}`}
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabIndex="-1"
-        aria-labelledby="staticBackdropLabel"
+        aria-labelledby="staticBackdropEditPostLabel"
         aria-hidden="true"
       >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h2 className="modal-title fs-5" id="staticBackdropLabel">
-                Share your Post
+              <h2
+                className="modal-title fs-5"
+                id={`staticBackdropEditPost${post._id}`}
+              >
+                Update your Post
               </h2>
               <button
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                onClick={handlePostShareModalClose}
               ></button>
             </div>
             <div className="modal-body">
@@ -122,17 +95,6 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
                     }
                   ></textarea>
                 </div>
-                {!isEditModal ? (
-                  <div className="fileBase">
-                    <FileBase
-                      type="file"
-                      multiple={false}
-                      onDone={({ base64 }) =>
-                        setPostData({ ...postData, selectedFile: base64 })
-                      }
-                    />
-                  </div>
-                ) : null}
               </form>
             </div>
             <div className="modal-footer">
@@ -140,7 +102,6 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
                 type="button"
                 className="btn btn-outline-secondary btn-sm"
                 data-bs-dismiss="modal"
-                onClick={clear}
               >
                 Cancel
               </button>
@@ -150,7 +111,7 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
                 onClick={handleSubmit}
                 data-bs-dismiss="modal"
               >
-                Post
+                Update Post
               </button>
             </div>
           </div>
@@ -160,4 +121,4 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
   );
 };
 
-export default ShareModal;
+export default PostEditModal;
