@@ -53,16 +53,16 @@ const TopSectionRightProfile = ({
                     alt=""
                     className="img-thumbnail rounded-circle profilePicture d-flex align-items-center justify-content-center"
                   />
-                  <div class="card-body">
-                    <h5 class="card-title placeholder-glow">
-                      <span class="placeholder col-6"></span>
+                  <div className="card-body">
+                    <h5 className="card-title placeholder-glow">
+                      <span className="placeholder col-6"></span>
                     </h5>
-                    <p class="card-text placeholder-glow">
-                      <span class="placeholder col-7"></span>
-                      <span class="placeholder col-4"></span>
-                      <span class="placeholder col-4"></span>
-                      <span class="placeholder col-6"></span>
-                      <span class="placeholder col-8"></span>
+                    <p className="card-text placeholder-glow">
+                      <span className="placeholder col-7"></span>
+                      <span className="placeholder col-4"></span>
+                      <span className="placeholder col-4"></span>
+                      <span className="placeholder col-6"></span>
+                      <span className="placeholder col-8"></span>
                     </p>
                   </div>
                 </div>

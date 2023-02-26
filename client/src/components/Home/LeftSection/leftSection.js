@@ -38,22 +38,22 @@ const LeftSection = ({
   return (
     <>
       {isProfileLoading ? (
-        <div class="card sticky-md-top sticky-lg-top" aria-hidden="true">
+        <div className="card sticky-md-top sticky-lg-top" aria-hidden="true">
           <img
             src="https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
-            class="card-img-top profileBgWall placeholder"
+            className="card-img-top profileBgWall placeholder"
             alt="Loading"
           />
-          <div class="card-body">
-            <h5 class="card-title placeholder-glow">
-              <span class="placeholder col-6"></span>
+          <div className="card-body">
+            <h5 className="card-title placeholder-glow">
+              <span className="placeholder col-6"></span>
             </h5>
-            <p class="card-text placeholder-glow">
-              <span class="placeholder col-7"></span>
-              <span class="placeholder col-4"></span>
-              <span class="placeholder col-4"></span>
-              <span class="placeholder col-6"></span>
-              <span class="placeholder col-8"></span>
+            <p className="card-text placeholder-glow">
+              <span className="placeholder col-7"></span>
+              <span className="placeholder col-4"></span>
+              <span className="placeholder col-4"></span>
+              <span className="placeholder col-6"></span>
+              <span className="placeholder col-8"></span>
             </p>
           </div>
         </div>
