@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 let localURL = "http://localhost:5000/";
 let productionURL = "https://connectit.onrender.com/";
@@ -21,7 +22,11 @@ API.interceptors.request.use(async (req) => {
     }
     return req;
   } catch (error) {
-    console.log(error.message);
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
   }
 });
 
@@ -78,5 +83,5 @@ export const updateProfileDetails = (id, userData) =>
 export const updateProfilePassword = (id, newUpdatePassword) =>
   API.patch(`/profile/update/password/${id}`, newUpdatePassword);
 
-  export const updateProfilePictures = (id, newPictures) =>
-    API.patch(`/profile/update/profile-pictures/${id}`, newPictures);
+export const updateProfilePictures = (id, newPictures) =>
+  API.patch(`/profile/update/profile-pictures/${id}`, newPictures);
