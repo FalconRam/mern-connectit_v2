@@ -6,7 +6,7 @@ const Search = () => {
   const history = useHistory();
   let user = JSON.parse(localStorage.getItem("profile"));
   if (!user) {
-    history.push("/auth");
+    if (window.location.pathname !== "/auth") history.push("/auth");
   }
   return (
     <>

@@ -18,8 +18,9 @@ const ProfileEdit = () => {
   const history = useHistory();
   const { id } = useParams();
   const user = JSON.parse(localStorage.getItem("profile"));
+  
   if (!user) {
-    history.push("/auth");
+    if (window.location.pathname !== "/auth") history.push("/auth");
   }
 
   let isUser = user.id === id;

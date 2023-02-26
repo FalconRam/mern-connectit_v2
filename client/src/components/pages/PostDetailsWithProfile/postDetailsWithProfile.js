@@ -18,7 +18,7 @@ const PostDetailsWithProfile = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
   if (!user) {
-    history.push("/auth");
+    if (window.location.pathname !== "/auth") history.push("/auth");
   }
 
   const { post, isPostLoading } = useSelector((state) => state.posts);

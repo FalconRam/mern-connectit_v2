@@ -24,7 +24,7 @@ const ProfilePage = () => {
   const history = useHistory();
 
   if (!user) {
-    history.push("/auth");
+    if (window.location.pathname !== "/auth") history.push("/auth");
   }
 
   const dispatch = useDispatch();

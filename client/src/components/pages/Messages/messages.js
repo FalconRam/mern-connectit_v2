@@ -6,9 +6,10 @@ const Messages = () => {
   const history = useHistory();
 
   let user = JSON.parse(localStorage.getItem("profile"));
-  if (!user) {
-    history.push("/auth");
-  }
+
+ if (!user) {
+   if (window.location.pathname !== "/auth") history.push("/auth");
+ }
   return (
     <>
       <div className="customMargin">Comming Soon...</div>
