@@ -12,8 +12,6 @@ const PostDetailsModal = ({ post, profileDetails }) => {
         id={`exampleModalCenter${post._id}`}
         tabIndex="-1"
         aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true"
-        data-bs-backdrop="static"
       >
         <div className="modal-dialog modal-xl modal-dialog-md-custom">
           <div className="modal-content">
