@@ -37,6 +37,7 @@ const PostUpperSection = ({ post, profileDetails }) => {
       <div className="card-header d-flex align-items-center justify-content-between">
         <div
           className="d-flex flex-row align-items-center gap-2 likeBtn"
+          data-bs-dismiss="modal"
           onClick={handleProfile}
         >
           <img
