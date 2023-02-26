@@ -24,16 +24,13 @@ const Home = () => {
   const { posts, isPostLoading } = useSelector((state) => state.posts);
 
   if (!user) {
-    history.push("/auth");
+    if (window.location.pathname !== "/auth") history.push("/auth");
   }
 
   useEffect(() => {
     user && dispatch(getProfileDetails(id));
-  }, []);
-
-  useEffect(() => {
     user && dispatch(getPostsByFollowing());
-  }, [posts.length]);
+  }, []);
 
   return (
     <>
