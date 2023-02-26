@@ -29,7 +29,6 @@ const NavBar = () => {
 
   const logout = () => {
     dispatch({ type: LOGOUT });
-    // window.location.href = "/auth";
   };
 
   const handleProfile = () => {
