@@ -4,12 +4,12 @@ import Posts from "./Posts/posts";
 import "./middleSection.css";
 import Loader from "../../Shared/utils/loader";
 
-const MiddleSection = ({ posts, isLoading }) => {
+const MiddleSection = ({ posts, isPostLoading }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
   return (
     <>
-      {isLoading ? (
+      {isPostLoading ? (
         <Loader />
       ) : (
         <div>

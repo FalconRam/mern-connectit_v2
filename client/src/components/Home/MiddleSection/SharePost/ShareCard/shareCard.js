@@ -4,7 +4,7 @@ import ShareModal from "../ShareModal/shareModal";
 
 import "./shareCard.css";
 
-const ShareCard = ({ profileDetails }) => {
+const ShareCard = ({ profileDetails, isProfileLoading }) => {
   return (
     <>
       <div className="mb-3">

@@ -10,8 +10,8 @@ import {
   COMMENT_POST_WITH_USER_DETAILS,
   DELETE_POST,
   DELETE_USER_POST,
-  START_LOADING,
-  END_LOADING,
+  START_POST_LOADING,
+  END_POST_LOADING,
   FETCH_POST_BY_ID,
   FETCH_POST_BY_USER,
 } from "../constants/actionTypes";
@@ -21,12 +21,12 @@ import { toast } from "react-toastify";
 
 export const getPostsByFollowing = () => async (dispatch) => {
   try {
-    dispatch({ type: START_LOADING });
+    dispatch({ type: START_POST_LOADING });
 
     const { data } = await api.fetchPostsByFollowing();
     dispatch({ type: FETCH_POSTS_BY_FOLLOWING, payload: data });
 
-    dispatch({ type: END_LOADING });
+    dispatch({ type: END_POST_LOADING });
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -38,12 +38,12 @@ export const getPostsByFollowing = () => async (dispatch) => {
 
 export const getPosts = (page) => async (dispatch) => {
   try {
-    dispatch({ type: START_LOADING });
+    dispatch({ type: START_POST_LOADING });
 
     const { data } = await api.fetchPosts(page);
     dispatch({ type: FETCH_ALL_POSTS, payload: data });
 
-    dispatch({ type: END_LOADING });
+    dispatch({ type: END_POST_LOADING });
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -55,12 +55,12 @@ export const getPosts = (page) => async (dispatch) => {
 
 export const getPostById = (id) => async (dispatch) => {
   try {
-    dispatch({ type: START_LOADING });
+    dispatch({ type: START_POST_LOADING });
 
     const { data } = await api.fetchPostById(id);
     dispatch({ type: FETCH_POST_BY_ID, payload: data });
 
-    dispatch({ type: END_LOADING });
+    dispatch({ type: END_POST_LOADING });
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -72,12 +72,12 @@ export const getPostById = (id) => async (dispatch) => {
 
 export const getPostByUser = (id) => async (dispatch) => {
   try {
-    dispatch({ type: START_LOADING });
+    dispatch({ type: START_POST_LOADING });
 
     const { data } = await api.fetchPostByUser(id);
     dispatch({ type: FETCH_POST_BY_USER, payload: data });
 
-    dispatch({ type: END_LOADING });
+    dispatch({ type: END_POST_LOADING });
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -89,14 +89,14 @@ export const getPostByUser = (id) => async (dispatch) => {
 
 export const getPostsBySearch = (search) => async (dispatch) => {
   try {
-    dispatch({ type: START_LOADING });
+    dispatch({ type: START_POST_LOADING });
 
     const {
       data: { data },
     } = await api.fetchPostsBySearch(search);
     dispatch({ type: FETCH_BY_SEARCH, payload: data });
 
-    dispatch({ type: END_LOADING });
+    dispatch({ type: END_POST_LOADING });
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -108,7 +108,7 @@ export const getPostsBySearch = (search) => async (dispatch) => {
 
 export const createPost = (post, history) => async (dispatch) => {
   try {
-    dispatch({ type: START_LOADING });
+    dispatch({ type: START_POST_LOADING });
 
     const { data } = await toast.promise(api.createPost(post), {
       pending: "Posting...",
@@ -117,7 +117,7 @@ export const createPost = (post, history) => async (dispatch) => {
     });
     dispatch({ type: CREATE_POST, payload: data });
 
-    dispatch({ type: END_LOADING });
+    dispatch({ type: END_POST_LOADING });
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -196,6 +196,12 @@ export const commentPostWithUserDetails =
       dispatch({ type: COMMENT_POST_WITH_USER_DETAILS, payload: data });
       return data.commentsInfo;
     } catch (error) {
-      console.log(error.message);
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
     }
   };

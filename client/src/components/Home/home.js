@@ -18,8 +18,10 @@ const Home = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { profileDetails } = useSelector((state) => state.profile);
-  const { posts, isLoading } = useSelector((state) => state.posts);
+  const { profileDetails, isProfileLoading } = useSelector(
+    (state) => state.profile
+  );
+  const { posts, isPostLoading } = useSelector((state) => state.posts);
 
   if (!user) {
     history.push("/auth");
@@ -38,11 +40,17 @@ const Home = () => {
       <div className="container-md customMargin">
         <div className="row">
           <div className="col-sm-12 col-md-4 mb-3 col-lg-3">
-            <LeftSection profileDetails={profileDetails} />
+            <LeftSection
+              profileDetails={profileDetails}
+              isProfileLoading={isProfileLoading}
+            />
           </div>
           <div className="col-sm-12 col-md-8 col-lg-6">
-            <ShareCard profileDetails={profileDetails} />
-            <MiddleSection posts={posts} isLoading={isLoading} />
+            <ShareCard
+              profileDetails={profileDetails}
+              isProfileLoading={isProfileLoading}
+            />
+            <MiddleSection posts={posts} isPostLoading={isPostLoading} />
             <div className="col-md-12 d-none d-md-block d-lg-none">
               <RightSection />
             </div>

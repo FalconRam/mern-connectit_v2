@@ -21,8 +21,10 @@ const PostDetailsWithProfile = () => {
     history.push("/auth");
   }
 
-  const { post, isLoading } = useSelector((state) => state.posts);
-  const { profileDetails } = useSelector((state) => state.profile);
+  const { post, isPostLoading } = useSelector((state) => state.posts);
+  const { profileDetails, isProfileLoading } = useSelector(
+    (state) => state.profile
+  );
 
   useEffect(() => {
     dispatch(getPostById(id));
@@ -39,7 +41,7 @@ const PostDetailsWithProfile = () => {
 
   return (
     <>
-      {isLoading ? (
+      {isPostLoading ? (
         <Loader />
       ) : (
         <div className="container d-flex align-items-center customMargin gap-3">
@@ -47,6 +49,7 @@ const PostDetailsWithProfile = () => {
             <div className="col-lg-3 d-none d-lg-block d-xl-block d-xxl-block">
               <LeftSection
                 profileDetails={profileDetails}
+                isProfileLoading={isProfileLoading}
                 id={id}
                 profileId={profileId}
                 post={post}

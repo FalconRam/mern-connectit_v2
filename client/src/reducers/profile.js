@@ -1,6 +1,6 @@
 import {
-  START_LOADING,
-  END_LOADING,
+  START_PROFILE_LOADING,
+  END_PROFILE_LOADING,
   GET_FOLLOWING_AND_FOLLOWERS_COUNT,
   GET_FOLLOWERS_PROFILE_DETAILS,
   GET_FOLLOWING_PROFILE_DETAILS,
@@ -15,14 +15,14 @@ const initState = {
   profileDetails: {},
   followingProfile: [],
   followersProfile: [],
-  isLoading: true,
+  isProfileLoading: true,
 };
 export default (state = initState, action) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, isLoading: true };
-    case END_LOADING:
-      return { ...state, isLoading: false };
+    case START_PROFILE_LOADING:
+      return { ...state, isProfileLoading: true };
+    case END_PROFILE_LOADING:
+      return { ...state, isProfileLoading: false };
     case GET_FOLLOWING_AND_FOLLOWERS_COUNT:
       return {
         ...state,

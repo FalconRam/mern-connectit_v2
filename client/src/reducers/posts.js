@@ -10,20 +10,20 @@ import {
   UNLIKE_POST,
   DELETE_POST,
   DELETE_USER_POST,
-  START_LOADING,
-  END_LOADING,
+  START_POST_LOADING,
+  END_POST_LOADING,
   COMMENT_POST_WITH_USER_DETAILS,
 } from "../constants/actionTypes";
 
 export default (
-  state = { posts: [], post: {}, userPosts: [], isLoading: true },
+  state = { posts: [], post: {}, userPosts: [], isPostLoading: true },
   action
 ) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, isLoading: true };
-    case END_LOADING:
-      return { ...state, isLoading: false };
+    case START_POST_LOADING:
+      return { ...state, isPostLoading: true };
+    case END_POST_LOADING:
+      return { ...state, isPostLoading: false };
     case FETCH_ALL_POSTS:
       return {
         ...state,

@@ -7,7 +7,7 @@ import UserPost from "./UserPost/userPost";
 const BottomSectionRightProfile = ({
   userPosts,
   profileDetails,
-  isLoading,
+  isPostLoading,
 }) => {
   return (
     <>
@@ -45,7 +45,7 @@ const BottomSectionRightProfile = ({
         </ul>
 
         {/* Content - User Post */}
-        {isLoading ? (
+        {isPostLoading ? (
           <Loader />
         ) : (
           <div className="tab-content" id="myTabContent">
