@@ -21,8 +21,9 @@ export const getFollowingAndFollowersCount = (id) => async (dispatch) => {
 
     dispatch({ type: END_PROFILE_LOADING });
   } catch (error) {
-    if (error.response.data.message === "jwt expired")
-      window.location.href = "/auth";
+    if (error.response && error.response.data && error.response.data.message)
+      if (error.response.data.message === "jwt expired")
+        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
@@ -40,8 +41,9 @@ export const getFollowingProfileDetails = (id) => async (dispatch) => {
 
     dispatch({ type: END_PROFILE_LOADING });
   } catch (error) {
-    if (error.response.data.message === "jwt expired")
-      window.location.href = "/auth";
+    if (error.response && error.response.data && error.response.data.message)
+      if (error.response.data.message === "jwt expired")
+        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
@@ -59,8 +61,9 @@ export const getFollowersProfileDetails = (id) => async (dispatch) => {
 
     dispatch({ type: END_PROFILE_LOADING });
   } catch (error) {
-    if (error.response.data.message === "jwt expired")
-      window.location.href = "/auth";
+    if (error.response && error.response.data && error.response.data.message)
+      if (error.response.data.message === "jwt expired")
+        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
@@ -78,8 +81,9 @@ export const getProfileDetails = (id, tokenFromCookie) => async (dispatch) => {
 
     dispatch({ type: END_PROFILE_LOADING });
   } catch (error) {
-    if (error.response.data.message === "jwt expired")
-      window.location.href = "/auth";
+    if (error.response && error.response.data && error.response.data.message)
+      if (error.response.data.message === "jwt expired")
+        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
@@ -97,8 +101,9 @@ export const updateProfileDetails = (id, userData) => async (dispatch) => {
 
     dispatch({ type: END_PROFILE_LOADING });
   } catch (error) {
-    if (error.response.data.message === "jwt expired")
-      window.location.href = "/auth";
+    if (error.response && error.response.data && error.response.data.message)
+      if (error.response.data.message === "jwt expired")
+        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
@@ -116,8 +121,9 @@ export const updateProfilePassword =
 
       dispatch({ type: END_PROFILE_LOADING });
     } catch (error) {
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
+      if (error.response && error.response.data && error.response.data.message)
+        if (error.response.data.message === "jwt expired")
+          window.location.href = "/auth";
       const message =
         (error.response &&
           error.response.data &&
@@ -137,8 +143,9 @@ export const updateProfilePictures = (id, newPictures) => async (dispatch) => {
 
     dispatch({ type: END_PROFILE_LOADING });
   } catch (error) {
-    if (error.response.data.message === "jwt expired")
-      window.location.href = "/auth";
+    if (error.response && error.response.data && error.response.data.message)
+      if (error.response.data.message === "jwt expired")
+        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
