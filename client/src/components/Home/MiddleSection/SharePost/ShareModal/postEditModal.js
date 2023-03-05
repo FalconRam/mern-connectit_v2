@@ -27,11 +27,9 @@ const PostEditModal = ({ post }) => {
     <>
       <div
         className="modal fade"
-        id={`staticBackdropEditPost${post._id}`}
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
+        id={`backdropEditPost${post._id}`}
         tabIndex="-1"
-        aria-labelledby="staticBackdropEditPostLabel"
+        aria-labelledby="backdropEditPostLabel"
         aria-hidden="true"
       >
         <div className="modal-dialog">
@@ -39,7 +37,7 @@ const PostEditModal = ({ post }) => {
             <div className="modal-header">
               <h2
                 className="modal-title fs-5"
-                id={`staticBackdropEditPost${post._id}`}
+                id={`backdropEditPost${post?._id}`}
               >
                 Update your Post
               </h2>

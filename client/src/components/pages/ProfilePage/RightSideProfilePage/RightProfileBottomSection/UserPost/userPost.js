@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PostDetailsModal from "../../../../../Shared/PostDetailsModal/postDetailsModal";
+import ViewEditModal from "../../../../../Shared/ViewEditModal/viewEditModal";
 
 import "./userPost.css";
 
@@ -23,12 +24,12 @@ const UserPost = ({ post, profileDetails }) => {
             src={post?.selectedFile}
             alt="Post Image"
             data-bs-toggle="modal"
-            data-bs-target={`#exampleModalCenter${post._id}`}
+            data-bs-target={`#viewEditModal${post._id}`}
           />
           <div
             className="d-flex justify-content-center align-items-center hoverDiv"
             data-bs-toggle="modal"
-            data-bs-target={`#exampleModalCenter${post._id}`}
+            data-bs-target={`#viewEditModal${post._id}`}
           >
             <p className="hoverDiv-likeIcon">
               <i className="bi bi-heart-fill text-danger" /> {postLikesCount}
@@ -38,7 +39,8 @@ const UserPost = ({ post, profileDetails }) => {
             </p>
           </div>
         </div>
-        <PostDetailsModal post={post} profileDetails={profileDetails} />
+        {/* <PostDetailsModal post={post} profileDetails={profileDetails} /> */}
+        <ViewEditModal post={post} profileDetails={profileDetails} />
       </div>
     </>
   );

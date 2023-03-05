@@ -17,7 +17,7 @@ const PostUpperSection = ({ post, profileDetails }) => {
 
   let isCreator = post?.creator === user?.id;
 
-  const handleEdit = () => {};
+  let isProfilePage = window.location.pathname === "/profile/details";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
@@ -70,17 +70,14 @@ const PostUpperSection = ({ post, profileDetails }) => {
               <i className="bi bi-three-dots"></i>
             </button>
             <ul className="dropdown-menu dropdown-menu-custom text-center">
-              {isCreator && (
-                <li>
+              {!isProfilePage && isCreator && (
+                <li
+                  data-bs-dismiss="modal"
+                  data-bs-toggle="modal"
+                  data-bs-target={`#backdropEditPost${post._id}`}
+                >
                   <a className="dropdown-item">
-                    <button
-                      className="btn dropdown-item-custom"
-                      onClick={handleEdit}
-                      data-bs-toggle="modal"
-                      data-bs-target={`#staticBackdropEditPost${post._id}`}
-                    >
-                      Edit
-                    </button>
+                    <button className="btn dropdown-item-custom">Edit</button>
                   </a>
                 </li>
               )}
@@ -109,8 +106,8 @@ const PostUpperSection = ({ post, profileDetails }) => {
             </ul>
           </div>
         </div>
-        <PostEditModal post={post} />
       </div>
+      <PostEditModal post={post} />
     </>
   );
 };
