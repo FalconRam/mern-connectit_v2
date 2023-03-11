@@ -1,6 +1,10 @@
 import {
   START_PROFILE_LOADING,
   END_PROFILE_LOADING,
+  START_PROFILE_FOLLOWING_LIST_LOADING,
+  END_PROFILE_FOLLOWING_LIST_LOADING,
+  START_PROFILE_FOLLOWERS_LIST_LOADING,
+  END_PROFILE_FOLLOWERS_LIST_LOADING,
   GET_FOLLOWING_AND_FOLLOWERS_COUNT,
   GET_FOLLOWERS_PROFILE_DETAILS,
   GET_FOLLOWING_PROFILE_DETAILS,
@@ -16,6 +20,8 @@ const initState = {
   followingProfile: [],
   followersProfile: [],
   isProfileLoading: true,
+  isProfileFollowingLoading: true,
+  isProfileFollowersLoading: true,
 };
 export default (state = initState, action) => {
   switch (action.type) {
@@ -23,6 +29,14 @@ export default (state = initState, action) => {
       return { ...state, isProfileLoading: true };
     case END_PROFILE_LOADING:
       return { ...state, isProfileLoading: false };
+    case START_PROFILE_FOLLOWING_LIST_LOADING:
+      return { ...state, isProfileFollowingLoading: true };
+    case END_PROFILE_FOLLOWING_LIST_LOADING:
+      return { ...state, isProfileFollowingLoading: false };
+    case START_PROFILE_FOLLOWERS_LIST_LOADING:
+      return { ...state, isProfileFollowersLoading: true };
+    case END_PROFILE_FOLLOWERS_LIST_LOADING:
+      return { ...state, isProfileFollowersLoading: false };
     case GET_FOLLOWING_AND_FOLLOWERS_COUNT:
       return {
         ...state,

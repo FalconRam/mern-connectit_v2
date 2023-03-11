@@ -17,6 +17,7 @@ import ProfileEdit from "./components/pages/ProfilePage/ProfileEdit/profileEdit"
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserFollowerFollowing from "./components/pages/UserFollowerFollowing/userFollowerFollowing";
 
 const App = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
@@ -49,6 +50,11 @@ const App = () => {
           <Route path="/post/:id" exact component={PostDetailsWithProfile} />
           <Route path="/profile/details" exact component={ProfilePage} />
           <Route path="/profile/edit/:id" exact component={ProfileEdit} />
+          <Route
+            path="/profile/following-followers/details"
+            exact
+            component={UserFollowerFollowing}
+          />
           <Route path="/profile/settings" exact component={Settings} />
           <Route path="/chats" exact component={Messages} />
           <Route path="/notification" exact component={Notification} />

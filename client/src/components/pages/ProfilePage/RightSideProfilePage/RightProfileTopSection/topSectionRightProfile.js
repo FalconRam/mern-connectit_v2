@@ -33,6 +33,10 @@ const TopSectionRightProfile = ({
   //   userDetailsCard.style.backgroundSize = "cover";
   // };
 
+  const handleFollowFollows = (id) => {
+    history.push(`/profile/following-followers/details?profileId=${profileId}`);
+  };
+
   const handleProfileEdit = () => {
     history.push(`/profile/edit/${profileDetails?.userDetails?._id}`);
   };

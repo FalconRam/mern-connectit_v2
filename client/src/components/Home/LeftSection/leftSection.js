@@ -16,7 +16,7 @@ const LeftSection = ({
   const history = useHistory();
 
   const handleFollowFollows = (id) => {
-    history.push(`/following-followers/details?profileId=${id}`);
+    history.push(`/profile/following-followers/details?profileId=${id}`);
   };
 
   const handleProfile = () => {

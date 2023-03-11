@@ -2,9 +2,13 @@ import * as api from "../api";
 import {
   START_PROFILE_LOADING,
   END_PROFILE_LOADING,
+  START_PROFILE_FOLLOWING_LIST_LOADING,
+  END_PROFILE_FOLLOWING_LIST_LOADING,
+  START_PROFILE_FOLLOWERS_LIST_LOADING,
+  END_PROFILE_FOLLOWERS_LIST_LOADING,
   GET_FOLLOWING_AND_FOLLOWERS_COUNT,
-  GET_FOLLOWERS_PROFILE_DETAILS,
   GET_FOLLOWING_PROFILE_DETAILS,
+  GET_FOLLOWERS_PROFILE_DETAILS,
   GET_PROFILE_DETAILS,
   UPDATE_PROFILE_DETAILS,
   // UPDATE_PROFILE_PASSWORD,
@@ -16,7 +20,7 @@ export const getFollowingAndFollowersCount = (id) => async (dispatch) => {
   try {
     dispatch({ type: START_PROFILE_LOADING });
 
-    const { data } = await api.fetchFollowingAndFollowersCount(id);
+    const { data } = await api.fetchFollowersProfileDetails(id);
     dispatch({ type: GET_FOLLOWING_AND_FOLLOWERS_COUNT, payload: data });
 
     dispatch({ type: END_PROFILE_LOADING });
@@ -34,12 +38,12 @@ export const getFollowingAndFollowersCount = (id) => async (dispatch) => {
 
 export const getFollowingProfileDetails = (id) => async (dispatch) => {
   try {
-    dispatch({ type: START_PROFILE_LOADING });
+    dispatch({ type: START_PROFILE_FOLLOWING_LIST_LOADING });
 
     const { data } = await api.fetchFollowingProfileDetails(id);
     dispatch({ type: GET_FOLLOWING_PROFILE_DETAILS, payload: data });
 
-    dispatch({ type: END_PROFILE_LOADING });
+    dispatch({ type: END_PROFILE_FOLLOWING_LIST_LOADING });
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")
@@ -54,12 +58,15 @@ export const getFollowingProfileDetails = (id) => async (dispatch) => {
 
 export const getFollowersProfileDetails = (id) => async (dispatch) => {
   try {
-    dispatch({ type: START_PROFILE_LOADING });
+    dispatch({ type: START_PROFILE_FOLLOWERS_LIST_LOADING });
 
     const { data } = await api.fetchFollowersProfileDetails(id);
-    dispatch({ type: GET_FOLLOWERS_PROFILE_DETAILS, payload: data });
+    dispatch({
+      type: GET_FOLLOWERS_PROFILE_DETAILS,
+      payload: data,
+    });
 
-    dispatch({ type: END_PROFILE_LOADING });
+    dispatch({ type: END_PROFILE_FOLLOWERS_LIST_LOADING });
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")
@@ -111,6 +118,7 @@ export const updateProfileDetails = (id, userData) => async (dispatch) => {
     toast.error(message);
   }
 };
+
 export const updateProfilePassword =
   (id, newUpdatePassword) => async (dispatch) => {
     try {
