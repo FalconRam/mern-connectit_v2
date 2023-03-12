@@ -33,7 +33,7 @@ const TopSectionRightProfile = ({
   //   userDetailsCard.style.backgroundSize = "cover";
   // };
 
-  const handleFollowFollows = (id) => {
+  const handleFollowFollows = () => {
     history.push(`/profile/following-followers/details?profileId=${profileId}`);
   };
 
@@ -43,6 +43,7 @@ const TopSectionRightProfile = ({
 
   return (
     <>
+      {/* Loading Comp */}
       {isProfileLoading ? (
         <>
           <div
@@ -122,7 +123,10 @@ const TopSectionRightProfile = ({
                     </p>
 
                     {/* Followers & Followings Count + Button */}
-                    <button className="d-flex justify-content-center align-items-center gap-2 btn btn-none">
+                    <button
+                      className="d-flex justify-content-center align-items-center gap-2 btn btn-none"
+                      onClick={handleFollowFollows}
+                    >
                       <p className="profFollowCount">
                         {profileDetails?.userDetails?.following?.length}
                         <i className="bi bi-dot text-success"></i>

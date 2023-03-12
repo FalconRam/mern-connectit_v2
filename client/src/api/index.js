@@ -85,3 +85,12 @@ export const updateProfilePassword = (id, newUpdatePassword) =>
 
 export const updateProfilePictures = (id, newPictures) =>
   API.patch(`/profile/update/profile-pictures/${id}`, newPictures);
+
+// request - Follow/UnFollow
+
+export const sendFollowRequest = (id) => API.post(`/request/follow/${id}`);
+
+export const sendUnFollowRequest = (id) => API.post(`/request/unFollow/${id}`);
+
+export const sendRemoveFollowerRequest = (id) =>
+  API.post(`/request/removeFollower/${id}`);

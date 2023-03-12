@@ -8,36 +8,34 @@ export const followRequest = async (req, res) => {
     const currentUser = await User.findById(req.userId); // req.userId fetched from auth middleware
     const companionUser = await User.findById(companionId);
 
-    if (!companionUser.following.includes(req.userId)) {
+    // removes companionUser id on following array of current user account
+    if (!currentUser.following.includes(companionId)) {
       currentUser.following.push(companionId);
-      companionUser.followers.push(req.userId);
 
-      currentUser.followers.push(companionId);
-      companionUser.following.push(req.userId);
       const updatedCurrentUser = await User.findByIdAndUpdate(
         currentUser._id,
         currentUser,
         { new: true }
       );
-      const updatedCompanionUser = await User.findByIdAndUpdate(
-        companionUser._id,
-        companionUser,
-        { new: true }
-      );
+
+      let result = {
+        id: updatedCurrentUser._id,
+        name: updatedCurrentUser.name,
+        following: updatedCurrentUser.following,
+      };
 
       res.status(200).json({
         success: true,
         message: "Request Sent",
-        data: updatedCurrentUser,
+        data: result,
       });
     } else {
       res.status(409).json({ status: false, message: "Already followed" });
     }
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ status: false, message: error.message });
   }
 };
-export const acceptFriendRequest = async (req, res) => {};
 
 export const unFollowRequest = async (req, res) => {
   const { companionId } = req.params;
@@ -46,27 +44,14 @@ export const unFollowRequest = async (req, res) => {
     const currentUser = await User.findById(req.userId);
     const companionUser = await User.findById(companionId);
 
-    // removes companionUser id from following and followers on current user account
-    const indexFollowingCurUser = currentUser.following.findIndex(
-      (compId) => compId === companionUser._id
-    );
-    const indexFollowersCurUser = currentUser.followers.findIndex(
-      (compId) => compId === companionUser._id
-    );
+    if (!currentUser.following.includes(companionId))
+      res.status(409).json({ status: false, message: "No Friend Exists" });
 
-    currentUser.following.splice(indexFollowingCurUser, 1);
-    currentUser.followers.splice(indexFollowersCurUser, 1);
-
-    // removes currentUser id from following and followers on companion user account
-    const indexFollowingCompUser = companionUser.following.findIndex(
-      (curId) => curId === currentUser._id
-    );
-    const indexFollowersCompUser = companionUser.followers.findIndex(
-      (curId) => curId === currentUser._id
-    );
-
-    companionUser.following.splice(indexFollowingCompUser, 1);
-    companionUser.followers.splice(indexFollowersCompUser, 1);
+    // removes companionUser id from following on current user account
+    const index = currentUser.following.indexOf(companionUser._id);
+    if (index !== -1) {
+      currentUser.following.splice(index, 1);
+    }
 
     const updatedCurrentUser = await User.findByIdAndUpdate(
       currentUser._id,
@@ -74,21 +59,63 @@ export const unFollowRequest = async (req, res) => {
       { new: true }
     );
 
-    const updatedCompanionUser = await User.findByIdAndUpdate(
-      companionUser._id,
-      companionUser,
-      { new: true }
-    );
+    let result = {
+      id: updatedCurrentUser._id,
+      name: updatedCurrentUser.name,
+      following: updatedCurrentUser.following,
+    };
 
     res.status(200).json({
       status: true,
       message: "UnFriend Success",
-      data: updatedCurrentUser,
+      data: result,
     });
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(500).json({ status: false, message: error.message });
   }
 };
+
+export const removeFollowerRequest = async (req, res) => {
+  const { companionId } = req.params;
+
+  try {
+    const currentUser = await User.findById(req.userId);
+    const companionUser = await User.findById(companionId);
+
+    if (!currentUser.followers.includes(companionId))
+      res.status(409).json({ status: false, message: "No Follower Exists" });
+
+    // removes companionUser id from following on current user account
+    const index = currentUser.followers.indexOf(companionUser._id);
+    if (index !== -1) {
+      currentUser.followers.splice(index, 1);
+    }
+
+    const updatedCurrentUser = await User.findByIdAndUpdate(
+      currentUser._id,
+      currentUser,
+      { new: true }
+    );
+
+    let result = {
+      id: updatedCurrentUser._id,
+      name: updatedCurrentUser.name,
+      followers: updatedCurrentUser.followers,
+    };
+
+    res.status(200).json({
+      status: true,
+      message: "Removed Follower",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, message: error.message });
+  }
+};
+
+export const acceptFriendRequest = async (req, res) => {};
+
+export const rejectFriendRequest = async (req, res) => {};
 
 export const getFollowersByUserId = async (req, res) => {
   try {
