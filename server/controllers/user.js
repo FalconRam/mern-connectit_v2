@@ -87,7 +87,7 @@ export const signUp = async (req, res) => {
     });
 
     let resultUser = {
-      id: _id,
+      id: result._id,
       name: result.name,
       email: result.email,
       token: token,
