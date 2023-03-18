@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -25,34 +25,27 @@ const SignUp = ({
 
   const [errors, setErrors] = useState({});
   const [showFormError, setShowFormError] = useState(false);
-  const [signInData, setsignInData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    city: "",
-    country: "",
-  });
+
+  let firstName = useRef("");
+  let lastName = useRef("");
+  let email = useRef("");
+  let password = useRef("");
+  let confirmPassword = useRef("");
+  let city = useRef("");
+  let country = useRef("");
 
   let clearForm = () => {
-    setsignInData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      city: "",
-      country: "",
-    });
+    firstName.current.value = "";
+    lastName.current.value = "";
+    email.current.value = "";
+    password.current.value = "";
+    confirmPassword.current.value = "";
+    city.current.value = "";
+    country.current.value = "";
   };
 
+  // Check and see if errors exist, and remove them from the error object:
   const setField = (field, value) => {
-    setsignInData({
-      ...signInData,
-      [field]: value,
-    });
-    // Check and see if errors exist, and remove them from the error object:
     if (!!errors[field])
       setErrors({
         ...errors,
@@ -62,6 +55,15 @@ const SignUp = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let signInData = {
+      firstName: firstName.current.value,
+      lastName: lastName.current.value,
+      email: email.current.value,
+      password: password.current.value,
+      confirmPassword: confirmPassword.current.value,
+      city: city.current.value,
+      country: country.current.value,
+    };
     const newErrors = findSigninFormErrors(signInData);
     // Conditional logic:
     if (Object.keys(newErrors).length > 0) {
@@ -108,6 +110,7 @@ const SignUp = ({
                 First Name
               </label>
               <input
+                ref={firstName}
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="First name"
@@ -122,6 +125,7 @@ const SignUp = ({
                 Last Name
               </label>
               <input
+                ref={lastName}
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Last name"
@@ -136,6 +140,7 @@ const SignUp = ({
                 Email
               </label>
               <input
+                ref={email}
                 type="email"
                 className="form-control form-control-sm"
                 placeholder="Email"
@@ -150,6 +155,7 @@ const SignUp = ({
                 City
               </label>
               <input
+                ref={city}
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="City"
@@ -164,6 +170,7 @@ const SignUp = ({
                 Country
               </label>
               <input
+                ref={country}
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Country"
@@ -179,6 +186,7 @@ const SignUp = ({
               </label>
               <div className="input-group">
                 <input
+                  ref={password}
                   type={showPassword ? "text" : "password"}
                   className="form-control form-control-sm form-control-password"
                   placeholder="Password"
@@ -208,6 +216,7 @@ const SignUp = ({
               </label>
               <div className="input-group">
                 <input
+                  ref={confirmPassword}
                   type={showConfirmPassword ? "text" : "password"}
                   className="form-control form-control-sm form-control-password"
                   placeholder="Confirm Password"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -23,24 +23,17 @@ const LogIn = ({
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [showFormError, setShowFormError] = useState(false);
-  const [loginCred, setLoginCred] = useState({
-    email: "",
-    password: "",
-  });
+
+  const email = useRef("");
+  const password = useRef("");
 
   let clearForm = () => {
-    setLoginCred({
-      email: "",
-      password: "",
-    });
+    email.current.value = "";
+    password.current.value = "";
   };
 
-  const setField = (field, value) => {
-    setLoginCred({
-      ...loginCred,
-      [field]: value,
-    });
-    // Check and see if errors exist, and remove them from the error object:
+  // Check and see if errors exist, and remove them from the error object:
+  const setField = (field) => {
     if (!!errors[field])
       setErrors({
         ...errors,
@@ -50,6 +43,10 @@ const LogIn = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let loginCred = {
+      email: email.current.value,
+      password: password.current.value,
+    };
     const newErrors = findLoginFormErrors(loginCred);
     // Conditional logic:
     if (Object.keys(newErrors).length > 0) {
@@ -94,6 +91,7 @@ const LogIn = ({
                   Email
                 </label>
                 <input
+                  ref={email}
                   type="email"
                   className="form-control form-control-sm"
                   id="exampleInputEmail1"
@@ -109,6 +107,7 @@ const LogIn = ({
                 </label>
                 <div className="input-group">
                   <input
+                    ref={password}
                     type={showPassword ? "text" : "password"}
                     className="form-control form-control-sm form-control-password"
                     id="exampleInputPassword1"
