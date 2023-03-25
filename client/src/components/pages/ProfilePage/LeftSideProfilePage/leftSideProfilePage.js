@@ -67,6 +67,7 @@ const LeftSideProfilePage = () => {
   const handleSettings = () => {
     history.push("/profile/settings");
   };
+
   return (
     <>
       <div className="">

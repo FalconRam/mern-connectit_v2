@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import LeftSideProfilePage from "../ProfilePage/LeftSideProfilePage/leftSideProfilePage";
 import LeftSideMessageSection from "./LeftSideMessageSection/leftSideMessageSection";
 import RightSideMessageSection from "./RightSideMessageSection/rightSideMessageSection";
-
+import ShareModal from "../../Home/MiddleSection/SharePost/ShareModal/shareModal";
 const Messages = () => {
   const history = useHistory();
 
@@ -30,6 +30,7 @@ const Messages = () => {
           </div>
         </div>
       </div>
+      <ShareModal />
     </>
   );
 };

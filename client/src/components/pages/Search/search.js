@@ -1,6 +1,7 @@
 import React from "react";
 
 import { useHistory } from "react-router-dom";
+import ShareModal from "../../Home/MiddleSection/SharePost/ShareModal/shareModal";
 
 const Search = () => {
   const history = useHistory();
@@ -10,8 +11,8 @@ const Search = () => {
   }
   return (
     <>
-      <div className="customMargin">
-        Comming Soon...</div>
+      <div className="customMargin">Comming Soon...</div>
+      <ShareModal />
     </>
   );
 };

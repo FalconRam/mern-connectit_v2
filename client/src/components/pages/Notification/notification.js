@@ -1,6 +1,7 @@
 import React from "react";
 
 import { useHistory } from "react-router-dom";
+import ShareModal from "../../Home/MiddleSection/SharePost/ShareModal/shareModal";
 
 const Notification = () => {
   const history = useHistory();
@@ -12,6 +13,7 @@ const Notification = () => {
   return (
     <>
       <div className="customMargin">Comming Soon...</div>
+      <ShareModal />
     </>
   );
 };
