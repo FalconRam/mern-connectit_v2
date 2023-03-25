@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { useLocation, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import decode from "jwt-decode";
 
 import { LOGOUT } from "../../constants/actionTypes";
@@ -13,6 +13,8 @@ import "./navBar.css";
 
 const NavBar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+
+  const { profileDetails } = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -55,23 +57,34 @@ const NavBar = () => {
           {/* From Medium to xxl Devices Component*/}
           {user && (
             <div role="navigation " className="d-none d-sm-none d-md-block">
-              <ul className="nav justify-content-end nav-listItems me-2">
-                <li className="nav-item ">
-                  <a className="nav-link " aria-current="page" href="#">
-                    Ram
+              <ul className="nav d-flex align-items-center  justify-content-end nav-listItems me-2">
+                <li className="nav-item sideNavButton" onClick={handleProfile}>
+                  <a className="nav-link d-flex align-items-center justify-content-center gap-2">
+                    <img
+                      src={
+                        profileDetails?.userDetails?.profilePicture ||
+                        profileDetails?.userDetails?.name
+                          .charAt(0)
+                          .toUpperCase() ||
+                        "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
+                      }
+                      className="img-thumbnail rounded-circle navProfilePic d-flex align-items-center justify-content-center"
+                      alt={profileDetails?.userDetails?.name
+                        .charAt(0)
+                        .toUpperCase()}
+                    />
+                    {profileDetails?.userDetails?.name}
                   </a>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item sideNavButton">
                   <a className="nav-link" onClick={handleProfile}>
                     My Profile
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    Settings
-                  </a>
+                <li className="nav-item sideNavButton">
+                  <a className="nav-link">Settings</a>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item sideNavButton">
                   <a className="dropdown-item" href="/auth">
                     <button className="btn" onClick={logout}>
                       Logout
@@ -94,25 +107,23 @@ const NavBar = () => {
                 <img src={more} alt="more" title="More" className="more-icon" />
               </button>
               <ul className="dropdown-menu text-center">
-                <li>
-                  <a className="dropdown-item dropdown-item-custom" href="#">
-                    Ram
+                <li className="nav-item sideNavButton" onClick={handleProfile}>
+                  <a className="dropdown-item dropdown-item-custom">
+                    {profileDetails?.userDetails?.name}
                   </a>
                 </li>
-                <li>
-                  <a className="dropdown-item dropdown-item-custom" href="#">
+                <li className="nav-item sideNavButton" onClick={handleProfile}>
+                  <a className="dropdown-item dropdown-item-custom">
                     My Profile
                   </a>
                 </li>
-                <li>
-                  <a className="dropdown-item dropdown-item-custom" href="#">
-                    Settings
-                  </a>
+                <li className="nav-item sideNavButton">
+                  <a className="dropdown-item dropdown-item-custom">Settings</a>
                 </li>
-                <li>
+                <li className="nav-item sideNavButton">
                   <a className="dropdown-item" href="/auth">
                     <button
-                      className="btn dropdown-item-custom"
+                      className="post-image-btn dropdown-item dropdown-item-custom"
                       onClick={logout}
                     >
                       Logout
