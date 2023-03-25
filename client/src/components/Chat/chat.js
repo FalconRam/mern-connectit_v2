@@ -2,9 +2,13 @@ import React from "react";
 
 import { useHistory, useLocation } from "react-router-dom";
 
-const Chat = ({ handleMessages }) => {
+const Chat = () => {
   const history = useHistory();
   const isChatPage = useLocation().pathname === "/chats";
+  const handleMessages = () => {
+    // Push to path only if not a Chat page and Win is below md
+    isChatPage || history.push("/chats");
+  };
   return (
     <>
       <div
