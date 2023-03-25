@@ -94,3 +94,8 @@ export const sendUnFollowRequest = (id) => API.post(`/request/unFollow/${id}`);
 
 export const sendRemoveFollowerRequest = (id) =>
   API.post(`/request/removeFollower/${id}`);
+
+// Chat & Messages
+
+export const fetchUsersBySearch = (search) =>
+  API.get(`/user/searchUsers?search=${search}`);

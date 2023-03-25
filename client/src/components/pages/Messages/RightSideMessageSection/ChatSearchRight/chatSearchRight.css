@@ -1,0 +1,13 @@
+/* .chatSearch-container {
+  position: relative;
+}
+
+.chatSearch-container::after {
+  content: "";
+  position: absolute;
+  width: 90%;
+  left: 5%;
+  bottom: 0;
+  height: 1px;
+  background-color: hsl(270, 2%, 84%);
+} */

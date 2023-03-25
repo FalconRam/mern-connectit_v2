@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 
 import User from "../models/user.js";
 import PostMessage from "../models/postMessage.js";
+import { convertImgToCloudinaryURL } from "../services/HelperFunctions/convertImgToCloudinaryURL.js";
+import { deleteCloudinaryImg } from "../services/HelperFunctions/deleteCloudinaryImg.js";
 
 export const getPostsByFollowing = async (req, res) => {
   try {
@@ -182,16 +184,46 @@ export const getPostsById = async (req, res) => {
 };
 
 export const createPost = async (req, res) => {
-  const post = req.body;
+  const { title, message, tags, selectedFile, name } = req.body;
   const newPost = new PostMessage({
-    ...post,
+    title,
+    message,
+    tags,
+    name,
     creator: req.userId,
     createdAt: new Date().toISOString(),
   });
   try {
-    await newPost.save();
+    let createdPost = await newPost.save();
 
-    res.status(201).json({ status: true, data: newPost });
+    // Convert the Base64 Image to Cloudinary Image URL(Image uploaded in Cloudinary account)
+    let folderName = "Posts";
+    const cloudinaryResponse = await convertImgToCloudinaryURL(
+      selectedFile,
+      createdPost._id,
+      folderName
+    );
+
+    // Delete the created Post and send faliure response, if the cloudinary Image upload fails
+    if (!cloudinaryResponse.secure_url) {
+      await PostMessage.findByIdAndDelete(createdPost._id);
+      res.status(500).json({ status: false, message: cloudinaryResponse });
+      return;
+    }
+
+    // append the Post's selectedFile as Cloudinary Image URL in createdPost object
+    createdPost.selectedFile = cloudinaryResponse.secure_url;
+
+    // update the Post's selectedFile as Cloudinary Image URL
+    createdPost = await PostMessage.findByIdAndUpdate(
+      createdPost._id,
+      createdPost,
+      {
+        new: true,
+      }
+    );
+
+    res.status(201).json({ status: true, data: createdPost });
   } catch (error) {
     res.status(409).json({ status: false, message: error.message });
   }
@@ -318,9 +350,27 @@ export const deletePost = async (req, res) => {
       return res
         .status(404)
         .json({ status: false, message: "No Post found to Delete" });
+    let folderName = "Posts";
+    const result = await deleteCloudinaryImg(_id, folderName);
 
-    await PostMessage.findByIdAndDelete(_id);
-    res.status(200).json({ status: true, message: "Post Deleted" });
+    if (result.result === "ok") {
+      await PostMessage.findByIdAndDelete(_id);
+      res.status(200).json({ status: true, message: "Post Deleted" });
+      return;
+    }
+
+    if (result.result === "not found") {
+      res.status(400).json({
+        status: true,
+        message: "No Asset found to Delete in Cloudinary",
+      });
+      return;
+    } else {
+      res.status(500).json({
+        status: true,
+        message: "Error occured at Cloudinary to delete Asset",
+      });
+    }
   } catch (error) {
     res.status(500).json({ status: false, message: error.message });
   }

@@ -98,3 +98,38 @@ export const signUp = async (req, res) => {
     res.status(500).json({ status: false, message: error.message });
   }
 };
+
+export const getSearchUsers = async (req, res) => {
+  let keyword = req.query.search;
+  try {
+    if (!keyword || keyword.trim() === "") {
+      res.status(200).json({ status: true, message: "No Users", data: [] });
+      return;
+    }
+
+    const keywordResults = keyword && {
+      $or: [
+        { name: { $regex: keyword, $options: "i" } },
+        { email: { $regex: keyword, $options: "i" } },
+      ],
+    };
+
+    const loggedInUser = await User.findById(req.userId);
+    const followingIds = loggedInUser.following.map((id) =>
+      mongoose.Types.ObjectId(id)
+    );
+
+    const users = await User.find({
+      $and: [
+        { _id: { $in: followingIds } }, // only return users whose _id is in followingIds
+        keywordResults, // any additional search criteria you have
+      ],
+    }).select(
+      "-password -following -followers -city -country -bio -profileBgWallPicture -createdAt -__v"
+    );
+
+    res.status(200).json({ status: true, data: { users: users } });
+  } catch (error) {
+    res.status(500).json({ status: false, message: error.message });
+  }
+};

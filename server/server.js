@@ -7,6 +7,7 @@ import postRoutes from "./routes/post.js";
 import userRoutes from "./routes/user.js";
 import followsAndUnfollows from "./routes/followsAndUnfollows.js";
 import profileRoutes from "./routes/profile.js";
+import chatRoutes from "./routes/chat.js";
 
 const app = express();
 dotenv.config();
@@ -29,6 +30,7 @@ app.use("/posts", postRoutes);
 app.use("/user", userRoutes);
 app.use("/request", followsAndUnfollows);
 app.use("/profile", profileRoutes);
+app.use("/chat", chatRoutes);
 
 const port = process.env.PORT;
 const dbUri = process.env.CONNECTION_URL;

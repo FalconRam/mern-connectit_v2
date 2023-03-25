@@ -10,7 +10,8 @@ const Search = () => {
   }
   return (
     <>
-      <div className="customMargin">Comming Soon...</div>
+      <div className="customMargin">
+        Comming Soon...</div>
     </>
   );
 };
