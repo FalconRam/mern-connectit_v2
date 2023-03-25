@@ -8,6 +8,12 @@
   margin-bottom: 0;
 }
 
+.formInfo {
+  color: rgb(2, 165, 2);
+  font-size: 0.7rem;
+  margin-bottom: 0;
+}
+
 .switchButton {
   border: none;
   background: none;
