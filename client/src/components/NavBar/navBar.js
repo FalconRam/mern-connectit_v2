@@ -8,7 +8,7 @@ import { LOGOUT } from "../../constants/actionTypes";
 
 import logo from "../../assets/logo.png";
 import more from "../../assets/more.png";
-
+import Chat from "../Chat/chat";
 import "./navBar.css";
 
 const NavBar = () => {
@@ -29,6 +29,45 @@ const NavBar = () => {
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
 
+  const isChatPage = useLocation().pathname === "/chats";
+
+  const [isScreenBelowMd, setIsScreenBelowMd] = useState(false);
+  const [winHeight, setWinHeight] = useState(window.outerHeight);
+  const [winWidth, setWinWidth] = useState(window.outerWidth);
+
+  // Get the Win Height & Width when the Win size changes
+  // and remove the event - resize when page is unmounted
+  useEffect(() => {
+    const handleResize = () => {
+      setWinHeight(window.outerHeight);
+      setWinWidth(window.outerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // Set the boolean if the Win size is reduced below md
+  useEffect(() => {
+    if (winHeight <= 1080 && winWidth <= 758) {
+      setIsScreenBelowMd(true);
+    } else {
+      setIsScreenBelowMd(false);
+    }
+  }, [winHeight, winWidth]);
+
+  // set spanProps in the Message span tag only if Win size is above sm
+  let spanProps = {};
+  if (!isScreenBelowMd)
+    spanProps = {
+      "data-bs-toggle": "offcanvas",
+      "data-bs-target": "#offcanvasWithBothOptions",
+      "aria-controls": "offcanvasWithBothOptions",
+    };
+
   const logout = () => {
     dispatch({ type: LOGOUT });
   };
@@ -36,6 +75,16 @@ const NavBar = () => {
   const handleProfile = () => {
     history.push(`/profile/details?profileId=${user?.id}`);
   };
+
+  const handleMessages = () => {
+    // Push to path only if not a Chat page and Win is below md
+    isChatPage || (isScreenBelowMd && history.push("/chats"));
+  };
+
+  const handleNotification = () => {
+    history.push("/notification");
+  };
+
   return (
     <>
       <div className="container-fluid">
@@ -81,6 +130,19 @@ const NavBar = () => {
                     My Profile
                   </a>
                 </li>
+                <li
+                  className="nav-item sideNavButton"
+                  {...(isChatPage || spanProps)}
+                  onClick={handleMessages}
+                >
+                  <a className="nav-link">Messages</a>
+                </li>
+                <li
+                  className="nav-item sideNavButton"
+                  onClick={handleNotification}
+                >
+                  <a className="nav-link">Notification</a>
+                </li>
                 <li className="nav-item sideNavButton">
                   <a className="nav-link">Settings</a>
                 </li>
@@ -107,7 +169,11 @@ const NavBar = () => {
                 <img src={more} alt="more" title="More" className="more-icon" />
               </button>
               <ul className="dropdown-menu text-center">
-                <li className="nav-item sideNavButton" onClick={handleProfile}>
+                <li
+                  className="nav-item sideNavButton"
+                  {...(isChatPage || spanProps)}
+                  onClick={handleProfile}
+                >
                   <a className="dropdown-item dropdown-item-custom">
                     {profileDetails?.userDetails?.name}
                   </a>
@@ -115,6 +181,17 @@ const NavBar = () => {
                 <li className="nav-item sideNavButton" onClick={handleProfile}>
                   <a className="dropdown-item dropdown-item-custom">
                     My Profile
+                  </a>
+                </li>
+                <li className="nav-item sideNavButton" onClick={handleMessages}>
+                  <a className="dropdown-item dropdown-item-custom">Messages</a>
+                </li>
+                <li
+                  className="nav-item sideNavButton"
+                  onClick={handleNotification}
+                >
+                  <a className="dropdown-item dropdown-item-custom">
+                    Notification
                   </a>
                 </li>
                 <li className="nav-item sideNavButton">
@@ -134,6 +211,7 @@ const NavBar = () => {
             </div>
           )}
         </nav>
+        <Chat />
       </div>
     </>
   );
