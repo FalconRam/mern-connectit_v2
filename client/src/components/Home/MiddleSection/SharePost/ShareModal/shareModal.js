@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -7,6 +7,7 @@ import FileBase from "react-file-base64";
 
 import "./shareModal.css";
 import { createPost } from "../../../../../actions/posts";
+import PreviewImage from "../../../../Shared/PreviewImage/previewImage";
 
 const ShareModal = ({ isEditModal, setIsEditModal }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -14,39 +15,53 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [postData, setPostData] = useState({
-    title: "",
-    message: "",
-    tags: "",
-    selectedFile: "",
-  });
+  const [selectedFile, setSelectedFile] = useState("");
+  const [fileSize, setFileSize] = useState(null);
+
+  const [formFileError, setFormFileError] = useState("");
+
+  const title = useRef("");
+  const message = useRef("");
+  const tags = useRef("");
+
+  let clearForm = (e) => {
+    title.current.value = "";
+    message.current.value = "";
+    tags.current.value = "";
+    setSelectedFile("");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // if (currentId) {
-    //   dispatch(
-    //     updatePost(currentId, { ...postData, name: user?.name }, history)
-    //   );
-    //   clear();
-    // } else {
-    //   dispatch(createPost({ ...postData, name: user?.name }, history));
-    //   clear();
-    // }
-
-    dispatch(createPost({ ...postData, name: user?.name }, history));
-    clear();
+    let postFormData = {
+      title: title.current.value,
+      message: message.current.value,
+      tags: tags.current.value,
+      selectedFile: selectedFile,
+    };
+    dispatch(createPost({ ...postFormData, name: user?.name }, history));
+    clearForm();
   };
-  const clear = () => {
-    // setCurrentId(0);
-    setPostData({
-      title: "",
-      message: "",
-      tags: "",
-      selectedFile: "",
-    });
-    // setModalOpened(false);
+  const [isFileSizeExceed, setIsFileSizeExceed] = useState(false);
+  const fileSizeLimit = 20;
+  const fileSizeMessages = {
+    noFileSelected: "No file selected",
+    fileSizeExeed: "File Size Exceeds limit - 20MB",
   };
+  let fileSizeInMB = fileSize / (1024 * 1024).toFixed(2);
+
+  useEffect(() => {
+    if (fileSizeInMB > fileSizeLimit) {
+      setFormFileError(fileSizeMessages.fileSizeExeed);
+      setIsFileSizeExceed(true);
+    } else if (fileSize === 0) {
+      setFormFileError(fileSizeMessages.noFileSelected);
+      setIsFileSizeExceed(true);
+    } else {
+      setFormFileError("");
+      setIsFileSizeExceed(false);
+    }
+  }, [fileSize]);
 
   const handlePostShareModalClose = () => {
     setIsEditModal(!isEditModal);
@@ -56,9 +71,7 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
     <>
       <div
         className="modal fade"
-        id="staticBackdrop"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
+        id="createModal"
         tabIndex="-1"
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
@@ -66,7 +79,7 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h2 className="modal-title fs-5" id="staticBackdropLabel">
+              <h2 className="modal-title fs-5" id="createModal">
                 Share your Post
               </h2>
               <button
@@ -84,13 +97,10 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
                     Tittle
                   </label>
                   <input
+                    ref={title}
                     type="text"
                     className="form-control form-control-sm"
                     id="tittle"
-                    value={postData.title}
-                    onChange={(e) =>
-                      setPostData({ ...postData, title: e.target.value })
-                    }
                   />
                 </div>
 
@@ -99,13 +109,10 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
                     Hastags
                   </label>
                   <input
+                    ref={tags}
                     type="text"
                     className="form-control form-control-sm"
                     id="tags"
-                    value={postData.tags}
-                    onChange={(e) =>
-                      setPostData({ ...postData, tags: e.target.value })
-                    }
                   />
                 </div>
 
@@ -114,23 +121,46 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
                     Caption
                   </label>
                   <textarea
+                    ref={message}
                     className="form-control form-control-sm text-area"
                     id="message"
-                    value={postData.message}
-                    onChange={(e) =>
-                      setPostData({ ...postData, message: e.target.value })
-                    }
                   ></textarea>
                 </div>
                 {!isEditModal ? (
-                  <div className="fileBase">
+                  <div
+                    className="fileBase"
+                    onChange={(e) => {
+                      setFileSize(e.target.files[0].size);
+                    }}
+                  >
                     <FileBase
                       type="file"
                       multiple={false}
-                      onDone={({ base64 }) =>
-                        setPostData({ ...postData, selectedFile: base64 })
-                      }
+                      onDone={({ base64 }) => setSelectedFile(base64)}
                     />
+                    {!isFileSizeExceed && fileSizeInMB > 0 ? (
+                      <>
+                        <p className="formInfo mt-1 mb-1">Perfect!...</p>
+                        <PreviewImage selectedFile={selectedFile} />
+                      </>
+                    ) : (
+                      fileSizeInMB === 0 && (
+                        <p className="formInfo mt-1">
+                          Max. Picture Size is 20MB
+                        </p>
+                      )
+                    )}
+                    {formFileError === fileSizeMessages.fileSizeExeed ? (
+                      <p className="formError mt-1">
+                        {fileSizeMessages.fileSizeExeed}
+                      </p>
+                    ) : (
+                      fileSizeInMB === 0 && (
+                        <p className="formError mt-1">
+                          {fileSizeMessages.noFileSelected}
+                        </p>
+                      )
+                    )}
                   </div>
                 ) : null}
               </form>
@@ -140,11 +170,12 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
                 type="button"
                 className="btn btn-outline-secondary btn-sm"
                 data-bs-dismiss="modal"
-                onClick={clear}
+                onClick={(e) => clearForm(e)}
               >
                 Cancel
               </button>
               <button
+                disabled={formFileError !== "" || fileSize === null}
                 type="button"
                 className="btn btn-outline-success btn-sm"
                 onClick={handleSubmit}

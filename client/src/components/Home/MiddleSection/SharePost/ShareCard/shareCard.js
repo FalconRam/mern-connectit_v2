@@ -26,7 +26,7 @@ const ShareCard = ({ profileDetails, isProfileLoading }) => {
                   type="button"
                   className="form-control rounded-pill shareCard-input text-muted text-start"
                   data-bs-toggle="modal"
-                  data-bs-target="#staticBackdrop"
+                  data-bs-target="#createModal"
                 >
                   Share a Post
                 </button>

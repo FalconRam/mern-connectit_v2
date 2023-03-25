@@ -84,7 +84,7 @@ const LeftSideProfilePage = () => {
             <span
               className="sideNavButton"
               data-bs-toggle="modal"
-              data-bs-target="#staticBackdrop"
+              data-bs-target="#createModal"
             >
               <i className="bi bi-plus-circle-fill"></i>{" "}
               <h6 className="d-lg-inline-block d-none d-sm-none d-md-none">
