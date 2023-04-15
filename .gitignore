@@ -1,3 +1,4 @@
+client/.env
 server/.env
 client_secret.json
 server/package-lock.json

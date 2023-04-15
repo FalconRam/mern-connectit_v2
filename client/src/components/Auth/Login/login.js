@@ -6,7 +6,11 @@ import { logIn } from "../../../actions/auth";
 import { findLoginFormErrors } from "../../../errorHandling/authFormEH";
 import LoaderMini from "../../Shared/utils/loaderMini";
 
+// import dotenv from "dotenv";
+
 import "./login.css";
+
+// dotenv.config();
 
 const LogIn = ({
   isLogin,
@@ -20,6 +24,7 @@ const LogIn = ({
   const history = useHistory();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingWithTest, setIsLoadingWithTest] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [showFormError, setShowFormError] = useState(false);
@@ -73,6 +78,20 @@ const LogIn = ({
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleTestAccountLogin = async () => {
+    setIsLoadingWithTest(!isLoadingWithTest);
+    await dispatch(
+      logIn(
+        {
+          email: process.env.REACT_APP_TEST_EMAIL,
+          password: process.env.REACT_APP_TEST_PASSWORD,
+        },
+        history
+      )
+    );
+    setIsLoadingWithTest(!isLoadingWithTest);
   };
 
   return (
@@ -130,30 +149,47 @@ const LogIn = ({
                 )}
               </div>
               {isLoading ? (
-                <button className="btn btn-primary d-grid col-sm-12 col-md-5 col-lg-4 mx-auto">
+                <button className="btn btn-primary d-grid col-12 col-md-5 col-lg-4 mx-auto">
                   <LoaderMini />
                 </button>
               ) : (
                 <button
                   disabled={isLoginLoading}
                   type="submit"
-                  className="btn btn-primary d-grid col-sm-12 col-md-5 col-lg-4 mx-auto"
+                  className="btn btn-primary d-grid col-12 col-md-5 col-lg-4 mx-auto"
                   onClick={handleSubmit}
                 >
                   LogIn
                 </button>
               )}
             </form>
-            <div className="d-flex flex-column flex-md-row justify-content-between ">
-              <button onClick={switchMode} className="p-0 mt-3 switchButton">
+            <div className="d-flex flex-column flex-md-row justify-content-between mt-3 gap-2">
+              <button onClick={switchMode} className="p-0  switchButton">
                 {isLogin
                   ? "Don't have an account?"
                   : "Already have an account? Sign In"}
               </button>
-              <button className="p-0 mt-3 switchButton">
+              <button className="p-0 switchButton">
                 {isLogin && "Forgot Password?"}
               </button>
             </div>
+            {/* Test Account Login Button */}
+            {isLoadingWithTest ? (
+              <div className="d-flex justify-content-center mt-2 switchButton">
+                <LoaderMini />
+              </div>
+            ) : (
+              <div className="d-flex justify-content-center">
+                <button
+                  disabled={isLoadingWithTest}
+                  type="submit"
+                  className="p-0 mt-2 switchButton"
+                  onClick={handleTestAccountLogin}
+                >
+                  Explore with Test Account?
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
