@@ -8,7 +8,7 @@ import LoaderMini from "../../Shared/utils/loaderMini";
 
 // import dotenv from "dotenv";
 
-import "./login.css";
+import "./LogIn.css";
 
 // dotenv.config();
 
