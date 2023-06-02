@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { logIn } from "../../../actions/auth";
 import { findLoginFormErrors } from "../../../errorHandling/authFormEH";
-import LogIn from "./LogIn";
+import LogIn from "./login";
 
 jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
