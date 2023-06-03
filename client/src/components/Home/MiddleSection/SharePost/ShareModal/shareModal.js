@@ -8,6 +8,10 @@ import FileBase from "react-file-base64";
 import "./shareModal.css";
 import { createPost } from "../../../../../actions/posts";
 import PreviewImage from "../../../../Shared/PreviewImage/previewImage";
+import {
+  fileFormErrorMessages,
+  formSuccessMessage,
+} from "../../../../../utils/localization/constans";
 
 const ShareModal = ({ isEditModal, setIsEditModal }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -17,8 +21,7 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
 
   const [selectedFile, setSelectedFile] = useState("");
   const [fileSize, setFileSize] = useState(null);
-
-  const [formFileError, setFormFileError] = useState("");
+  const [fileType, setFileType] = useState("");
 
   const title = useRef("");
   const message = useRef("");
@@ -42,26 +45,45 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
     dispatch(createPost({ ...postFormData, name: user?.name }, history));
     clearForm();
   };
+
   const [isFileSizeExceed, setIsFileSizeExceed] = useState(false);
-  const fileSizeLimit = 20;
-  const fileSizeMessages = {
-    noFileSelected: "No file selected",
-    fileSizeExeed: "File Size Exceeds limit - 20MB",
-  };
+
+  const [formFileError, setFormFileError] = useState({
+    noFileSelected: "",
+    fileSizeExeed: "",
+    incorrectType: "",
+  });
+
   let fileSizeInMB = fileSize / (1024 * 1024).toFixed(2);
+  const fileSizeLimit = 20;
 
   useEffect(() => {
+    setFormFileError({
+      noFileSelected: "",
+      fileSizeExeed: "",
+      incorrectType: "",
+    });
+
     if (fileSizeInMB > fileSizeLimit) {
-      setFormFileError(fileSizeMessages.fileSizeExeed);
+      setFormFileError({
+        ...formFileError,
+        fileSizeExeed: fileFormErrorMessages.fileSizeExeed,
+      });
       setIsFileSizeExceed(true);
-    } else if (fileSize === 0) {
-      setFormFileError(fileSizeMessages.noFileSelected);
-      setIsFileSizeExceed(true);
-    } else {
-      setFormFileError("");
-      setIsFileSizeExceed(false);
     }
-  }, [fileSize]);
+    if (fileSize === 0) {
+      setFormFileError({
+        ...formFileError,
+        noFileSelected: fileFormErrorMessages.noFileSelected,
+      });
+    }
+    if (fileType && !fileType.includes("image")) {
+      setFormFileError({
+        ...formFileError,
+        incorrectType: fileFormErrorMessages.incorrectType,
+      });
+    }
+  }, [fileSize, fileType]);
 
   const handlePostShareModalClose = () => {
     setIsEditModal(!isEditModal);
@@ -130,6 +152,7 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
                   <div
                     className="fileBase"
                     onChange={(e) => {
+                      setFileType(e.target.files[0].type);
                       setFileSize(e.target.files[0].size);
                     }}
                   >
@@ -138,28 +161,35 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
                       multiple={false}
                       onDone={({ base64 }) => setSelectedFile(base64)}
                     />
-                    {!isFileSizeExceed && fileSizeInMB > 0 ? (
-                      <>
-                        <p className="formInfo mt-1 mb-1">Perfect!...</p>
-                        <PreviewImage selectedFile={selectedFile} />
-                      </>
-                    ) : (
-                      fileSizeInMB === 0 && (
-                        <p className="formInfo mt-1">
-                          Max. Picture Size is 20MB
-                        </p>
-                      )
-                    )}
-                    {formFileError === fileSizeMessages.fileSizeExeed ? (
+                    {!isFileSizeExceed && fileSizeInMB > 0
+                      ? formFileError.incorrectType === "" && (
+                          <>
+                            <p className="formInfo mt-1 mb-1">
+                              {formSuccessMessage.correctImage}
+                            </p>
+                            <PreviewImage selectedFile={selectedFile} />
+                          </>
+                        )
+                      : fileSizeInMB === 0 && (
+                          <p className="formInfo mt-1">
+                            {formSuccessMessage.maximumSize}
+                          </p>
+                        )}
+                    {formFileError && formFileError.fileSizeExeed !== "" ? (
                       <p className="formError mt-1">
-                        {fileSizeMessages.fileSizeExeed}
+                        {fileFormErrorMessages.fileSizeExeed}
                       </p>
                     ) : (
                       fileSizeInMB === 0 && (
                         <p className="formError mt-1">
-                          {fileSizeMessages.noFileSelected}
+                          {fileFormErrorMessages.noFileSelected}
                         </p>
                       )
+                    )}
+                    {formFileError && formFileError.incorrectType !== "" && (
+                      <p className="formError mt-1">
+                        {fileFormErrorMessages.incorrectType}
+                      </p>
                     )}
                   </div>
                 ) : null}
@@ -175,7 +205,12 @@ const ShareModal = ({ isEditModal, setIsEditModal }) => {
                 Cancel
               </button>
               <button
-                disabled={formFileError !== "" || fileSize === null}
+                disabled={
+                  formFileError.fileSizeExeed !== "" ||
+                  formFileError.incorrectType !== "" ||
+                  formFileError.noFileSelected !== "" ||
+                  fileSize === null
+                }
                 type="button"
                 className="btn btn-outline-success btn-sm"
                 onClick={handleSubmit}
