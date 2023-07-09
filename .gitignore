@@ -1,7 +1,7 @@
 # client/.env
 # server/.env
-# client_secret.json
+client_secret.json
 # server/package-lock.json
 # client/package-lock.json
 # package-lock.json
-# client/coverage
+client/coverage
