@@ -38,7 +38,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (user) {
       dispatch(getPostByUser(profileId));
-      dispatch(getProfileDetails(profileId, tokenFromCookie));
+      dispatch(getProfileDetails(profileId, false, tokenFromCookie));
     }
   }, []);
 

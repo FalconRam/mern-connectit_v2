@@ -18,7 +18,7 @@ const Home = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { profileDetails, isProfileLoading } = useSelector(
+  const { userProfileDetails, isUserProfileLoading } = useSelector(
     (state) => state.profile
   );
   const { posts, isPostLoading } = useSelector((state) => state.posts);
@@ -28,7 +28,7 @@ const Home = () => {
   }
 
   useEffect(() => {
-    user && dispatch(getProfileDetails(id));
+    user && dispatch(getProfileDetails(id, true));
     user && dispatch(getPostsByFollowing());
   }, []);
 
@@ -38,14 +38,14 @@ const Home = () => {
         <div className="row">
           <div className="col-sm-12 col-md-4 mb-3 col-lg-3">
             <LeftSection
-              profileDetails={profileDetails}
-              isProfileLoading={isProfileLoading}
+              userProfileDetails={userProfileDetails}
+              isUserProfileLoading={isUserProfileLoading}
             />
           </div>
           <div className="col-sm-12 col-md-8 col-lg-6">
             <ShareCard
-              profileDetails={profileDetails}
-              isProfileLoading={isProfileLoading}
+              userProfileDetails={userProfileDetails}
+              isUserProfileLoading={isUserProfileLoading}
             />
             <MiddleSection posts={posts} isPostLoading={isPostLoading} />
             <div className="col-md-12 d-none d-md-block d-lg-none">

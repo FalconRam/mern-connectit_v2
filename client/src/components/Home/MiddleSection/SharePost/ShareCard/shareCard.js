@@ -4,7 +4,7 @@ import ShareModal from "../ShareModal/shareModal";
 
 import "./shareCard.css";
 
-const ShareCard = ({ profileDetails, isProfileLoading }) => {
+const ShareCard = ({ userProfileDetails, isProfileLoading }) => {
   return (
     <>
       <div className="mb-3">
@@ -14,12 +14,12 @@ const ShareCard = ({ profileDetails, isProfileLoading }) => {
             <div className="d-flex align-items-center gap-3 mb-2">
               <img
                 src={
-                  profileDetails?.userDetails?.profilePicture ||
-                  profileDetails?.userDetails?.name.charAt(0).toUpperCase() ||
+                  userProfileDetails?.userDetails?.profilePicture ||
+                  userProfileDetails?.userDetails?.name.charAt(0).toUpperCase() ||
                   "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
                 }
                 className="img-thumbnail rounded-circle profilePic-share d-flex align-items-center justify-content-center"
-                alt={profileDetails?.userDetails?.name.charAt(0).toUpperCase()}
+                alt={userProfileDetails?.userDetails?.name.charAt(0).toUpperCase()}
               ></img>
               <div className="mb-2 w-100">
                 <button

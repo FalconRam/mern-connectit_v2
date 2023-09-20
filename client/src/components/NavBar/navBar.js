@@ -14,7 +14,7 @@ import "./navBar.css";
 const NavBar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
-  const { profileDetails } = useSelector((state) => state.profile);
+  const { userProfileDetails } = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -111,18 +111,18 @@ const NavBar = () => {
                   <a className="nav-link d-flex align-items-center justify-content-center gap-2">
                     <img
                       src={
-                        profileDetails?.userDetails?.profilePicture ||
-                        profileDetails?.userDetails?.name
+                        userProfileDetails?.userDetails?.profilePicture ||
+                        userProfileDetails?.userDetails?.name
                           .charAt(0)
                           .toUpperCase() ||
                         "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
                       }
                       className="img-thumbnail rounded-circle navProfilePic d-flex align-items-center justify-content-center"
-                      alt={profileDetails?.userDetails?.name
+                      alt={userProfileDetails?.userDetails?.name
                         .charAt(0)
                         .toUpperCase()}
                     />
-                    {profileDetails?.userDetails?.name}
+                    {userProfileDetails?.userDetails?.name}
                   </a>
                 </li>
                 <li className="nav-item sideNavButton">
@@ -175,7 +175,7 @@ const NavBar = () => {
                   onClick={handleProfile}
                 >
                   <a className="dropdown-item dropdown-item-custom">
-                    {profileDetails?.userDetails?.name}
+                    {userProfileDetails?.userDetails?.name}
                   </a>
                 </li>
                 <li className="nav-item sideNavButton" onClick={handleProfile}>

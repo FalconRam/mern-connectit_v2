@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import "./leftSection.css";
 
 const LeftSection = ({
-  profileDetails,
+  userProfileDetails,
   isProfileLoading,
   id,
   profileId,
@@ -61,7 +61,7 @@ const LeftSection = ({
         <div className="card sticky-md-top sticky-lg-top">
           <img
             src={
-              profileDetails?.userDetails?.profileBgWallPicture ||
+              userProfileDetails?.userDetails?.profileBgWallPicture ||
               "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
             }
             className="card-img-top profileBgWall"
@@ -70,22 +70,22 @@ const LeftSection = ({
 
           <img
             src={
-              profileDetails?.userDetails?.profilePicture ||
-              profileDetails?.userDetails?.name.charAt(0).toUpperCase() ||
+              userProfileDetails?.userDetails?.profilePicture ||
+              userProfileDetails?.userDetails?.name.charAt(0).toUpperCase() ||
               "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
             }
             className="img-thumbnail rounded-circle profilePic d-flex align-items-center justify-content-center"
-            alt={profileDetails?.userDetails?.name.charAt(0).toUpperCase()}
+            alt={userProfileDetails?.userDetails?.name.charAt(0).toUpperCase()}
           ></img>
           <div
             className="card-body pt-2 profileUser"
-            onClick={() => handleProfile(profileDetails?.userDetails?._id)}
+            onClick={() => handleProfile(userProfileDetails?.userDetails?._id)}
           >
             <h6 className="card-title text-center text-primary">
-              {profileDetails?.userDetails?.name}
+              {userProfileDetails?.userDetails?.name}
             </h6>
             <p className="card-text text-center text-muted headline">
-              {profileDetails?.userDetails?.bio}
+              {userProfileDetails?.userDetails?.bio}
             </p>
           </div>
           <ul className="list-group list-group-flush">
@@ -93,18 +93,18 @@ const LeftSection = ({
               <div
                 className="text-center d-flex flex-row justify-content-center text-muted followFollows"
                 onClick={() =>
-                  handleFollowFollows(profileDetails?.userDetails?._id)
+                  handleFollowFollows(userProfileDetails?.userDetails?._id)
                 }
               >
                 <span className="card-link followCount">
                   <p className="mb-0 followCount">
-                    {profileDetails?.userDetails?.following?.length}
+                    {userProfileDetails?.userDetails?.following?.length}
                   </p>
                   Following
                 </span>
                 <span className="card-link followCount">
                   <p className="mb-0 followCount">
-                    {profileDetails?.userDetails?.followers?.length}
+                    {userProfileDetails?.userDetails?.followers?.length}
                   </p>
                   Followers
                 </span>

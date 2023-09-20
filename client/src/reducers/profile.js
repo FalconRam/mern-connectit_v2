@@ -1,6 +1,8 @@
 import {
   START_PROFILE_LOADING,
   END_PROFILE_LOADING,
+  START_USER_PROFILE_LOADING,
+  END_USER_PROFILE_LOADING,
   START_PROFILE_FOLLOWING_LIST_LOADING,
   END_PROFILE_FOLLOWING_LIST_LOADING,
   START_PROFILE_FOLLOWERS_LIST_LOADING,
@@ -9,6 +11,7 @@ import {
   GET_FOLLOWERS_PROFILE_DETAILS,
   GET_FOLLOWING_PROFILE_DETAILS,
   GET_PROFILE_DETAILS,
+  GET_USER_PROFILE_DETAILS,
   UPDATE_PROFILE_DETAILS,
   // UPDATE_PROFILE_PASSWORD,
   UPDATE_PROFILE_PICTURES,
@@ -20,6 +23,7 @@ const initState = {
   followingProfile: [],
   followersProfile: [],
   isProfileLoading: true,
+  isUserProfileLoading: true,
   isProfileFollowingLoading: true,
   isProfileFollowersLoading: true,
 };
@@ -29,6 +33,10 @@ export default (state = initState, action) => {
       return { ...state, isProfileLoading: true };
     case END_PROFILE_LOADING:
       return { ...state, isProfileLoading: false };
+    case START_USER_PROFILE_LOADING:
+      return { ...state, isUserProfileLoading: true };
+    case END_USER_PROFILE_LOADING:
+      return { ...state, isUserProfileLoading: false };
     case START_PROFILE_FOLLOWING_LIST_LOADING:
       return { ...state, isProfileFollowingLoading: true };
     case END_PROFILE_FOLLOWING_LIST_LOADING:
@@ -51,6 +59,11 @@ export default (state = initState, action) => {
       return {
         ...state,
         followersProfile: action.payload.data,
+      };
+    case GET_USER_PROFILE_DETAILS:
+      return {
+        ...state,
+        userProfileDetails: action.payload.data,
       };
     case GET_PROFILE_DETAILS:
       return {
