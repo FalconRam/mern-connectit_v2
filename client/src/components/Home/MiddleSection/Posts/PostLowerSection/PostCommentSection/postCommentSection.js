@@ -8,6 +8,7 @@ import {
 
 import "./postCommentSection.css";
 import CommentsWidget from "../../../../../Shared/CommentsWidget/commentsWidget";
+import SideModal from "../../../../../SideModal/sideModal";
 
 const PostCommentSection = ({ post, isModal }) => {
   const dispatch = useDispatch();
@@ -34,21 +35,20 @@ const PostCommentSection = ({ post, isModal }) => {
     );
     setComment("");
     setIsPostingComment(false);
+    dispatch(getCommentsWithProfilePicture(post?._id));
     setComments(updatedPostWithComment);
   };
 
-  let sortedComment = comments?.postComment.sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
   let commentSliced = comments?.postComment
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 1);
+
   return (
     <>
       <div className={isModal ? "pt-1" : "card-footer p-1 pt-1"}>
         <div className={isModal && ""}>
           <div>
-            {!sortedComment?.length ? (
+            {!commentSliced?.length ? (
               <p className="text-start text-muted ms-2 mb-0 pb-1 p-like">
                 Be first to comment...
               </p>
@@ -57,9 +57,6 @@ const PostCommentSection = ({ post, isModal }) => {
                 {isModal ? (
                   // Shows Comments Widget
                   <>
-                    {/* {sortedComment?.map((comment, i) => (
-                      <CommentsWidget post={post} key={i} comment={comment} />
-                    ))} */}
                     <CommentsWidget post={post} isModal={isModal} />
                   </>
                 ) : (
@@ -74,7 +71,7 @@ const PostCommentSection = ({ post, isModal }) => {
                         {commentSliced?.map((comment) => comment.comment)}
                       </p>
                     </div>
-                    <div>
+                    <div className="">
                       <p className="mb-0 me-1 commenterCmt text-muted">
                         {comments?.postComment?.length} Comments
                       </p>

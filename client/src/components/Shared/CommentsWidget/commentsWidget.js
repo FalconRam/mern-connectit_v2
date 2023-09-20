@@ -8,18 +8,22 @@ const CommentsWidget = ({ post, isModal }) => {
   const { comments, isPostCommentsLoading } = useSelector(
     (state) => state.posts
   );
-  console.log(JSON.stringify(comments));
-  console.log(isModal);
+  comments?.comments?.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
   return (
     <>
-      {isModal &&
-        comments?.comments?.map((comment, index) => {
-          <>
-            {console.log(comments?.comment)}
-            <CommentItem comment={comment} key={index} />
-          </>;
-        })}
-      {/* <CommentItem comment={comment} /> */}
+      <div>
+        <div className="d-flex justify-content-end mb-1">
+          <p className="mb-0 me-1 commenterCmt text-muted">
+            {post?.commentsInfo?.postComment?.length} Comments
+          </p>
+        </div>
+        {isModal &&
+          comments?.comments?.map((comment, index) => (
+            <CommentItem comment={comment} key={index} isModal={isModal} />
+          ))}
+      </div>
     </>
   );
 };

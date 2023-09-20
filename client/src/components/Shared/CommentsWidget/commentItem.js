@@ -1,31 +1,20 @@
 import React from "react";
+import MiniProfilePicture from "../MiniProfilePicture/miniProfilePicture";
 
-const CommentItem = ({ comment }) => {
+const CommentItem = ({ post, isModal, comment }) => {
   return (
     <>
-      <div>
+      <div
+        {...(isModal && { "data-bs-dismiss": "modal", "aria-label": "Close" })}
+      >
         <div className="d-flex justify-content-between">
-          <div className="d-flex align-items-center ms-1 gap-2 ">
-            <i className="bi bi-chat-left likeIcon text-success "></i>
-            {/* <MiniProfilePicture
-                isComment={true}
-                sortedComment={sortedComment}
-            /> */}
-
-            {/* <h5 className="mb-0 commenterName">
-              {comment?.map((c)=> c.commenterName}
-              </h5>
-            <p className="mb-0 commenterCmt">{sortedComment?.comment}</p> */}
+          <div className="d-flex align-items-center ms-1 gap-2 mb-2">
+            <div className="likeIcon text-success ">
+              <MiniProfilePicture isComment={true} comment={comment} />
+            </div>
+            <h5 className="mb-0 commenterName">{comment?.commenterName}</h5>
+            <p className="mb-0 commenterCmt">{comment?.comment}</p>
           </div>
-          <h5 className="mb-0 commenterName">
-            {comment?.commenterName}
-            {console.log(comment)}
-          </h5>
-          {/* <div>
-            <p className="mb-0 me-1 commenterCmt text-muted">
-              {comments?.postComment?.length} Comments
-            </p>
-          </div> */}
         </div>
       </div>
     </>

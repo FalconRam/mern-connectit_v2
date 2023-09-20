@@ -4,7 +4,7 @@ import "./sideModal.css";
 import LikeCommentSave from "../Shared/LikeCommentSave/likeCommentSave";
 import PostCommentSection from "../Home/MiddleSection/Posts/PostLowerSection/PostCommentSection/postCommentSection";
 
-const SideModal = ({ post, handleProfile, handleCopy, isPostSaved }) => {
+const SideModal = ({ post, handleCopy, isPostSaved }) => {
   return (
     <div>
       <div
@@ -30,14 +30,12 @@ const SideModal = ({ post, handleProfile, handleCopy, isPostSaved }) => {
               <LikeCommentSave
                 post={post}
                 isPostSaved={isPostSaved}
-                handleProfile={handleProfile}
                 handleCopy={handleCopy}
-                isModal={true}
+                isCommentsNotOpened={true}
               />
               <PostCommentSection
                 post={post}
                 isModal={true}
-                commentActive={true}
               />
             </div>
           </div>

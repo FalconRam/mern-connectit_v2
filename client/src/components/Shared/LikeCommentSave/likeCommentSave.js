@@ -6,33 +6,24 @@ import { getCommentsWithProfilePicture } from "../../../actions/posts";
 
 const LikeCommentSave = ({
   post,
-  handleProfile,
   handleCopy,
   isPostSaved,
-  isModal,
+  isCommentsNotOpened,
 }) => {
-  useEffect(() => {
-    console.log(isModal);
-  }, [isModal]);
   const dispatch = useDispatch();
-  const { comments, isPostCommentsLoading } = useSelector(
-    (state) => state.posts
-  );
   const getComments = () => {
-    isModal && dispatch(getCommentsWithProfilePicture(post?._id));
+    isCommentsNotOpened && dispatch(getCommentsWithProfilePicture(post?._id));
   };
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center">
         <div className="d-flex align-items-center gap-3">
           {/* Mini Profile Picture */}
-          <div data-bs-dismiss="modal" aria-label="Close">
-            <MiniProfilePicture post={post} handleProfile={handleProfile} />
-          </div>
+          <MiniProfilePicture post={post} />
           <PostLikeSection post={post} />
           <span
             className="d-flex align-items-center gap-1 likeBtn"
-            {...(isModal && {
+            {...(isCommentsNotOpened && {
               "data-bs-toggle": "modal",
               "data-bs-target": "#staticBackdrop",
             })}

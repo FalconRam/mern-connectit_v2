@@ -1,20 +1,14 @@
 import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-
-import PostLikeSection from "../PostLikeSection/postLikeSection";
 
 import "./postLowerSection.css";
-import PostCaption from "./PostCaption/postCaption";
 import PostCommentSection from "./PostCommentSection/postCommentSection";
 import SideModal from "../../../../SideModal/sideModal";
 import LikeCommentSave from "../../../../Shared/LikeCommentSave/likeCommentSave";
 import PostCaptionMain from "../../../../Shared/PostCaptionMain/postCaptionMain";
 
 const PostLowerSection = ({ post }) => {
-  const dispatch = useDispatch();
-  const history = useHistory();
 
   const [isPostSaved, setIsPostSaved] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
@@ -29,10 +23,6 @@ const PostLowerSection = ({ post }) => {
     navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
   };
 
-  const handleProfile = () => {
-    history.push(`/profile/details?profileId=${post.creator}`);
-  };
-
   return (
     <>
       <div className="card-body p-2">
@@ -41,14 +31,12 @@ const PostLowerSection = ({ post }) => {
         <LikeCommentSave
           post={post}
           isPostSaved={isPostSaved}
-          handleProfile={handleProfile}
           handleCopy={handleCopy}
-          isModal={true}
+          isCommentsNotOpened={true}
         />
         <SideModal
           post={post}
           isPostSaved={isPostSaved}
-          handleProfile={handleProfile}
           handleCopy={handleCopy}
         />
 
