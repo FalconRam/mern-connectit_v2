@@ -14,6 +14,9 @@ import {
   END_POST_LOADING,
   FETCH_POST_BY_ID,
   FETCH_POST_BY_USER,
+  FETCH_COMMENT_BY_POST_ID,
+  START_FETCH_COMMENT_BY_POST_ID,
+  END_FETCH_COMMENT_BY_POST_ID,
 } from "../constants/actionTypes";
 import { toast } from "react-toastify";
 
@@ -67,6 +70,26 @@ export const getPostById = (id) => async (dispatch) => {
     dispatch({ type: FETCH_POST_BY_ID, payload: data });
 
     dispatch({ type: END_POST_LOADING });
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.message)
+      if (error.response.data.message === "jwt expired")
+        window.location.href = "/auth";
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
+
+export const getCommentsWithProfilePicture = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: START_FETCH_COMMENT_BY_POST_ID });
+
+    const { data } = await api.fetchCommentsByPostId(id);
+    dispatch({ type: FETCH_COMMENT_BY_POST_ID, payload: data });
+
+    dispatch({ type: END_FETCH_COMMENT_BY_POST_ID });
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")

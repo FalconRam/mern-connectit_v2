@@ -10,29 +10,34 @@ import {
   getPostsByFollowing,
   postsByUserId,
   addCommentByPost,
+  getCommentsByPost,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/feeds", auth, getPostsByFollowing);
+router.use(auth);
 
-router.get("/all", auth, getPosts);
+router.get("/getCommentsByPost", getCommentsByPost);
 
-router.get("/search", auth, getPostsBySearch);
+router.get("/feeds", getPostsByFollowing);
 
-router.get("/:id", auth, getPostsById);
+router.get("/all", getPosts);
 
-router.post("/create", auth, createPost);
+router.get("/search", getPostsBySearch);
 
-router.patch("/update/:id", auth, updatePost);
+router.get("/:id", getPostsById);
 
-router.delete("/:id", auth, deletePost);
+router.post("/create", createPost);
 
-router.patch("/like/:id", auth, likePost);
+router.patch("/update/:id", updatePost);
 
-router.patch("/:id/addComment/byPost", auth, addCommentByPost);
+router.delete("/:id", deletePost);
 
-router.get("/user-posts/:id", auth, postsByUserId);
+router.patch("/like/:id", likePost);
+
+router.patch("/:id/addCommentByPost", addCommentByPost);
+
+router.get("/user-posts/:id", postsByUserId);
 
 export default router;

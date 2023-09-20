@@ -37,6 +37,9 @@ export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
 
 export const fetchPostById = (id) => API.get(`/posts/${id}`);
 
+export const fetchCommentsByPostId = (id) =>
+  API.get(`/posts/getCommentsByPost?postId=${id}`);
+
 export const fetchPostsBySearch = (searchQuery) =>
   API.get(
     `/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${
@@ -57,7 +60,7 @@ export const deletePost = (id) => API.delete(`/posts/${id}`);
 export const likePost = (id) => API.patch(`/posts/like/${id}`);
 
 export const commentPostWithUserDetails = (id, resultComment) =>
-  API.patch(`/posts/${id}/addComment/byPost`, resultComment);
+  API.patch(`/posts/${id}/addCommentByPost`, resultComment);
 
 // Login/Signup APIs
 export const logIn = (formData) => API.post("/user/login-user", formData);

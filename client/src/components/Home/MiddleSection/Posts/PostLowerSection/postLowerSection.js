@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-
-import PostLikeSection from "../PostLikeSection/postLikeSection";
 
 import "./postLowerSection.css";
-import PostCaption from "./PostCaption/postCaption";
 import PostCommentSection from "./PostCommentSection/postCommentSection";
+import SideModal from "../../../../SideModal/sideModal";
+import LikeCommentSave from "../../../../Shared/LikeCommentSave/likeCommentSave";
+import PostCaptionMain from "../../../../Shared/PostCaptionMain/postCaptionMain";
 
 const PostLowerSection = ({ post }) => {
-  const dispatch = useDispatch();
-  const history = useHistory();
 
   const [isPostSaved, setIsPostSaved] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
@@ -26,74 +23,30 @@ const PostLowerSection = ({ post }) => {
     navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
   };
 
-  const handleProfile = () => {
-    history.push(`/profile/details?profileId=${post.creator}`);
-  };
-
   return (
     <>
       <div className="card-body p-2">
         {/* Like,Comment,Save */}
-        <div className="d-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center gap-3">
-            {/* Mini Profile Picture */}
-            <div
-              className=" d-flex flex-row align-items-center gap-2 likeBtn"
-              onClick={handleProfile}
-            >
-              <img
-                src={
-                  post?.profilePicture === ""
-                    ? post?.name?.charAt(0).toUpperCase()
-                    : post?.profilePicture ||
-                      "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
-                }
-                className="img-thumbnail rounded-circle miniPostProfilePic d-flex align-items-center justify-content-center"
-                alt={post?.name?.charAt(0).toUpperCase()}
-              ></img>
-              <div>
-                <h6 className="mb-0 postCreator">{post?.name}</h6>
-              </div>
-            </div>
 
-            <PostLikeSection post={post} />
+        <LikeCommentSave
+          post={post}
+          isPostSaved={isPostSaved}
+          handleCopy={handleCopy}
+          isCommentsNotOpened={true}
+        />
+        <SideModal
+          post={post}
+          isPostSaved={isPostSaved}
+          handleCopy={handleCopy}
+        />
 
-            <span className="d-flex align-items-center gap-1 likeBtn">
-              <i className="bi bi-chat-left likeIcon"></i>
-              <p className="mb-0 p-like">Comment</p>
-            </span>
-            <span
-              className="d-flex align-items-center gap-1 likeBtn"
-              onClick={handleCopy}
-            >
-              <i className="bi bi-send"></i>
-              <p className="mb-0 p-like">Share</p>
-            </span>
-          </div>
-          <span>
-            {!isPostSaved ? (
-              <i className="bi bi-bookmark likeIcon"></i>
-            ) : (
-              <i className="bi bi-bookmark-fill likeIcon"></i>
-            )}
-          </span>
-        </div>
         <div className="divider custom-divider bg-light"></div>
         {/* Caption */}
-        <div
-          className={
-            isReadMore
-              ? "card-text postContent-scrollInView"
-              : "card-text postContent"
-          }
-        >
-          <h6 className="mt-1 mb-0 title">{post?.title}</h6>
-          <PostCaption
-            post={post}
-            isReadMore={isReadMore}
-            handleReadMore={handleReadMore}
-          />
-        </div>
+        <PostCaptionMain
+          post={post}
+          handleReadMore={handleReadMore}
+          isReadMore={isReadMore}
+        />
       </div>
 
       {/* Comment Section */}
