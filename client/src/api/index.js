@@ -60,7 +60,7 @@ export const deletePost = (id) => API.delete(`/posts/${id}`);
 export const likePost = (id) => API.patch(`/posts/like/${id}`);
 
 export const commentPostWithUserDetails = (id, resultComment) =>
-  API.patch(`/posts/${id}/addComment/byPost`, resultComment);
+  API.patch(`/posts/${id}/addCommentByPost`, resultComment);
 
 // Login/Signup APIs
 export const logIn = (formData) => API.post("/user/login-user", formData);

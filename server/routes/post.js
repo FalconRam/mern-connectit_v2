@@ -16,28 +16,28 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-// router.use(auth);
+router.use(auth);
 
 router.get("/getCommentsByPost", getCommentsByPost);
 
-router.get("/feeds", auth, getPostsByFollowing);
+router.get("/feeds", getPostsByFollowing);
 
-router.get("/all", auth, getPosts);
+router.get("/all", getPosts);
 
-router.get("/search", auth, getPostsBySearch);
+router.get("/search", getPostsBySearch);
 
-router.get("/:id", auth, getPostsById);
+router.get("/:id", getPostsById);
 
-router.post("/create", auth, createPost);
+router.post("/create", createPost);
 
-router.patch("/update/:id", auth, updatePost);
+router.patch("/update/:id", updatePost);
 
-router.delete("/:id", auth, deletePost);
+router.delete("/:id", deletePost);
 
-router.patch("/like/:id", auth, likePost);
+router.patch("/like/:id", likePost);
 
-router.patch("/:id/addComment/byPost", auth, addCommentByPost);
+router.patch("/:id/addCommentByPost", addCommentByPost);
 
-router.get("/user-posts/:id", auth, postsByUserId);
+router.get("/user-posts/:id", postsByUserId);
 
 export default router;
