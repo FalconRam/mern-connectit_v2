@@ -10,10 +10,15 @@ import {
   getPostsByFollowing,
   postsByUserId,
   addCommentByPost,
+  getCommentsByPost,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
 const router = express.Router();
+
+// router.use(auth);
+
+router.get("/getCommentsByPost", getCommentsByPost);
 
 router.get("/feeds", auth, getPostsByFollowing);
 

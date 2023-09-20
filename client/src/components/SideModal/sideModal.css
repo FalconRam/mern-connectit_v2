@@ -1,0 +1,21 @@
+.modal-dialog-custom-side {
+    margin-right: 0;
+    margin-top: 0;
+}
+
+.modal-header-custom {
+    border-bottom: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.modal-body-custom {
+    padding-top: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .modal-dialog-custom-side {
+        margin-right: auto;
+        margin-left: auto;
+    }
+}

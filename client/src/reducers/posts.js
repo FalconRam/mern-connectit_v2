@@ -3,6 +3,7 @@ import {
   FETCH_POSTS_BY_FOLLOWING,
   FETCH_BY_SEARCH,
   FETCH_POST_BY_ID,
+  FETCH_COMMENT_BY_POST_ID,
   FETCH_POST_BY_USER,
   CREATE_POST,
   UPDATE_POST,
@@ -13,6 +14,8 @@ import {
   START_POST_LOADING,
   END_POST_LOADING,
   COMMENT_POST_WITH_USER_DETAILS,
+  START_FETCH_COMMENT_BY_POST_ID,
+  END_FETCH_COMMENT_BY_POST_ID,
 } from "../constants/actionTypes";
 
 export default (
@@ -24,6 +27,10 @@ export default (
       return { ...state, isPostLoading: true };
     case END_POST_LOADING:
       return { ...state, isPostLoading: false };
+      case START_FETCH_COMMENT_BY_POST_ID:
+        return { ...state, isPostCommentsLoading: true };
+      case END_FETCH_COMMENT_BY_POST_ID:
+        return { ...state, isPostCommentsLoading: false };
     case FETCH_ALL_POSTS:
       return {
         ...state,
@@ -38,6 +45,8 @@ export default (
       };
     case FETCH_POST_BY_ID:
       return { ...state, post: action.payload.data };
+    case FETCH_COMMENT_BY_POST_ID:
+      return { ...state, comments: action.payload.data };
     case FETCH_POST_BY_USER:
       return { ...state, userPosts: action.payload.data };
     case FETCH_BY_SEARCH:

@@ -183,6 +183,77 @@ export const getPostsById = async (req, res) => {
   }
 };
 
+export const getCommentsByPost = async (req, res) => {
+  try {
+    const { postId } = req.query;
+    const post = await PostMessage.findById(postId);
+    if (!postId)
+      return res
+        .status(400)
+        .json({ status: false, message: "PostId cannot be Empty!" });
+    if (!post)
+      return res.status(404).json({ status: false, message: "No Post found" });
+
+    const postCommentsIds = post.commentsInfo.postComment.map(
+      (id) => id.commenterId
+    );
+
+    const result = await PostMessage.aggregate([
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(postId),
+        },
+      },
+      {
+        $unwind: "$commentsInfo.postComment",
+      },
+      {
+        $addFields: {
+          commenterId: {
+            $toObjectId: "$commentsInfo.postComment.commenterId",
+          },
+        },
+      },
+      // {
+      //   $match: {
+      //     commenterId: {
+      //       $in: postCommentsIds.map((id) => mongoose.Types.ObjectId(id)),
+      //     },
+      //   },
+      // },
+      {
+        $lookup: {
+          from: "users",
+          localField: "commenterId",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          comments: {
+            $push: {
+              _id: "$commentsInfo.postComment._id",
+              commenterId: "$commentsInfo.postComment.commenterId",
+              commenterName: "$commentsInfo.postComment.commenterName",
+              comment: "$commentsInfo.postComment.comment",
+              createdAt: "$commentsInfo.postComment.createdAt",
+              profilePicture: {
+                $arrayElemAt: ["$userInfo.profilePicture", 0],
+              },
+            },
+          },
+        },
+      },
+    ]);
+
+    res.status(200).json({ status: true, data: result[0] });
+  } catch (error) {
+    res.status(500).json({ status: false, message: error.message });
+  }
+};
+
 export const createPost = async (req, res) => {
   const { title, message, tags, selectedFile, name } = req.body;
   const newPost = new PostMessage({

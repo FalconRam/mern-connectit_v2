@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { commentPostWithUserDetails } from "../../../../../../actions/posts";
+import {
+  commentPostWithUserDetails,
+  getCommentsWithProfilePicture,
+} from "../../../../../../actions/posts";
 
 import "./postCommentSection.css";
+import CommentsWidget from "../../../../../Shared/CommentsWidget/commentsWidget";
 
-const PostCommentSection = ({ post }) => {
+const PostCommentSection = ({ post, isModal }) => {
   const dispatch = useDispatch();
 
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -33,66 +37,82 @@ const PostCommentSection = ({ post }) => {
     setComments(updatedPostWithComment);
   };
 
-  let sortedComment = comments?.postComment
+  let sortedComment = comments?.postComment.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+  let commentSliced = comments?.postComment
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 1);
   return (
     <>
-      <div className="card-footer p-1 pt-1">
-        <div>
-          {!sortedComment?.length ? (
-            <p className="text-start text-muted ms-2 mb-0 pb-1 p-like">
-              Be first to comment...
-            </p>
-          ) : (
-            <>
-              <div className="d-flex justify-content-between">
-                <div className="d-flex align-items-center ms-1 gap-2 ">
-                  <i className="bi bi-chat-left likeIcon text-success "></i>
-                  <h5 className="mb-0 commenterName">
-                    {sortedComment?.map((comment) => comment.commenterName)}
-                  </h5>
-                  <p className="mb-0 commenterCmt">
-                    {sortedComment?.map((comment) => comment.comment)}
-                  </p>
-                </div>
-                <div>
-                  <p className="mb-0 me-1 commenterCmt text-muted">
-                    {comments?.postComment?.length} Comments
-                  </p>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-        <div className="input-group">
-          <input
-            disabled={isPostingComment}
-            type="text"
-            className={
-              isPostingComment
-                ? "form-control form-control-sm form-control-comment ms-2 text-muted"
-                : "form-control form-control-sm form-control-comment ms-2"
-            }
-            placeholder="Write your Comment..."
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            name="comment"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-          <button
-            disabled={isPostingComment || !comment.length}
-            className={
-              isPostingComment || !comment.length
-                ? "input-group-text text-success eyeButton commentIcon me-2 text-muted commentIconHold"
-                : "input-group-text text-success eyeButton commentIcon me-2"
-            }
-            id="basic-addon1"
-            onClick={handleComment}
-          >
-            <i className="bi bi-plus-circle commentIcon"></i>
-          </button>
+      <div className={isModal ? "pt-1" : "card-footer p-1 pt-1"}>
+        <div className={isModal && ""}>
+          <div>
+            {!sortedComment?.length ? (
+              <p className="text-start text-muted ms-2 mb-0 pb-1 p-like">
+                Be first to comment...
+              </p>
+            ) : (
+              <>
+                {isModal ? (
+                  // Shows Comments Widget
+                  <>
+                    {/* {sortedComment?.map((comment, i) => (
+                      <CommentsWidget post={post} key={i} comment={comment} />
+                    ))} */}
+                    <CommentsWidget post={post} isModal={isModal} />
+                  </>
+                ) : (
+                  // Shows last comment
+                  <div className="d-flex justify-content-between">
+                    <div className="d-flex align-items-center ms-1 gap-2 ">
+                      <i className="bi bi-chat-left likeIcon text-success "></i>
+                      <h5 className="mb-0 commenterName">
+                        {commentSliced?.map((comment) => comment.commenterName)}
+                      </h5>
+                      <p className="mb-0 commenterCmt">
+                        {commentSliced?.map((comment) => comment.comment)}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-0 me-1 commenterCmt text-muted">
+                        {comments?.postComment?.length} Comments
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+          <div className="input-group">
+            <input
+              disabled={isPostingComment}
+              type="text"
+              className={
+                isPostingComment
+                  ? "form-control form-control-sm form-control-comment ms-2 text-muted"
+                  : "form-control form-control-sm form-control-comment ms-2"
+              }
+              placeholder="Write your Comment..."
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+              name="comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <button
+              disabled={isPostingComment || !comment.length}
+              className={
+                isPostingComment || !comment.length
+                  ? "input-group-text text-success eyeButton commentIcon me-2 text-muted commentIconHold"
+                  : "input-group-text text-success eyeButton commentIcon me-2"
+              }
+              id="basic-addon1"
+              onClick={handleComment}
+            >
+              <i className="bi bi-plus-circle commentIcon"></i>
+            </button>
+          </div>
         </div>
       </div>
     </>
