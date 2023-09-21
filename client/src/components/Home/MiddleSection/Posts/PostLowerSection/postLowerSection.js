@@ -4,12 +4,11 @@ import { useDispatch } from "react-redux";
 
 import "./postLowerSection.css";
 import PostCommentSection from "./PostCommentSection/postCommentSection";
-import SideModal from "../../../../SideModal/sideModal";
 import LikeCommentSave from "../../../../Shared/LikeCommentSave/likeCommentSave";
 import PostCaptionMain from "../../../../Shared/PostCaptionMain/postCaptionMain";
+import SideCommentModal from "../../../../SideModal/sideCommentModal";
 
 const PostLowerSection = ({ post }) => {
-
   const [isPostSaved, setIsPostSaved] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
 
@@ -34,7 +33,7 @@ const PostLowerSection = ({ post }) => {
           handleCopy={handleCopy}
           isCommentsNotOpened={true}
         />
-        <SideModal
+        <SideCommentModal
           post={post}
           isPostSaved={isPostSaved}
           handleCopy={handleCopy}

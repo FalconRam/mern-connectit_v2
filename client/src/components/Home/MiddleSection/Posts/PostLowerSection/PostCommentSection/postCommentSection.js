@@ -8,7 +8,6 @@ import {
 
 import "./postCommentSection.css";
 import CommentsWidget from "../../../../../Shared/CommentsWidget/commentsWidget";
-import SideModal from "../../../../../SideModal/sideModal";
 
 const PostCommentSection = ({ post, isModal }) => {
   const dispatch = useDispatch();
