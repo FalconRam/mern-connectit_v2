@@ -25,7 +25,7 @@ const LikeCommentSave = ({
             className="d-flex align-items-center gap-1 likeBtn"
             {...(isCommentsNotOpened && {
               "data-bs-toggle": "modal",
-              "data-bs-target": "#staticBackdrop",
+              "data-bs-target": `#staticBackdropComment${post?._id}`,
             })}
             onClick={getComments}
           >
