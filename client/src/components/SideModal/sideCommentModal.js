@@ -1,15 +1,15 @@
 import React from "react";
 
-import "./sideModal.css";
+import "./sideCommentModal.css";
 import LikeCommentSave from "../Shared/LikeCommentSave/likeCommentSave";
 import PostCommentSection from "../Home/MiddleSection/Posts/PostLowerSection/PostCommentSection/postCommentSection";
 
-const SideModal = ({ post, handleCopy, isPostSaved }) => {
+const SideCommentModal = ({ post, handleCopy, isPostSaved }) => {
   return (
     <div>
       <div
         className="modal fade"
-        id="staticBackdrop"
+        id={`staticBackdropComment${post?._id}`}
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabIndex="-1"
@@ -33,10 +33,7 @@ const SideModal = ({ post, handleCopy, isPostSaved }) => {
                 handleCopy={handleCopy}
                 isCommentsNotOpened={true}
               />
-              <PostCommentSection
-                post={post}
-                isModal={true}
-              />
+              <PostCommentSection post={post} isModal={true} />
             </div>
           </div>
         </div>
@@ -45,4 +42,4 @@ const SideModal = ({ post, handleCopy, isPostSaved }) => {
   );
 };
 
-export default SideModal;
+export default SideCommentModal;
