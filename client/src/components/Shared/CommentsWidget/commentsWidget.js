@@ -5,10 +5,10 @@ import { getCommentsWithProfilePicture } from "../../../actions/posts";
 import CommentItem from "./commentItem";
 
 const CommentsWidget = ({ post, isModal }) => {
-  const { comments, isPostCommentsLoading } = useSelector(
+  const { postComments, isPostCommentsLoading } = useSelector(
     (state) => state.posts
   );
-  comments?.comments?.sort(
+  postComments?.comments?.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
   return (
@@ -20,8 +20,13 @@ const CommentsWidget = ({ post, isModal }) => {
           </p>
         </div>
         {isModal &&
-          comments?.comments?.map((comment, index) => (
-            <CommentItem comment={comment} key={index} isModal={isModal} />
+          postComments?.comments?.map((comment, index) => (
+            <CommentItem
+              post={post}
+              comment={comment}
+              key={index}
+              isModal={isModal}
+            />
           ))}
       </div>
     </>

@@ -16,10 +16,20 @@ import {
   COMMENT_POST_WITH_USER_DETAILS,
   START_FETCH_COMMENT_BY_POST_ID,
   END_FETCH_COMMENT_BY_POST_ID,
+  START_FETCH_REPLIES_BY_COMMENT,
+  FETCH_REPLIES_BY_COMMENT,
+  END_FETCH_REPLIES_BY_COMMENT,
 } from "../constants/actionTypes";
 
 export default (
-  state = { posts: [], post: {}, userPosts: [], isPostLoading: true },
+  state = {
+    posts: [],
+    post: {},
+    userPosts: [],
+    isPostLoading: true,
+    isPostCommentsLoading: true,
+    isRepliesByCommentsLoading: true,
+  },
   action
 ) => {
   switch (action.type) {
@@ -27,10 +37,14 @@ export default (
       return { ...state, isPostLoading: true };
     case END_POST_LOADING:
       return { ...state, isPostLoading: false };
-      case START_FETCH_COMMENT_BY_POST_ID:
-        return { ...state, isPostCommentsLoading: true };
-      case END_FETCH_COMMENT_BY_POST_ID:
-        return { ...state, isPostCommentsLoading: false };
+    case START_FETCH_COMMENT_BY_POST_ID:
+      return { ...state, isPostCommentsLoading: true };
+    case END_FETCH_COMMENT_BY_POST_ID:
+      return { ...state, isPostCommentsLoading: false };
+    case START_FETCH_REPLIES_BY_COMMENT:
+      return { ...state, isRepliesByCommentsLoading: true };
+    case END_FETCH_REPLIES_BY_COMMENT:
+      return { ...state, isRepliesByCommentsLoading: false };
     case FETCH_ALL_POSTS:
       return {
         ...state,
@@ -46,7 +60,9 @@ export default (
     case FETCH_POST_BY_ID:
       return { ...state, post: action.payload.data };
     case FETCH_COMMENT_BY_POST_ID:
-      return { ...state, comments: action.payload.data };
+      return { ...state, postComments: action.payload.data };
+    case FETCH_REPLIES_BY_COMMENT:
+      return { ...state, commentReplies: action.payload.data };
     case FETCH_POST_BY_USER:
       return { ...state, userPosts: action.payload.data };
     case FETCH_BY_SEARCH:

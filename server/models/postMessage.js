@@ -26,6 +26,23 @@ const postSchema = mongoose.Schema({
         commenterId: { type: String },
         commenterName: { type: String },
         comment: { type: String },
+        commentLikes: [String],
+        replyComments: [
+          {
+            _id: {
+              type: String,
+              default: () => nanoid(10),
+            },
+            replierId: { type: String },
+            replierName: { type: String },
+            reply: { type: String },
+            replyLikes: [String],
+            createdAt: {
+              type: Date,
+              default: Date.now,
+            },
+          },
+        ],
         createdAt: {
           type: Date,
           default: Date.now,

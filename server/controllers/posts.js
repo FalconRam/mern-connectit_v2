@@ -187,16 +187,13 @@ export const getCommentsByPost = async (req, res) => {
   try {
     const { postId } = req.query;
     const post = await PostMessage.findById(postId);
+
     if (!postId)
       return res
         .status(400)
         .json({ status: false, message: "PostId cannot be Empty!" });
     if (!post)
       return res.status(404).json({ status: false, message: "No Post found" });
-
-    const postCommentsIds = post.commentsInfo.postComment.map(
-      (id) => id.commenterId
-    );
 
     const result = await PostMessage.aggregate([
       {
@@ -214,19 +211,12 @@ export const getCommentsByPost = async (req, res) => {
           },
         },
       },
-      // {
-      //   $match: {
-      //     commenterId: {
-      //       $in: postCommentsIds.map((id) => mongoose.Types.ObjectId(id)),
-      //     },
-      //   },
-      // },
       {
         $lookup: {
           from: "users",
           localField: "commenterId",
           foreignField: "_id",
-          as: "userInfo",
+          as: "commenterInfo",
         },
       },
       {
@@ -238,10 +228,136 @@ export const getCommentsByPost = async (req, res) => {
               commenterId: "$commentsInfo.postComment.commenterId",
               commenterName: "$commentsInfo.postComment.commenterName",
               comment: "$commentsInfo.postComment.comment",
-              createdAt: "$commentsInfo.postComment.createdAt",
+              commentLikes: "$commentsInfo.postComment.commentLikes",
+              replyComments: "$commentsInfo.postComment.replyComments",
               profilePicture: {
-                $arrayElemAt: ["$userInfo.profilePicture", 0],
+                $arrayElemAt: ["$commenterInfo.profilePicture", 0],
               },
+              createdAt: "$commentsInfo.postComment.createdAt",
+            },
+          },
+        },
+      },
+    ]);
+
+    res.status(200).json({ status: true, data: result[0] });
+  } catch (error) {
+    res.status(500).json({ status: false, message: error.message });
+  }
+};
+
+export const getRepliesByComment = async (req, res) => {
+  try {
+    const { postId, commentId } = req.query;
+    const post = await PostMessage.findById(postId);
+
+    if (!postId)
+      return res
+        .status(400)
+        .json({ status: false, message: "PostId cannot be Empty!" });
+    if (!post)
+      return res.status(404).json({ status: false, message: "No Post found" });
+
+    // const result = await PostMessage.aggregate([
+    //   {
+    //     $match: {
+    //       _id: mongoose.Types.ObjectId(postId),
+    //       "commentsInfo.postComment._id": commentId,
+    //     },
+    //   },
+    //   {
+    //     $unwind: "$commentsInfo.postComment.replyComments",
+    //   },
+    //   {
+    //     $match: {
+    //       "commentsInfo.postComment.replyComments._id": commentId,
+    //     },
+    //   },
+    //   {
+    //     $addFields: {
+    //       replierId: {
+    //         $toObjectId: "$commentsInfo.postComment.replyComments.replierId",
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "users",
+    //       localField: "replierId",
+    //       foreignField: "_id",
+    //       as: "replierInfo",
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: "$_id",
+    //       replies: {
+    //         $push: {
+    //           _id: "$commentsInfo.postComment.replyComments._id",
+    //           replierId: "$commentsInfo.postComment.replyComments.replierId",
+    //           replierName:
+    //             "$commentsInfo.postComment.replyComments.replierName",
+    //           reply: "$commentsInfo.postComment.replyComments.reply",
+    //           replyComments: "$commentsInfo.postComment.replyComments",
+    //           profilePicture: {
+    //             $arrayElemAt: ["$replierInfo.profilePicture", 0],
+    //           },
+    //           createdAt: "$commentsInfo.postComment.replyComments.createdAt",
+    //         },
+    //       },
+    //     },
+    //   },
+    // ]);
+
+    const result = await PostMessage.aggregate([
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(postId),
+        },
+      },
+      {
+        $unwind: "$commentsInfo.postComment",
+      },
+      {
+        $match: {
+          "commentsInfo.postComment._id": commentId,
+        },
+      },
+      {
+        $unwind: "$commentsInfo.postComment.replyComments",
+      },
+      {
+        $addFields: {
+          replierId: {
+            $toObjectId: "$commentsInfo.postComment.replyComments.replierId",
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "replierId",
+          foreignField: "_id",
+          as: "replierInfo",
+        },
+      },
+      {
+        $group: {
+          _id: "$commentsInfo.postComment._id",
+          replyComments: {
+            $push: {
+              _id: "$commentsInfo.postComment.replyComments._id",
+              replierId: "$commentsInfo.postComment.replyComments.replierId",
+              replierName:
+                "$commentsInfo.postComment.replyComments.replierName",
+              reply: "$commentsInfo.postComment.replyComments.reply",
+              replyComments:
+                "$commentsInfo.postComment.replyComments.replyComments",
+              replyLikes: "$commentsInfo.postComment.replyComments.replyLikes",
+              profilePicture: {
+                $arrayElemAt: ["$replierInfo.profilePicture", 0],
+              },
+              createdAt: "$commentsInfo.postComment.replyComments.createdAt",
             },
           },
         },
@@ -357,18 +473,32 @@ export const updatePost = async (req, res) => {
 };
 
 export const addCommentByPost = async (req, res) => {
-  const { id } = req.params;
+  const { postId } = req.params;
   const { postComment } = req.body;
 
   try {
-    const user = await User.findById(req.userId);
-    const post = await PostMessage.findById(id);
+    if (!postId || !postComment) {
+      return res
+        .status(400)
+        .json({ status: false, message: "All fields are required." });
+    }
+
+    const post = await PostMessage.findById(postId);
+
+    if (!post)
+      return res
+        .status(404)
+        .json({ status: false, message: "Post not Found." });
 
     post.commentsInfo.postComment.push(postComment[0]);
 
-    const updatedCommentInfo = await PostMessage.findByIdAndUpdate(id, post, {
-      new: true,
-    });
+    const updatedCommentInfo = await PostMessage.findByIdAndUpdate(
+      postId,
+      post,
+      {
+        new: true,
+      }
+    );
 
     let updatedPostWithprofPic = await PostMessage.aggregate([
       {
@@ -407,7 +537,41 @@ export const addCommentByPost = async (req, res) => {
       },
     ]);
 
-    res.status(201).json(updatedPostWithprofPic[0]);
+    res.status(201).json({ status: true, data: updatedPostWithprofPic[0] });
+  } catch (error) {
+    res.status(409).json({ status: false, message: error.message });
+  }
+};
+
+export const addReplyToComment = async (req, res) => {
+  const { postId } = req.params;
+  const { commentReply, repliedTo } = req.body;
+
+  try {
+    if (!postId || !commentReply || !repliedTo) {
+      return res
+        .status(400)
+        .json({ status: false, message: "All fields are required." });
+    }
+
+    const post = await PostMessage.findById(postId);
+
+    if (!post)
+      return res
+        .status(404)
+        .json({ status: false, message: "Post not Found." });
+
+    post.commentsInfo.postComment.map((comment) => {
+      if (comment._id === repliedTo) {
+        comment.replyComments.push(commentReply);
+      }
+    });
+
+    await PostMessage.findByIdAndUpdate(postId, post, {
+      new: true,
+    });
+
+    res.status(200).json({ status: true });
   } catch (error) {
     res.status(409).json({ status: false, message: error.message });
   }
