@@ -40,6 +40,11 @@ export const fetchPostById = (id) => API.get(`/posts/${id}`);
 export const fetchCommentsByPostId = (id) =>
   API.get(`/posts/getCommentsByPost?postId=${id}`);
 
+export const fetchRepliesByComment = (commentId, postId) =>
+  API.get(
+    `/posts/replies/getRepliesByComment?commentId=${commentId}&postId=${postId}`
+  );
+
 export const fetchPostsBySearch = (searchQuery) =>
   API.get(
     `/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${

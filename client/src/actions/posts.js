@@ -17,6 +17,9 @@ import {
   FETCH_COMMENT_BY_POST_ID,
   START_FETCH_COMMENT_BY_POST_ID,
   END_FETCH_COMMENT_BY_POST_ID,
+  START_FETCH_REPLIES_BY_COMMENT,
+  FETCH_REPLIES_BY_COMMENT,
+  END_FETCH_REPLIES_BY_COMMENT,
 } from "../constants/actionTypes";
 import { toast } from "react-toastify";
 
@@ -101,6 +104,30 @@ export const getCommentsWithProfilePicture = (id) => async (dispatch) => {
     toast.error(message);
   }
 };
+
+export const getRepliesWithProfilePicture =
+  (commentId, postId) => async (dispatch) => {
+    try {
+      dispatch({ type: START_FETCH_REPLIES_BY_COMMENT });
+
+      const { data } = await api.fetchRepliesByComment(commentId, postId);
+      dispatch({ type: FETCH_REPLIES_BY_COMMENT, payload: data });
+
+      dispatch({ type: END_FETCH_REPLIES_BY_COMMENT });
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message)
+        if (error.response.data.message === "jwt expired")
+          window.location.href = "/auth";
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+    }
+  };
 
 export const getPostByUser = (id) => async (dispatch) => {
   try {
