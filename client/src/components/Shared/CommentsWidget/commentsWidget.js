@@ -14,11 +14,7 @@ const CommentsWidget = ({ post, isModal }) => {
   return (
     <>
       <div>
-        <div className="d-flex justify-content-end mb-1">
-          <p className="mb-0 me-1 commenterCmt text-muted">
-            {post?.commentsInfo?.postComment?.length} Comments
-          </p>
-        </div>
+        
         {isModal &&
           postComments?.comments?.map((comment, index) => (
             <CommentItem

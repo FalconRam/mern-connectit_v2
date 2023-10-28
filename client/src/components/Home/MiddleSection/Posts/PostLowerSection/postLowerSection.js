@@ -8,7 +8,7 @@ import LikeCommentSave from "../../../../Shared/LikeCommentSave/likeCommentSave"
 import PostCaptionMain from "../../../../Shared/PostCaptionMain/postCaptionMain";
 import SideCommentModal from "../../../../SideModal/sideCommentModal";
 
-const PostLowerSection = ({ post }) => {
+const PostLowerSection = ({ post, comments, setComments }) => {
   const [isPostSaved, setIsPostSaved] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
 
@@ -37,6 +37,8 @@ const PostLowerSection = ({ post }) => {
           post={post}
           isPostSaved={isPostSaved}
           handleCopy={handleCopy}
+          comments={comments}
+          setComments={setComments}
         />
 
         <div className="divider custom-divider bg-light"></div>
@@ -49,58 +51,11 @@ const PostLowerSection = ({ post }) => {
       </div>
 
       {/* Comment Section */}
-      <PostCommentSection post={post} />
-
-      {/* <div className="card-footer p-1 pt-1">
-        <div>
-          {!sortedComment.length ? (
-            <p className="text-start text-muted ms-2 mb-0 pb-1 p-like">
-              Be first to comment...
-            </p>
-          ) : (
-            <>
-              <div className="d-flex align-items-center ms-1 gap-2 ">
-                <i className="bi bi-chat-left likeIcon text-success "></i>
-                <h5 className="mb-0 commenterName">
-                  {sortedComment.map((comment) => comment.commenterName)}
-                </h5>
-                <p className="mb-0 commenterCmt">
-                  {sortedComment.map((comment) => comment.comment)}
-                </p>
-              </div>
-            </>
-          )}
-        </div>
-        <div className="input-group">
-          <input
-            disabled={isPostingComment}
-            type="text"
-            className={
-              isPostingComment
-                ? "form-control form-control-sm form-control-comment ms-2 text-muted"
-                : "form-control form-control-sm form-control-comment ms-2"
-            }
-            placeholder="Post your Comment..."
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            name="comment"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-          <button
-            disabled={isPostingComment || !comment.length}
-            className={
-              isPostingComment || !comment.length
-                ? "input-group-text text-success eyeButton commentIcon me-2 text-muted commentIconHold"
-                : "input-group-text text-success eyeButton commentIcon me-2"
-            }
-            id="basic-addon1"
-            onClick={handleComment}
-          >
-            <i className="bi bi-plus-circle commentIcon"></i>
-          </button>
-        </div>
-      </div> */}
+      <PostCommentSection
+        post={post}
+        comments={comments}
+        setComments={setComments}
+      />
     </>
   );
 };

@@ -7,13 +7,14 @@ import PostCommentSection from "../../../Home/MiddleSection/Posts/PostLowerSecti
 
 import "../../../Home/MiddleSection/Posts/PostLowerSection/postLowerSection.css";
 
-const PostLowerSectionModal = ({ post, profileDetails }) => {
-  const dispatch = useDispatch();
-
+const PostLowerSectionModal = ({
+  post,
+  profileDetails,
+  comments,
+  setComments,
+}) => {
   const [isPostSaved, setIsPostSaved] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
-
-  const user = JSON.parse(localStorage.getItem("profile"));
 
   const handleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -101,7 +102,7 @@ const PostLowerSectionModal = ({ post, profileDetails }) => {
       </div>
 
       {/* Comment Section */}
-      <PostCommentSection post={post} />
+      <PostCommentSection post={post} setComments={setComments} />
     </>
   );
 };

@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-import { useHistory } from "react-router-dom";
 import PostUpperSection from "./PostUpperSection/postUpperSection";
 import PostMiddleSection from "./PostMiddleSection/postMiddleSection";
 import PostLowerSection from "./PostLowerSection/postLowerSection";
@@ -8,7 +7,11 @@ import PostLowerSection from "./PostLowerSection/postLowerSection";
 import "./posts.css";
 
 const Posts = ({ post }) => {
-  const history = useHistory();
+  const [comments, setComments] = useState(post?.commentsInfo);
+
+  useEffect(() => {
+    setComments(post?.commentsInfo);
+  }, [post]);
 
   return (
     <>
@@ -20,7 +23,11 @@ const Posts = ({ post }) => {
         <PostMiddleSection post={post} />
 
         {/* Caption & Comment - Card Body & Footer*/}
-        <PostLowerSection post={post} />
+        <PostLowerSection
+          post={post}
+          comments={comments}
+          setComments={setComments}
+        />
       </div>
     </>
   );

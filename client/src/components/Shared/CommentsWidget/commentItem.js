@@ -19,13 +19,11 @@ const CommentItem = ({ post, isModal, comment }) => {
   return (
     <>
       <div
+        className="ms-1 mb-2"
         // {...(isModal && { "data-bs-dismiss": "modal", "aria-label": "Close" })}
       >
         <div className="d-flex justify-content-between">
-          <div
-            className="d-flex align-items-center ms-1 gap-2 mb-2"
-            onClick={handleGetReplies}
-          >
+          <div className="d-flex align-items-center gap-2">
             <div className="likeIcon text-success ">
               <MiniProfilePicture isComment={true} comment={comment} />
             </div>
@@ -33,6 +31,16 @@ const CommentItem = ({ post, isModal, comment }) => {
             <p className="mb-0 commenterCmt">{comment?.comment}</p>
           </div>
         </div>
+        {comment?.replyComments?.length > 0 && (
+          <div className="ms-5 ps-4">
+            <span
+              className="commenterName text-muted ms-3"
+              onClick={handleGetReplies}
+            >
+              View {comment?.replyComments?.length} replies
+            </span>
+          </div>
+        )}
       </div>
     </>
   );
