@@ -301,7 +301,7 @@ export const commentPostWithUserDetails =
     try {
       const { data } = await api.commentPostWithUserDetails(id, resultComment);
       dispatch({ type: COMMENT_POST_WITH_USER_DETAILS, payload: data });
-      return data.commentsInfo;
+      return data.data.commentsInfo;
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message)
         if (error.response.data.message === "jwt expired")
