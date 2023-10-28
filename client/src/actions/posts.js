@@ -94,6 +94,7 @@ export const getCommentsWithProfilePicture = (id) => async (dispatch) => {
 
     dispatch({ type: END_FETCH_COMMENT_BY_POST_ID });
   } catch (error) {
+    dispatch({ type: END_FETCH_COMMENT_BY_POST_ID });
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")
         window.location.href = "/auth";
@@ -111,11 +112,12 @@ export const getRepliesWithProfilePicture =
       dispatch({ type: START_FETCH_REPLIES_BY_COMMENT });
 
       const { data } = await api.fetchRepliesByComment(commentId, postId);
+      dispatch({ type: END_FETCH_REPLIES_BY_COMMENT });
       dispatch({ type: FETCH_REPLIES_BY_COMMENT, payload: data });
 
-      dispatch({ type: END_FETCH_REPLIES_BY_COMMENT });
-      return data;
+      return data.data;
     } catch (error) {
+      dispatch({ type: END_FETCH_REPLIES_BY_COMMENT });
       if (error.response && error.response.data && error.response.data.message)
         if (error.response.data.message === "jwt expired")
           window.location.href = "/auth";
@@ -301,7 +303,7 @@ export const commentPostWithUserDetails =
     try {
       const { data } = await api.commentPostWithUserDetails(id, resultComment);
       dispatch({ type: COMMENT_POST_WITH_USER_DETAILS, payload: data });
-      return data.commentsInfo;
+      return data.data.commentsInfo;
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message)
         if (error.response.data.message === "jwt expired")

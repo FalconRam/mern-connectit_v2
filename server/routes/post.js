@@ -44,7 +44,7 @@ router.delete("/:id", deletePost);
 
 router.patch("/like/:id", likePost);
 
-router.patch("/:id/addCommentByPost", addCommentByPost);
+router.patch("/:postId/addCommentByPost", addCommentByPost);
 
 router.patch("/:postId/addReplyToComment", addReplyToComment);
 
