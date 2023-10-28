@@ -65,12 +65,12 @@ body {
 .spinnerMini {
   display: block;
   position: relative;
-  width: 15px;
-  height: 15px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   border: 1px solid transparent;
   border-top-color: #ffffff;
-  animation: spin 2s linear infinite;
+  animation: spin 0.5s linear infinite;
   z-index: 1001;
 }
 
