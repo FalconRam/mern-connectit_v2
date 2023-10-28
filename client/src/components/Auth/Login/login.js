@@ -81,7 +81,7 @@ const LogIn = ({
   };
 
   const handleTestAccountLogin = async () => {
-    setIsLoadingWithTest(!isLoadingWithTest);
+    setIsLoadingWithTest(true);
     await dispatch(
       logIn(
         {
@@ -91,7 +91,7 @@ const LogIn = ({
         history
       )
     );
-    setIsLoadingWithTest(!isLoadingWithTest);
+    setIsLoadingWithTest(false);
   };
 
   return (
