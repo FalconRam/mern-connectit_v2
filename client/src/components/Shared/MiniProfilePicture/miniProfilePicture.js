@@ -2,15 +2,15 @@ import React, { useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
-const MiniProfilePicture = ({ post, isComment, comment }) => {
+const MiniProfilePicture = ({ post, isComment, comment, reply }) => {
+  let profileId = comment ? comment?.commenterId : reply?.replierId;
   const history = useHistory();
   const handleProfile = () => {
     history.push(
-      `/profile/details?profileId=${
-        isComment ? comment.commenterId : post.creator
-      }`
+      `/profile/details?profileId=${isComment ? profileId : post.creator}`
     );
   };
+
   return (
     <>
       <div
@@ -22,13 +22,18 @@ const MiniProfilePicture = ({ post, isComment, comment }) => {
           <>
             <img
               src={
-                comment?.profilePicture === ""
-                  ? comment?.commenterName?.charAt(0).toUpperCase()
+                comment?.profilePicture === "" || reply?.profilePicture === ""
+                  ? comment?.commenterName?.charAt(0).toUpperCase() ||
+                    reply.replierName.charAt(0).toUpperCase()
                   : comment?.profilePicture ||
+                    reply?.profilePicture ||
                     "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
               }
               className="img-thumbnail rounded-circle miniPostProfilePic d-flex align-items-center justify-content-center"
-              alt={comment?.commenterName?.charAt(0).toUpperCase()}
+              alt={
+                comment?.commenterName?.charAt(0).toUpperCase() ||
+                reply?.replierName?.charAt(0).toUpperCase()
+              }
             ></img>
           </>
         ) : (

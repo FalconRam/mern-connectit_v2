@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-import { useDispatch, useSelector } from "react-redux";
-import { getCommentsWithProfilePicture } from "../../../actions/posts";
+import { useSelector } from "react-redux";
 import CommentItem from "./commentItem";
+import LoaderMini from "../utils/loaderMini";
 
 const CommentsWidget = ({ post, isModal }) => {
   const { postComments, isPostCommentsLoading } = useSelector(
@@ -13,18 +13,21 @@ const CommentsWidget = ({ post, isModal }) => {
   );
   return (
     <>
-      <div>
-        
-        {isModal &&
-          postComments?.comments?.map((comment, index) => (
-            <CommentItem
-              post={post}
-              comment={comment}
-              key={index}
-              isModal={isModal}
-            />
-          ))}
-      </div>
+      {isPostCommentsLoading ? (
+        <LoaderMini />
+      ) : (
+        <>
+          {isModal &&
+            postComments?.comments?.map((comment, index) => (
+              <CommentItem
+                post={post}
+                comment={comment}
+                key={index}
+                isModal={isModal}
+              />
+            ))}
+        </>
+      )}
     </>
   );
 };
