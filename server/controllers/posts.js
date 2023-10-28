@@ -681,3 +681,70 @@ export const likePost = async (req, res) => {
     res.status(500).json({ status: false, message: error.message });
   }
 };
+
+export const likeComentReply = async (req, res) => {
+  const { postId, commentId, replyId, isComment } = req.query;
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!req.userId)
+      return res
+        .status(400)
+        .json({ status: false, message: "User not authorized" });
+
+    const post = await PostMessage.findById(postId);
+    if (!post)
+      return res.status(404).send({
+        status: false,
+        message: "No Post found",
+      });
+    if (isComment) {
+      if (
+        !post.commentsInfo.postComment.map((comment) =>
+          comment.commentLikes.includes(commentId)
+        )
+      )
+        return res.status(404).send({
+          status: false,
+          message: "No Comment found",
+        });
+      post.commentsInfo.postComment.map((comment) => {
+        if (comment._id === commentId) {
+          const index = comment.commentLikes.findIndex(
+            (id) => id === String(req.userId)
+          );
+          if (index === -1) {
+            // like the Comment
+            comment.commentLikes.push(req.userId);
+          } else {
+            // dislike the Comment
+            // filter method !== --> returns all the values which not matched/does not return the matched id(value)
+            comment.commentLikes = comment.commentLikes.filter(
+              (id) => id !== String(req.userId)
+            );
+          }
+        }
+      });
+      // return res.status(200).json({ status: true, post });
+    }
+    // else if (!isCommentLike) {
+    //   if (
+    //     post.commentsInfo.postComment.find(
+    //       (comment) => comment._id === commentId
+    //     )
+    //   )
+    //     return res.status(500).send({
+    //       status: false,
+    //       message: "No Comment found",
+    //     });
+    // }
+
+    let updatedPost = await PostMessage.findByIdAndUpdate(post._id, post, {
+      new: true,
+    });
+
+    res.status(200).json({ status: true, data: updatedPost });
+  } catch (error) {
+    res.status(500).json({ status: false, message: error.message });
+  }
+};

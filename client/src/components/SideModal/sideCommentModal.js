@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import "./sideCommentModal.css";
 import LikeCommentSave from "../Shared/LikeCommentSave/likeCommentSave";

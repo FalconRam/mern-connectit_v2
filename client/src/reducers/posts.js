@@ -9,6 +9,7 @@ import {
   UPDATE_POST,
   LIKE_POST,
   UNLIKE_POST,
+  LIKE_UNLIKE_COMMENT_REPLY,
   DELETE_POST,
   DELETE_USER_POST,
   START_POST_LOADING,
@@ -84,6 +85,13 @@ export default (
         ),
       };
     case UNLIKE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
+    case LIKE_UNLIKE_COMMENT_REPLY:
       return {
         ...state,
         posts: state.posts.map((post) =>

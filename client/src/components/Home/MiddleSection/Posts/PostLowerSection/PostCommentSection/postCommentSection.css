@@ -1,3 +1,8 @@
+.customDetails{
+  /* overflow-y: scroll;
+  height: 30% */
+}
+
 .form-control-comment {
   border-right-color: #fff;
   border-top-left-radius: 2rem;

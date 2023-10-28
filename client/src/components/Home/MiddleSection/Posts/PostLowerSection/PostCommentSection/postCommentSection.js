@@ -4,7 +4,7 @@ import "./postCommentSection.css";
 import CommentsWidget from "../../../../../Shared/CommentsWidget/commentsWidget";
 import CommentFormButton from "../../../../../Shared/CommentFormButton/commentFormButton";
 
-const PostCommentSection = ({ post, isModal }) => {
+const PostCommentSection = ({ post, isModal, isPostDetails }) => {
   const [comments, setComments] = useState(post?.commentsInfo);
 
   useEffect(() => {
@@ -17,7 +17,8 @@ const PostCommentSection = ({ post, isModal }) => {
 
   return (
     <>
-      <div className={isModal ? "pt-1" : "card-footer p-1 pt-1"}>
+      {/* <div className={isPostDetails && "customDetails"}> */}
+      <div className={isModal ? "p-2" : "card-footer p-1 pt-1"}>
         <div className={isModal && ""}>
           <div>
             {!commentSliced?.length ? (
@@ -29,7 +30,11 @@ const PostCommentSection = ({ post, isModal }) => {
                 {isModal ? (
                   // Shows Comments Widget
                   <>
-                    <CommentsWidget post={post} isModal={isModal} />
+                    <CommentsWidget
+                      post={post}
+                      isModal={isModal}
+                      isPostDetails={isPostDetails}
+                    />
                   </>
                 ) : (
                   // Shows last comment
@@ -53,11 +58,12 @@ const PostCommentSection = ({ post, isModal }) => {
               </>
             )}
           </div>
-          {!isModal && (
+          {isPostDetails && (
             <CommentFormButton post={post} setComments={setComments} />
           )}
         </div>
       </div>
+      {/* </div> */}
     </>
   );
 };

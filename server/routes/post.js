@@ -13,6 +13,7 @@ import {
   getCommentsByPost,
   addReplyToComment,
   getRepliesByComment,
+  likeComentReply,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
@@ -43,6 +44,8 @@ router.patch("/update/:id", updatePost);
 router.delete("/:id", deletePost);
 
 router.patch("/like/:id", likePost);
+
+router.patch("/comment-reply-like", likeComentReply);
 
 router.patch("/:postId/addCommentByPost", addCommentByPost);
 
