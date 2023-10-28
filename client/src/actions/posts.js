@@ -7,6 +7,7 @@ import {
   UPDATE_POST,
   LIKE_POST,
   UNLIKE_POST,
+  LIKE_UNLIKE_COMMENT_REPLY,
   COMMENT_POST_WITH_USER_DETAILS,
   DELETE_POST,
   DELETE_USER_POST,
@@ -297,6 +298,33 @@ export const unLikePost = (id) => async (dispatch) => {
     toast.error(message);
   }
 };
+
+export const likeCommentReply =
+  ({ postId, commentId, replyId, isComment }) =>
+  async (dispatch) => {
+    try {
+      const { data } = await api.likeCommentReply(
+        postId,
+        commentId,
+        replyId,
+        isComment
+      );
+      dispatch({ type: LIKE_UNLIKE_COMMENT_REPLY, payload: data });
+      const comments = await api.fetchCommentsByPostId(postId);
+      dispatch({ type: FETCH_COMMENT_BY_POST_ID, payload: comments.data });
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message)
+        if (error.response.data.message === "jwt expired")
+          window.location.href = "/auth";
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+    }
+  };
 
 export const commentPostWithUserDetails =
   (id, resultComment) => async (dispatch) => {

@@ -64,6 +64,13 @@ export const deletePost = (id) => API.delete(`/posts/${id}`);
 
 export const likePost = (id) => API.patch(`/posts/like/${id}`);
 
+export const likeCommentReply = (postId, commentId, replyId, isComment) =>
+  API.patch(
+    `/posts/comment-reply-like?postId=${postId}&commentId=${
+      isComment && commentId
+    }&replyId=${isComment && replyId}&isComment=${isComment}`
+  );
+
 export const commentPostWithUserDetails = (id, resultComment) =>
   API.patch(`/posts/${id}/addCommentByPost`, resultComment);
 

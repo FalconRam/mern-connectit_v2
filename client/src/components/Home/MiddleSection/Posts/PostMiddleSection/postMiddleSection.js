@@ -1,12 +1,17 @@
 import React from "react";
-
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import PostDetailsModal from "../../../../Shared/PostDetailsModal/postDetailsModal";
 
 import "./postMiddleSection.css";
+import { getCommentsWithProfilePicture } from "../../../../../actions/posts";
 
 const PostMiddleSection = ({ post }) => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const getComments = () => {
+    dispatch(getCommentsWithProfilePicture(post?._id));
+  };
 
   return (
     <>
@@ -16,6 +21,7 @@ const PostMiddleSection = ({ post }) => {
           className="post-image-btn"
           data-bs-toggle="modal"
           data-bs-target={`#exampleModalCenter${post._id}`}
+          onClick={getComments}
         >
           <img
             src={

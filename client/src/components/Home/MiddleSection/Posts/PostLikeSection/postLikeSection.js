@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { likePost, unLikePost } from "../../../../../actions/posts";
 
-import Likes from "./Likes/likes";
+import Likes from "../../../../Shared/Likes/likes";
 
 import "./postLikeSection.css";
 
@@ -28,7 +28,7 @@ const PostLikeSection = ({ post }) => {
     }
   }, [post?.likes, userId]);
 
-  const handleLike = () => {
+  const handlePostLike = () => {
     setIsLikeUpdating(true);
 
     if (isLiked) {
@@ -46,7 +46,7 @@ const PostLikeSection = ({ post }) => {
 
   return (
     <>
-      <Likes isLiked={isLiked} likes={likes} handleLike={handleLike} />
+      <Likes isLiked={isLiked} likes={likes} likeFrom={"postCard"} handlePostLike={handlePostLike} />
     </>
   );
 };
