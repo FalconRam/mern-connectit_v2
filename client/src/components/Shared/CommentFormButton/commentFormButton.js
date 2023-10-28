@@ -24,7 +24,6 @@ const CommentFormButton = ({ post, setComments }) => {
     setComment("");
     setIsPostingComment(false);
     dispatch(getCommentsWithProfilePicture(post?._id));
-    console.log(updatedPostWithComment);
     setComments(updatedPostWithComment);
   };
   return (
