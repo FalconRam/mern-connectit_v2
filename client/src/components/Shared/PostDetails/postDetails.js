@@ -5,12 +5,12 @@ import PostLowerSectionModal from "./PostLowerSectionModal/PostLowerSectionModal
 
 import "./postDetails.css";
 
-const PostDetails = ({ post, profileDetails }) => {
+const PostDetails = ({ post, profileDetails,setComments }) => {
   return (
     <>
       <div className="gap-3">
         <div className="card col mx-auto">
-          <div className="d-flex flex-column flex-md-row">
+          <div className="d-flex flex-column flex-md-row  postDetails-custom">
             {/* Upper/Left Section */}
             <div className="col-sm-12 col-md-6 ps-0">
               <PostUpperSection post={post} profileDetails={profileDetails} />
@@ -25,10 +25,11 @@ const PostDetails = ({ post, profileDetails }) => {
               ></img>
             </div>
             {/* Lower/Right Section */}
-            <div className="col-sm-12 col-md-6">
+            <div className="col-sm-12 col-md-6 customLowerRight">
               <PostLowerSectionModal
                 post={post}
                 profileDetails={profileDetails}
+                setComments={setComments}
               />
             </div>
           </div>

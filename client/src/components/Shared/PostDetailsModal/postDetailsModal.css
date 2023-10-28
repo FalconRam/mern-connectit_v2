@@ -1,3 +1,7 @@
+.postDetails-modal-body-custom {
+  /* height: 50rem */
+}
+
 @media (min-width: 576px) {
   .modal-dialog-md-custom {
     max-width: 90%;

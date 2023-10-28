@@ -23,7 +23,7 @@ const PostDetailsModal = ({ post, profileDetails }) => {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="modal-body">
+            <div className="modal-body postDetails-modal-body-custom">
               <PostDetails post={post} profileDetails={profileDetails} />
             </div>
           </div>

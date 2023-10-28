@@ -10,7 +10,6 @@ const MiniProfilePicture = ({ post, isComment, comment, reply }) => {
       `/profile/details?profileId=${isComment ? profileId : post.creator}`
     );
   };
-
   return (
     <>
       <div

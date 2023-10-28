@@ -48,7 +48,7 @@ const NavBar = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [window]);
 
   // Set the boolean if the Win size is reduced below md
   useEffect(() => {

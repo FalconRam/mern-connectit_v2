@@ -102,7 +102,12 @@ const PostLowerSectionModal = ({
       </div>
 
       {/* Comment Section */}
-      <PostCommentSection post={post} setComments={setComments} />
+      <PostCommentSection
+        post={post}
+        isModal={true}
+        isPostDetails={true}
+        setComments={setComments}
+      />
     </>
   );
 };
