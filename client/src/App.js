@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
 import "./App.css";
 
 import NavBar from "./components/NavBar/navBar";
@@ -18,13 +18,16 @@ import ProfileEdit from "./components/pages/ProfilePage/ProfileEdit/profileEdit"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserFollowerFollowing from "./components/pages/UserFollowerFollowing/userFollowerFollowing";
+import { getProfileDetails } from "./actions/profile";
 
 const App = () => {
+  const dispatch = useDispatch();
   let user = JSON.parse(localStorage.getItem("profile"));
 
   const [isAuth, setIsAuth] = useState(true);
 
   useEffect(() => {
+    dispatch(getProfileDetails(user?.id, true));
     window.location.pathname !== "/auth" && setIsAuth(!isAuth);
   }, [window.location]);
 

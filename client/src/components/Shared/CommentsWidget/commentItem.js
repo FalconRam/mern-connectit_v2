@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import MiniProfilePicture from "../MiniProfilePicture/miniProfilePicture";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   getRepliesWithProfilePicture,
   likeCommentReply,
@@ -15,13 +15,11 @@ const CommentItem = ({ post, isModal, comment }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
   const dispatch = useDispatch();
-  // const { commentReplies, isRepliesByCommentsLoading } = useSelector(
-  //   (state) => state.posts
-  // );
 
   const [viewReplies, setviewReplies] = useState(false);
   const [isApiLoading, setIsApiLoading] = useState(false);
   const [replies, setReplies] = useState({});
+
   const handleReplies = async () => {
     if (comment.replyComments.length && !viewReplies) {
       setIsApiLoading(true);
@@ -47,7 +45,6 @@ const CommentItem = ({ post, isModal, comment }) => {
     isComment: true,
   };
   const handleCommentLike = () => {
-    console.log("Dipatching Comment like");
     if (isLiked) {
       setIsLiked(false);
       setLikes((currentLikeCount) => currentLikeCount - 1);
@@ -124,7 +121,13 @@ const CommentItem = ({ post, isModal, comment }) => {
             <>
               {viewReplies &&
                 replies?.replyComments.map((reply, i) => (
-                  <ReplyWidget user={user} reply={reply} key={i} />
+                  <ReplyWidget
+                    user={user}
+                    reply={reply}
+                    comment={comment}
+                    post={post}
+                    key={i}
+                  />
                 ))}
             </>
           )}

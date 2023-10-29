@@ -18,7 +18,7 @@ const ProfileEdit = () => {
   const history = useHistory();
   const { id } = useParams();
   const user = JSON.parse(localStorage.getItem("profile"));
-  
+
   if (!user) {
     if (window.location.pathname !== "/auth") history.push("/auth");
   }
@@ -30,7 +30,7 @@ const ProfileEdit = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (user) {
-      dispatch(getProfileDetails(id, tokenFromCookie));
+      dispatch(getProfileDetails(id, true, tokenFromCookie));
     }
   }, []);
 

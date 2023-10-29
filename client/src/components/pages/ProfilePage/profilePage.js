@@ -22,7 +22,7 @@ const ProfilePage = () => {
   const query = useQuery();
   const profileId = query.get("profileId");
   const history = useHistory();
-
+  const isLoggedInUser = user?.id === profileId;
   if (!user) {
     if (window.location.pathname !== "/auth") history.push("/auth");
   }
@@ -30,15 +30,18 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
 
   const { userPosts, isPostLoading } = useSelector((state) => state.posts);
-  const { profileDetails, isProfileLoading } = useSelector(
-    (state) => state.profile
-  );
+  const {
+    profileDetails,
+    userProfileDetails,
+    isProfileLoading,
+    isUserProfileLoading,
+  } = useSelector((state) => state.profile);
   let tokenFromCookie = Cookies.get("userToken");
 
   useEffect(() => {
     if (user) {
       dispatch(getPostByUser(profileId));
-      dispatch(getProfileDetails(profileId, false, tokenFromCookie));
+      dispatch(getProfileDetails(profileId, isLoggedInUser, tokenFromCookie));
     }
   }, []);
 
@@ -55,9 +58,13 @@ const ProfilePage = () => {
           <div className="col-sm-11 col-md-10 col-lg-10  offset-md-1 offset-lg-2 customOffset customMargin">
             <RightSideProfilePage
               userPosts={userPosts}
-              profileDetails={profileDetails}
+              profileDetails={
+                isLoggedInUser ? userProfileDetails : profileDetails
+              }
               isPostLoading={isPostLoading}
-              isProfileLoading={isProfileLoading}
+              isProfileLoading={
+                isLoggedInUser ? isUserProfileLoading : isProfileLoading
+              }
             />
           </div>
         </div>

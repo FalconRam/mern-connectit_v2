@@ -52,6 +52,7 @@ const PostLowerSection = ({ post, comments, setComments }) => {
 
       {/* Comment Section */}
       <PostCommentSection
+        isModal={false}
         post={post}
         comments={comments}
         setComments={setComments}
