@@ -27,7 +27,7 @@ const App = () => {
   const [isAuth, setIsAuth] = useState(true);
 
   useEffect(() => {
-    dispatch(getProfileDetails(user?.id, true));
+    user && dispatch(getProfileDetails(user?.id, true));
     window.location.pathname !== "/auth" && setIsAuth(!isAuth);
   }, [window.location]);
 
