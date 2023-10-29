@@ -105,7 +105,6 @@ const PostLowerSectionModal = ({
       <PostCommentSection
         post={post}
         isModal={true}
-        isPostDetails={true}
         setComments={setComments}
       />
     </>

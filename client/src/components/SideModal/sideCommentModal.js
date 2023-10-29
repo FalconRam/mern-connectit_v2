@@ -50,6 +50,7 @@ const SideCommentModal = ({
               <PostCommentSection
                 post={post}
                 isModal={true}
+                isSideModal={true}
                 comments={comments}
                 setComments={setComments}
               />
