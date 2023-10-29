@@ -26,7 +26,6 @@ const ProfileListItem = ({ profile, isFollowingNavTab }) => {
 
   let isLoggedInUser = user?.id === profileId;
 
-  console.log(isLoggedInUser);
   const [isUnFollow, setIsUnFollow] = useState(true);
   const [isRemove, setIsRemove] = useState(true);
   // const [isOtherUser, setIsOtherUserFollow] = useState(true);
