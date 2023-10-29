@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+
 import moment from "moment";
 import MiniProfilePicture from "../../MiniProfilePicture/miniProfilePicture";
 import Likes from "../../Likes/likes";
+import { likeCommentReply } from "../../../../actions/posts";
 
-const ReplyWidget = ({ user, reply }) => {
+const ReplyWidget = ({ user, reply, comment, post }) => {
+  const dispatch = useDispatch();
+
+  const [isLiked, setIsLiked] = useState(reply?.replyLikes?.includes(user?.id));
+  const [likes, setLikes] = useState(reply?.replyLikes?.length);
+
+  const likeCommentReplyParams = {
+    postId: post._id,
+    commentId: comment._id,
+    replyId: reply._id,
+    isComment: false,
+  };
   const handleReplyLike = () => {
-    console.log("Dipatching Reply like");
+    if (isLiked) {
+      setIsLiked(false);
+      setLikes((currentLikeCount) => currentLikeCount - 1);
+    } else {
+      setIsLiked(true);
+      setLikes((currentLikeCount) => currentLikeCount + 1);
+    }
+    dispatch(likeCommentReply(likeCommentReplyParams));
   };
   const handleReply = () => {
     console.log("Dipatching Reply To Reply");
@@ -31,8 +52,8 @@ const ReplyWidget = ({ user, reply }) => {
             {moment(reply?.createdAt).fromNow()}
           </p>
           <Likes
-            isLiked={reply.replyLikes.includes(user?.id)}
-            likes={reply.replyLikes.length}
+            isLiked={isLiked}
+            likes={likes}
             likeFrom={"commentModal"}
             handleCommentLike={handleReplyLike}
           />

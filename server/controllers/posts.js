@@ -684,10 +684,9 @@ export const likePost = async (req, res) => {
 
 export const likeComentReply = async (req, res) => {
   const { postId, commentId, replyId, isComment } = req.query;
-
   try {
     const user = await User.findById(req.userId);
-    if (!req.userId)
+    if (!user)
       return res
         .status(400)
         .json({ status: false, message: "User not authorized" });
@@ -698,16 +697,17 @@ export const likeComentReply = async (req, res) => {
         status: false,
         message: "No Post found",
       });
-    if (isComment) {
-      if (
-        !post.commentsInfo.postComment.map((comment) =>
-          comment.commentLikes.includes(commentId)
-        )
+    if (
+      !post.commentsInfo.postComment.map((comment) =>
+        comment.commentLikes.includes(commentId)
       )
-        return res.status(404).send({
-          status: false,
-          message: "No Comment found",
-        });
+    )
+      return res.status(404).send({
+        status: false,
+        message: "No Comment found",
+      });
+    if (isComment === "true") {
+      // For comment like and Dislike
       post.commentsInfo.postComment.map((comment) => {
         if (comment._id === commentId) {
           const index = comment.commentLikes.findIndex(
@@ -725,26 +725,41 @@ export const likeComentReply = async (req, res) => {
           }
         }
       });
-      // return res.status(200).json({ status: true, post });
+    } else if (isComment === "false") {
+      // For comment's Reply like and Dislike
+      post.commentsInfo.postComment.map((comment) => {
+        if (comment._id === commentId) {
+          comment.replyComments.map((replyComment) => {
+            // if (!replyComment.replyLikes.includes(replyId))
+            //   return res
+            //     .status(404)
+            //     .json({ status: false, message: "No Reply Found" });
+            if (replyComment._id === replyId) {
+              const index = replyComment.replyLikes.findIndex(
+                (id) => id === String(req.userId)
+              );
+              if (index === -1) {
+                // If the user's ID is not in the replyLikes array, add it to like the comment.
+                replyComment.replyLikes.push(req.userId);
+              } else {
+                // dislike the Comment
+                // filter method !== --> returns all the values which not matched/does not return the matched id(value)
+                replyComment.replyLikes = replyComment.replyLikes.filter(
+                  (id) => id !== String(req.userId)
+                );
+              }
+            }
+          });
+        }
+      });
     }
-    // else if (!isCommentLike) {
-    //   if (
-    //     post.commentsInfo.postComment.find(
-    //       (comment) => comment._id === commentId
-    //     )
-    //   )
-    //     return res.status(500).send({
-    //       status: false,
-    //       message: "No Comment found",
-    //     });
-    // }
 
     let updatedPost = await PostMessage.findByIdAndUpdate(post._id, post, {
       new: true,
     });
 
-    res.status(200).json({ status: true, data: updatedPost });
+    return res.status(200).json({ status: true, data: updatedPost });
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    return res.status(500).json({ status: false, message: error.message });
   }
 };
