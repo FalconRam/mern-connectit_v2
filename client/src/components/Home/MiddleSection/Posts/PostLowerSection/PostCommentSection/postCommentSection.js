@@ -19,7 +19,7 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
     <>
       {/* <div className={isPostDetails && "customDetails"}> */}
       <div className={isModal ? "p-2" : "card-footer p-1 pt-1"}>
-        <div className={isModal && ""}>
+        <div>
           <div>
             {!commentSliced?.length ? (
               <p className="text-start text-muted ms-2 mb-0 pb-1 p-like">
