@@ -17,7 +17,6 @@ const NavBar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
   const { userProfileDetails } = useSelector((state) => state.profile);
-  userProfileDetails);
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
