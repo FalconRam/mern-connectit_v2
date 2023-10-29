@@ -14,6 +14,7 @@ import {
   addReplyToComment,
   getRepliesByComment,
   likeComentReply,
+  addReplyToReply,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
@@ -50,6 +51,8 @@ router.patch("/comment-reply-like", likeComentReply);
 router.patch("/:postId/addCommentByPost", addCommentByPost);
 
 router.patch("/:postId/addReplyToComment", addReplyToComment);
+
+router.patch("/:postId/addReplyToReply", addReplyToReply);
 
 router.get("/user-posts/:id", postsByUserId);
 

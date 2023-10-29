@@ -12,7 +12,8 @@ const LikeCommentSave = ({
 }) => {
   const dispatch = useDispatch();
   const getComments = () => {
-    isCommentsNotOpened && dispatch(getCommentsWithProfilePicture(post?._id));
+    isCommentsNotOpened &&
+      dispatch(getCommentsWithProfilePicture(post?._id, true));
   };
   return (
     <div>

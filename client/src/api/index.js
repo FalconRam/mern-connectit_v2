@@ -74,6 +74,12 @@ export const likeCommentReply = (postId, commentId, replyId, isComment) =>
 export const commentPostWithUserDetails = (id, resultComment) =>
   API.patch(`/posts/${id}/addCommentByPost`, resultComment);
 
+export const replyToCommentPost = (postId, replyToCommentBody) =>
+  API.patch(`/posts/${postId}/addReplyToComment`, replyToCommentBody);
+
+export const replyToReplyOfComment = (postId, replyToReplyBody) =>
+  API.patch(`/posts/${postId}/addReplyToReply`, replyToReplyBody);
+
 // Login/Signup APIs
 export const logIn = (formData) => API.post("/user/login-user", formData);
 

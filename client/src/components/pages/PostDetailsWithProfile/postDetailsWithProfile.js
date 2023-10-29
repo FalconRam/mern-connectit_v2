@@ -31,7 +31,7 @@ const PostDetailsWithProfile = () => {
 
   useEffect(() => {
     dispatch(getPostById(id));
-    dispatch(getCommentsWithProfilePicture(id));
+    dispatch(getCommentsWithProfilePicture(id, true));
   }, []);
 
   let profileId = post?.creator;

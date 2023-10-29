@@ -15,11 +15,14 @@ import {
   START_POST_LOADING,
   END_POST_LOADING,
   COMMENT_POST_WITH_USER_DETAILS,
+  SUBMIT_REPLY_TO_COMMENT_OR_REPLY,
   START_FETCH_COMMENT_BY_POST_ID,
   END_FETCH_COMMENT_BY_POST_ID,
   START_FETCH_REPLIES_BY_COMMENT,
   FETCH_REPLIES_BY_COMMENT,
   END_FETCH_REPLIES_BY_COMMENT,
+  SET_STATE_FOR_COMMENT_REPLY,
+  SET_COMMENT_REPLY_DETAILS,
 } from "../constants/actionTypes";
 
 export default (
@@ -30,6 +33,16 @@ export default (
     isPostLoading: true,
     isPostCommentsLoading: true,
     isRepliesByCommentsLoading: true,
+    commentReplyState: {
+      commentToPost: true,
+      replyToComment: false,
+      replyToReply: false,
+    },
+    commentReplyDetails: {
+      postId: "",
+      commentId: "",
+      replyId: "",
+    },
   },
   action
 ) => {
@@ -108,6 +121,16 @@ export default (
           return post;
         }),
       };
+    case SUBMIT_REPLY_TO_COMMENT_OR_REPLY:
+      return {
+        ...state,
+        posts: state.posts.map((post) => {
+          // return the post that received with comment
+          if (post._id === action.payload._id) return action.payload;
+          // and return all other posts
+          return post;
+        }),
+      };
     case DELETE_POST:
       // if the post._id is not equal to the action.payload in that case we are going to delete
       //  going to keep all the state expect the one where the id is equal
@@ -119,6 +142,16 @@ export default (
       return {
         ...state,
         posts: state.posts.filter((post) => post._id !== action.payload),
+      };
+    case SET_STATE_FOR_COMMENT_REPLY:
+      return {
+        ...state,
+        commentReplyState: action.payload,
+      };
+    case SET_COMMENT_REPLY_DETAILS:
+      return {
+        ...state,
+        commentReplyDetails: action.payload,
       };
     default:
       return state;

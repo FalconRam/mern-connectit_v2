@@ -577,6 +577,47 @@ export const addReplyToComment = async (req, res) => {
   }
 };
 
+export const addReplyToReply = async (req, res) => {
+  const { postId } = req.params;
+  const { replyOfReply, repliedTo, commentId } = req.body;
+
+  try {
+    if (
+      !postId ||
+      !replyOfReply.replierId ||
+      !replyOfReply.replierName ||
+      !replyOfReply.reply ||
+      !repliedTo ||
+      !commentId
+    ) {
+      return res
+        .status(400)
+        .json({ status: false, message: "All fields are required." });
+    }
+
+    const post = await PostMessage.findById(postId);
+
+    if (!post)
+      return res
+        .status(404)
+        .json({ status: false, message: "Post not Found." });
+
+    post.commentsInfo.postComment.map((comment) => {
+      if (comment._id === commentId) {
+        comment.replyComments.push(replyOfReply);
+      }
+    });
+
+    await PostMessage.findByIdAndUpdate(postId, post, {
+      new: true,
+    });
+
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(409).json({ status: false, message: error.message });
+  }
+};
+
 export const deletePost = async (req, res) => {
   const { id: _id } = req.params;
 

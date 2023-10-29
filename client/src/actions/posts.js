@@ -9,6 +9,7 @@ import {
   UNLIKE_POST,
   LIKE_UNLIKE_COMMENT_REPLY,
   COMMENT_POST_WITH_USER_DETAILS,
+  SUBMIT_REPLY_TO_COMMENT_OR_REPLY,
   DELETE_POST,
   DELETE_USER_POST,
   START_POST_LOADING,
@@ -21,6 +22,8 @@ import {
   START_FETCH_REPLIES_BY_COMMENT,
   FETCH_REPLIES_BY_COMMENT,
   END_FETCH_REPLIES_BY_COMMENT,
+  SET_STATE_FOR_COMMENT_REPLY,
+  SET_COMMENT_REPLY_DETAILS,
 } from "../constants/actionTypes";
 import { toast } from "react-toastify";
 
@@ -86,26 +89,29 @@ export const getPostById = (id) => async (dispatch) => {
   }
 };
 
-export const getCommentsWithProfilePicture = (id) => async (dispatch) => {
-  try {
-    dispatch({ type: START_FETCH_COMMENT_BY_POST_ID });
+export const getCommentsWithProfilePicture =
+  (id, isLoad) => async (dispatch) => {
+    try {
+      isLoad && dispatch({ type: START_FETCH_COMMENT_BY_POST_ID });
 
-    const { data } = await api.fetchCommentsByPostId(id);
-    dispatch({ type: FETCH_COMMENT_BY_POST_ID, payload: data });
+      const { data } = await api.fetchCommentsByPostId(id);
+      dispatch({ type: FETCH_COMMENT_BY_POST_ID, payload: data });
 
-    dispatch({ type: END_FETCH_COMMENT_BY_POST_ID });
-  } catch (error) {
-    dispatch({ type: END_FETCH_COMMENT_BY_POST_ID });
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    toast.error(message);
-  }
-};
+      isLoad && dispatch({ type: END_FETCH_COMMENT_BY_POST_ID });
+    } catch (error) {
+      dispatch({ type: END_FETCH_COMMENT_BY_POST_ID });
+      if (error.response && error.response.data && error.response.data.message)
+        if (error.response.data.message === "jwt expired")
+          window.location.href = "/auth";
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+    }
+  };
 
 export const getRepliesWithProfilePicture =
   (commentId, postId) => async (dispatch) => {
@@ -345,3 +351,68 @@ export const commentPostWithUserDetails =
       toast.error(message);
     }
   };
+
+export const submitReplyToCommentAction =
+  (postId, replyToCommentBody) => async (dispatch) => {
+    try {
+      const { data } = await api.replyToCommentPost(postId, replyToCommentBody);
+      dispatch({ type: SUBMIT_REPLY_TO_COMMENT_OR_REPLY, payload: data });
+      return;
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message)
+        if (error.response.data.message === "jwt expired")
+          window.location.href = "/auth";
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+    }
+  };
+
+export const submitReplyToReplyAction =
+  (postId, replyToReplyBody) => async (dispatch) => {
+    try {
+      const { data } = await api.replyToReplyOfComment(
+        postId,
+        replyToReplyBody
+      );
+      dispatch({ type: SUBMIT_REPLY_TO_COMMENT_OR_REPLY, payload: data });
+      const replies = await api.fetchRepliesByComment(
+        replyToReplyBody.repliedTo,
+        postId
+      );
+      dispatch({ type: FETCH_REPLIES_BY_COMMENT, payload: replies.data });
+      return;
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message)
+        if (error.response.data.message === "jwt expired")
+          window.location.href = "/auth";
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+    }
+  };
+
+// Set Global State to handle Reply to Post, Comment and Reply
+export const handleStateForCommentReply = (data) => (dispatch) => {
+  try {
+    dispatch({ type: SET_STATE_FOR_COMMENT_REPLY, payload: data });
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
+export const setCommentReplydetails = (data) => (dispatch) => {
+  try {
+    dispatch({ type: SET_COMMENT_REPLY_DETAILS, payload: data });
+  } catch (error) {
+    toast.error(error.message);
+  }
+};

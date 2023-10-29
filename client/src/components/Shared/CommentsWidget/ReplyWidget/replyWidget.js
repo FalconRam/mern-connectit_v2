@@ -4,7 +4,11 @@ import { useDispatch } from "react-redux";
 import moment from "moment";
 import MiniProfilePicture from "../../MiniProfilePicture/miniProfilePicture";
 import Likes from "../../Likes/likes";
-import { likeCommentReply } from "../../../../actions/posts";
+import {
+  handleStateForCommentReply,
+  likeCommentReply,
+  setCommentReplydetails,
+} from "../../../../actions/posts";
 
 const ReplyWidget = ({ user, reply, comment, post }) => {
   const dispatch = useDispatch();
@@ -28,8 +32,21 @@ const ReplyWidget = ({ user, reply, comment, post }) => {
     }
     dispatch(likeCommentReply(likeCommentReplyParams));
   };
-  const handleReply = () => {
-    console.log("Dipatching Reply To Reply");
+  const handleReplyToReply = async () => {
+    await dispatch(
+      handleStateForCommentReply({
+        commentToPost: false,
+        replyToComment: false,
+        replyToReply: true,
+      })
+    );
+    await dispatch(
+      setCommentReplydetails({
+        postId: post._id,
+        commentId: comment._id,
+        replyId: reply._id,
+      })
+    );
   };
   return (
     <>
@@ -57,7 +74,10 @@ const ReplyWidget = ({ user, reply, comment, post }) => {
             likeFrom={"commentModal"}
             handleCommentLike={handleReplyLike}
           />
-          <span className="mb-0 commenterName text-muted" onClick={handleReply}>
+          <span
+            className="mb-0 commenterName text-muted likeBtn"
+            onClick={handleReplyToReply}
+          >
             Reply
           </span>
         </div>

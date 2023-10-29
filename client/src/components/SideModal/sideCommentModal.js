@@ -1,9 +1,10 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import "./sideCommentModal.css";
 import LikeCommentSave from "../Shared/LikeCommentSave/likeCommentSave";
 import PostCommentSection from "../Home/MiddleSection/Posts/PostLowerSection/PostCommentSection/postCommentSection";
 import CommentFormButton from "../Shared/CommentFormButton/commentFormButton";
+import { getCurrentCommentReplyState } from "../../actions/posts";
 
 const SideCommentModal = ({
   post,
@@ -12,6 +13,10 @@ const SideCommentModal = ({
   comments,
   setComments,
 }) => {
+  const [selectedReplyToComment, setSelectedReplyToComment] = useState("");
+
+  const { commentReplyState } = useSelector((state) => state.posts);
+
   return (
     <div>
       <div
@@ -53,10 +58,16 @@ const SideCommentModal = ({
                 isSideModal={true}
                 comments={comments}
                 setComments={setComments}
+                selectedReplyToComment={selectedReplyToComment}
               />
             </div>
             <div className="modal-footer">
-              <CommentFormButton post={post} setComments={setComments} />
+              <CommentFormButton
+                post={post}
+                setComments={setComments}
+                commentReplyState={commentReplyState}
+                setSelectedReplyToComment={setSelectedReplyToComment}
+              />
             </div>
           </div>
         </div>
