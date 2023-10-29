@@ -7,7 +7,10 @@ import LeftSection from "../../Home/LeftSection/leftSection";
 import PostDetails from "../../Shared/PostDetails/postDetails";
 
 import "../../Shared/PostDetails/postDetails.css";
-import { getPostById } from "../../../actions/posts";
+import {
+  getCommentsWithProfilePicture,
+  getPostById,
+} from "../../../actions/posts";
 import Loader from "../../Shared/utils/loader";
 
 const PostDetailsWithProfile = () => {
@@ -28,12 +31,14 @@ const PostDetailsWithProfile = () => {
 
   useEffect(() => {
     dispatch(getPostById(id));
+    dispatch(getCommentsWithProfilePicture(id));
   }, []);
 
   let profileId = post?.creator;
 
   useEffect(() => {
-    if (profileId !== undefined) dispatch(getProfileDetails(post?.creator));
+    if (profileId !== undefined)
+      dispatch(getProfileDetails(post?.creator, false));
   }, [profileId]);
 
   const openProfile = (profileId) =>
@@ -48,7 +53,7 @@ const PostDetailsWithProfile = () => {
           <div className="row">
             <div className="col-lg-3 d-none d-lg-block d-xl-block d-xxl-block">
               <LeftSection
-                profileDetails={profileDetails}
+                userProfileDetails={profileDetails}
                 isProfileLoading={isProfileLoading}
                 id={id}
                 profileId={profileId}

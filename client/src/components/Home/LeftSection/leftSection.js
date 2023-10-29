@@ -12,7 +12,6 @@ const LeftSection = ({
   post,
 }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
-
   const history = useHistory();
 
   const handleFollowFollows = (id) => {

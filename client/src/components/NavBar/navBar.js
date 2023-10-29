@@ -10,12 +10,14 @@ import logo from "../../assets/logo.png";
 import more from "../../assets/more.png";
 import Chat from "../Chat/chat";
 import "./navBar.css";
+import { getProfileDetails } from "../../actions/profile";
+import { getPostByUser } from "../../actions/posts";
 
 const NavBar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
   const { userProfileDetails } = useSelector((state) => state.profile);
-
+  console.log(userProfileDetails);
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
@@ -73,6 +75,8 @@ const NavBar = () => {
   };
 
   const handleProfile = () => {
+    dispatch(getProfileDetails(user?.id, true));
+    dispatch(getPostByUser(user?.id));
     history.push(`/profile/details?profileId=${user?.id}`);
   };
 
