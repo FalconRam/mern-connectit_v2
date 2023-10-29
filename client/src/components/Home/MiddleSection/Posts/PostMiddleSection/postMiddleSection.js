@@ -10,7 +10,7 @@ const PostMiddleSection = ({ post }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const getComments = () => {
-    dispatch(getCommentsWithProfilePicture(post?._id));
+    dispatch(getCommentsWithProfilePicture(post?._id, true));
   };
 
   return (

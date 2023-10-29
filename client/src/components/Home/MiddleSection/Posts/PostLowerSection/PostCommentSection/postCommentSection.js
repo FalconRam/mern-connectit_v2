@@ -4,9 +4,13 @@ import "./postCommentSection.css";
 import CommentsWidget from "../../../../../Shared/CommentsWidget/commentsWidget";
 import CommentFormButton from "../../../../../Shared/CommentFormButton/commentFormButton";
 
-const PostCommentSection = ({ post, isModal, isSideModal }) => {
+const PostCommentSection = ({
+  post,
+  isModal,
+  isSideModal,
+  selectedReplyToComment,
+}) => {
   const [comments, setComments] = useState(post?.commentsInfo);
-
   useEffect(() => {
     setComments(post?.commentsInfo);
   }, [post]);
@@ -30,7 +34,11 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
                 {isModal ? (
                   // Shows Comments Widget
                   <>
-                    <CommentsWidget post={post} isModal={isModal} />
+                    <CommentsWidget
+                      post={post}
+                      isModal={isModal}
+                      selectedReplyToComment={selectedReplyToComment}
+                    />
                   </>
                 ) : (
                   // Shows last comment
@@ -55,7 +63,10 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
             )}
           </div>
           {!isSideModal && (
-            <CommentFormButton post={post} setComments={setComments} />
+            <CommentFormButton
+              post={post}
+              setComments={setComments}
+            />
           )}
         </div>
       </div>

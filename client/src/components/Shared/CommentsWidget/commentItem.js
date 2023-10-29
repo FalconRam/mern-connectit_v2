@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import moment from "moment";
 import MiniProfilePicture from "../MiniProfilePicture/miniProfilePicture";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getRepliesWithProfilePicture,
+  handleStateForCommentReply,
   likeCommentReply,
+  setCommentReplydetails,
 } from "../../../actions/posts";
 import ReplyWidget from "./ReplyWidget/replyWidget";
 import LoaderMini from "../utils/loaderMini";
@@ -54,8 +56,22 @@ const CommentItem = ({ post, isModal, comment }) => {
     }
     dispatch(likeCommentReply(likeCommentReplyParams));
   };
-  const handleReplyToComment = () => {
-    console.log("Dipatching Reply To Comment");
+
+  const handleReplyToComment = async () => {
+    await dispatch(
+      handleStateForCommentReply({
+        commentToPost: false,
+        replyToComment: true,
+        replyToReply: false,
+      })
+    );
+    await dispatch(
+      setCommentReplydetails({
+        postId: post._id,
+        commentId: comment._id,
+        replyid: "",
+      })
+    );
   };
   return (
     <>
