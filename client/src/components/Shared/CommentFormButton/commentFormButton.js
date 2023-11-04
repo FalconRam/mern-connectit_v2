@@ -10,10 +10,11 @@ import {
 
 const CommentFormButton = ({ post, setComments }) => {
   let actionTo;
+  let inputCommentReply = useRef(null);
+
   const { commentReplyState, commentReplyDetails } = useSelector(
     (state) => state.posts
   );
-  let inputCommentReply = useRef(null);
 
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -36,7 +37,7 @@ const CommentFormButton = ({ post, setComments }) => {
 
   if (commentReplyState.replyToComment || commentReplyState.replyToReply) {
     // inputCommentReply.current.scrollIntoView({ behavior: "smooth" });
-    inputCommentReply.current.focus();
+    inputCommentReply?.current?.focus();
   }
   const handleSubmit = () => {
     switch (actionTo) {
