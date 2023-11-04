@@ -25,7 +25,6 @@ const Likes = ({
         handleCommentLike();
         break;
       case type.commentReply:
-        console.log("Dipatching Reply like");
         handleReplyLike();
         break;
       default:

@@ -381,7 +381,7 @@ export const submitReplyToReplyAction =
       );
       dispatch({ type: SUBMIT_REPLY_TO_COMMENT_OR_REPLY, payload: data });
       const replies = await api.fetchRepliesByComment(
-        replyToReplyBody.repliedTo,
+        replyToReplyBody.commentId,
         postId
       );
       dispatch({ type: FETCH_REPLIES_BY_COMMENT, payload: replies.data });
