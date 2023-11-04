@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import CommentItem from "./commentItem";
 import LoaderMini from "../utils/loaderMini";
 
-const CommentsWidget = ({ post, isModal, selectedReplyToComment }) => {
+const CommentsWidget = ({ post, isModal }) => {
   const { postComments, isPostCommentsLoading } = useSelector(
     (state) => state.posts
   );
@@ -24,7 +24,6 @@ const CommentsWidget = ({ post, isModal, selectedReplyToComment }) => {
                 comment={comment}
                 key={index}
                 isModal={isModal}
-                selectedReplyToComment={selectedReplyToComment}
               />
             ))}
         </>

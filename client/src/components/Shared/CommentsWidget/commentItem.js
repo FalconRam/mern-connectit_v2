@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import MiniProfilePicture from "../MiniProfilePicture/miniProfilePicture";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   getRepliesWithProfilePicture,
   handleStateForCommentReply,
