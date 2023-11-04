@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import MiniProfilePicture from "../MiniProfilePicture/miniProfilePicture";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getRepliesWithProfilePicture,
   handleStateForCommentReply,
@@ -15,7 +15,7 @@ import Likes from "../Likes/likes";
 
 const CommentItem = ({ post, isModal, comment }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
-
+  const { commentReplies } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
 
   const [viewReplies, setviewReplies] = useState(false);
@@ -136,7 +136,7 @@ const CommentItem = ({ post, isModal, comment }) => {
           ) : (
             <>
               {viewReplies &&
-                replies?.replyComments.map((reply, i) => (
+                commentReplies?.replyComments?.map((reply, i) => (
                   <ReplyWidget
                     user={user}
                     reply={reply}
