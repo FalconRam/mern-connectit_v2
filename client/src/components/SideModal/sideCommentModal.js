@@ -4,7 +4,6 @@ import "./sideCommentModal.css";
 import LikeCommentSave from "../Shared/LikeCommentSave/likeCommentSave";
 import PostCommentSection from "../Home/MiddleSection/Posts/PostLowerSection/PostCommentSection/postCommentSection";
 import CommentFormButton from "../Shared/CommentFormButton/commentFormButton";
-import { getCurrentCommentReplyState } from "../../actions/posts";
 
 const SideCommentModal = ({
   post,
