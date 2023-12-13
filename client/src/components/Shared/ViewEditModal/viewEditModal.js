@@ -1,11 +1,19 @@
 import React from "react";
 import PostEditModal from "../../Home/MiddleSection/SharePost/ShareModal/postEditModal";
 import PostDetailsModal from "../PostDetailsModal/postDetailsModal";
+import { getCommentsWithProfilePicture } from "../../../actions/posts";
+
+import { useDispatch } from "react-redux";
 
 const ViewEditModal = ({ post, profileDetails }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
   let isCreator = post?.creator === user?.id;
+
+  const dispatch = useDispatch();
+  const getComments = () => {
+    dispatch(getCommentsWithProfilePicture(post?._id, true));
+  };
   return (
     <>
       <div
@@ -46,7 +54,10 @@ const ViewEditModal = ({ post, profileDetails }) => {
                   data-bs-target={`#exampleModalCenter${post._id}`}
                 >
                   <a className="dropdown-item">
-                    <button className="btn dropdown-item-custom">
+                    <button
+                      className="btn dropdown-item-custom"
+                      onClick={getComments}
+                    >
                       View Post
                     </button>
                   </a>
