@@ -1,5 +1,5 @@
 import React from "react";
-import LeftSideProfilePage from "../../pages/ProfilePage/LeftSideProfilePage/leftSideProfilePage";
+import LeftSideProfilePage from "../../../pages/ProfilePage/LeftSideProfilePage/leftSideProfilePage";
 
 const MobileNavigationBar = () => {
   return (

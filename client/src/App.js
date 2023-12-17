@@ -6,19 +6,21 @@ import "./App.css";
 import NavBar from "./components/NavBar/navBar";
 import Auth from "./components/Auth/auth";
 import Home from "./components/Home/home";
-import PostDetailsWithProfile from "./components/pages/PostDetailsWithProfile/postDetailsWithProfile";
-import ProfilePage from "./components/pages/ProfilePage/profilePage";
 import MobileNavigationBar from "./components/Shared/MobileNavigationBar/mobileNavigationBar";
-import Settings from "./components/pages/Settings/settings";
-import Notification from "./components/pages/Notification/notification";
-import Search from "./components/pages/Search/search";
-import Messages from "./components/pages/Messages/messages";
-import ProfileEdit from "./components/pages/ProfilePage/ProfileEdit/profileEdit";
+
+import PostDetailsWithProfile from "./pages/PostDetailsWithProfile/postDetailsWithProfile";
+import ProfilePage from "./pages/ProfilePage/profilePage";
+import Settings from "./pages/Settings/settings";
+import Notification from "./pages/Notification/notification";
+import Search from "./pages/Search/search";
+import Messages from "./pages/Messages/messages";
+import ProfileEdit from "./pages/ProfilePage/ProfileEdit/profileEdit";
+import UserFollowerFollowing from "./pages/UserFollowerFollowing/userFollowerFollowing";
+
+import { getProfileDetails } from "./actions/profile";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import UserFollowerFollowing from "./components/pages/UserFollowerFollowing/userFollowerFollowing";
-import { getProfileDetails } from "./actions/profile";
 
 const App = () => {
   const dispatch = useDispatch();
