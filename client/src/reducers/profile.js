@@ -20,6 +20,7 @@ import {
 const initState = {
   count: {},
   profileDetails: {},
+  userProfileDetails:{},
   followingProfile: [],
   followersProfile: [],
   isProfileLoading: true,
@@ -73,11 +74,11 @@ export default (state = initState, action) => {
     case UPDATE_PROFILE_DETAILS:
       return {
         ...state,
-        profileDetails:
-          state.profileDetails.userDetails._id ===
+        userProfileDetails:
+          state.userProfileDetails.userDetails._id ===
           action.payload.data.userDetails._id
             ? action.payload.data
-            : state.profileDetails.userDetails,
+            : state.userProfileDetails.userDetails,
       };
     // case UPDATE_PROFILE_PASSWORD:
     //   return {
@@ -91,7 +92,7 @@ export default (state = initState, action) => {
     case UPDATE_PROFILE_PICTURES:
       return {
         ...state,
-        profileDetails:
+        userProfileDetails:
           state.profileDetails.userDetails._id ===
           action.payload.data.userDetails._id
             ? action.payload.data
