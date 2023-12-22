@@ -1,10 +1,34 @@
 import React from "react";
 
-import PostDetails from "../PostDetails/postDetails";
+import PostDetails from "../../Shared/PostDetails/postDetails";
 
 import "./postDetailsModal.css";
+import { useDispatch } from "react-redux";
+import { setCommentReplydetails } from "../../../actions/posts";
+
+// import { clearCmtReplyState } from "../../../utils/clearCmtReplyState";
 
 const PostDetailsModal = ({ post, profileDetails }) => {
+  const dispatch = useDispatch();
+  const clearCmtReplyState = async () => {
+    await dispatch(
+      setCommentReplydetails({
+        postId: "",
+        commentId: "",
+        replyid: "",
+        repliedToCommenterName: "", // Only for Showing Name in Input tag
+      })
+    );
+    await dispatch(
+      setCommentReplydetails({
+        postId: "",
+        commentId: "",
+        replyId: "",
+        repliedToReplierName: "", // Only for Showing Name in Input tag
+      })
+    );
+    return null;
+  };
   return (
     <>
       <div
@@ -21,6 +45,7 @@ const PostDetailsModal = ({ post, profileDetails }) => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                onClick={clearCmtReplyState}
               ></button>
             </div>
             <div className="modal-body postDetails-modal-body-custom">

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
-import "./auth.css";
-import LogIn from "./Login/login";
-import SignUp from "./SignUp/signUp";
+import "../../components/Auth/auth.css";
+import LogIn from "../../components/Auth/Login/login";
+import SignUp from "../../components/Auth/SignUp/signUp";
 
 const Auth = ({ isAuth, setIsAuth }) => {
   const history = useHistory();

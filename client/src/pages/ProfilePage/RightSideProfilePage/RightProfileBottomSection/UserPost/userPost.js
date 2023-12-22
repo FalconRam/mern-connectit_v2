@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import PostDetailsModal from "../../../../../components/Shared/PostDetailsModal/postDetailsModal";
-import ViewEditModal from "../../../../../components/Shared/ViewEditModal/viewEditModal";
+import PostDetailsModal from "../../../../../components/Modals/PostDetailsModal/postDetailsModal";
+import ViewEditModal from "../../../../../components/Modals/ViewEditModal/viewEditModal";
 
 import "./userPost.css";
 

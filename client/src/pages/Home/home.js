@@ -4,11 +4,11 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileDetails } from "../../actions/profile";
 
-import "./home.css";
-import LeftSection from "./LeftSection/leftSection";
-import MiddleSection from "./MiddleSection/middleSection";
-import RightSection from "./RightSection/rightSection";
-import ShareCard from "./MiddleSection/SharePost/ShareCard/shareCard";
+import "../../components/Home/home.css";
+import LeftSection from "../../components/Home/LeftSection/leftSection";
+import MiddleSection from "../../components/Home/MiddleSection/middleSection";
+import RightSection from "../../components/Home/RightSection/rightSection";
+import ShareCard from "../../components/Home/MiddleSection/SharePost/ShareCard/shareCard";
 import { getPostsByFollowing } from "../../actions/posts";
 
 const Home = () => {

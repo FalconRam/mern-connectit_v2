@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 
-import { useDispatch } from "react-redux";
-
 import "./postLowerSection.css";
 import PostCommentSection from "./PostCommentSection/postCommentSection";
 import LikeCommentSave from "../../../../Shared/LikeCommentSave/likeCommentSave";
 import PostCaptionMain from "../../../../Shared/PostCaptionMain/postCaptionMain";
-import SideCommentModal from "../../../../SideModal/sideCommentModal";
+import SideCommentModal from "../../../../Modals/SideModal/sideCommentModal";
 
 const PostLowerSection = ({ post, comments, setComments }) => {
   const [isPostSaved, setIsPostSaved] = useState(false);

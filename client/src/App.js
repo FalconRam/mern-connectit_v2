@@ -4,10 +4,10 @@ import { useDispatch } from "react-redux";
 import "./App.css";
 
 import NavBar from "./components/NavBar/navBar";
-import Auth from "./components/Auth/auth";
-import Home from "./components/Home/home";
 import MobileNavigationBar from "./components/Shared/MobileNavigationBar/mobileNavigationBar";
 
+import Home from "./pages/Home/home";
+import Auth from "./pages/Auth/auth";
 import PostDetailsWithProfile from "./pages/PostDetailsWithProfile/postDetailsWithProfile";
 import ProfilePage from "./pages/ProfilePage/profilePage";
 import Settings from "./pages/Settings/settings";
