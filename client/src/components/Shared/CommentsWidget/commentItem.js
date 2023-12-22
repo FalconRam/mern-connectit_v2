@@ -70,6 +70,7 @@ const CommentItem = ({ post, isModal, comment }) => {
         postId: post._id,
         commentId: comment._id,
         replyid: "",
+        repliedToCommenterName: comment.commenterName, // Only for Showing Name in Input tag
       })
     );
   };

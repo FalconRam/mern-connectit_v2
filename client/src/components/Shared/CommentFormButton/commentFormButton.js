@@ -15,7 +15,6 @@ const CommentFormButton = ({ post, setComments }) => {
   const { commentReplyState, commentReplyDetails } = useSelector(
     (state) => state.posts
   );
-
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
 
@@ -115,7 +114,15 @@ const CommentFormButton = ({ post, setComments }) => {
             ? "form-control form-control-sm form-control-comment ms-2 text-muted"
             : "form-control form-control-sm form-control-comment ms-2"
         }
-        placeholder="Write your Comment..."
+        placeholder={
+          commentReplyDetails.repliedToCommenterName ||
+          commentReplyDetails.repliedToReplierName
+            ? `Replying to ${
+                commentReplyDetails.repliedToCommenterName ||
+                commentReplyDetails.repliedToReplierName
+              }`
+            : "Write your Comment..."
+        }
         aria-label="Username"
         aria-describedby="basic-addon1"
         name="comment"

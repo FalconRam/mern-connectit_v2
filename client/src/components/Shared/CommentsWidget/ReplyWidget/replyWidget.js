@@ -45,6 +45,7 @@ const ReplyWidget = ({ user, reply, comment, post }) => {
         postId: post._id,
         commentId: comment._id,
         replyId: reply._id,
+        repliedToReplierName: reply.replierName, // Only for Showing Name in Input tag
       })
     );
   };
