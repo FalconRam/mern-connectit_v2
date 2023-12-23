@@ -37,6 +37,60 @@ const SideCommentModal = ({
   return (
     <div>
       <div
+        className="offcanvas offcanvas-end"
+        tabindex="-1"
+        id={`offcanvasRight${post?._id}`}
+        aria-labelledby="offcanvasRightLabel"
+        data-bs-backdrop="static"
+      >
+        <div className="m-2 p-1 d-flex justify-content-end">
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+            onClick={clearCmtReplyState}
+          />
+        </div>
+        {/* <div class="offcanvas-header">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div> */}
+        <div className="ms-3 ps-1 me-4">
+          <LikeCommentSave
+            post={post}
+            isPostSaved={isPostSaved}
+            handleCopy={handleCopy}
+            isCommentsNotOpened={true}
+          />
+          <div className="d-flex justify-content-end mb-1">
+            <p className="mb-0 commenterCmt text-muted">
+              {post?.commentsInfo?.postComment?.length} Comments
+            </p>
+          </div>
+        </div>
+        <div className="offcanvas-body">
+          <PostCommentSection
+            post={post}
+            isModal={true}
+            isSideModal={true}
+            comments={comments}
+            setComments={setComments}
+          />
+        </div>
+        <div className="">
+          <CommentFormButton
+            post={post}
+            setComments={setComments}
+            commentReplyState={commentReplyState}
+          />
+        </div>
+      </div>
+      {/* <div
         className="modal fade"
         id={`staticBackdropComment${post?._id}`}
         data-bs-backdrop="static"
@@ -87,7 +141,7 @@ const SideCommentModal = ({
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

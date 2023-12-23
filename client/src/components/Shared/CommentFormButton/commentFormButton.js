@@ -104,7 +104,7 @@ const CommentFormButton = ({ post, setComments }) => {
     setIsPostingComment(false);
   };
   return (
-    <div className="input-group">
+    <div className="input-group mb-4">
       <input
         ref={inputCommentReply}
         disabled={isPostingComment}
