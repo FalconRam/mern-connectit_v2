@@ -21,10 +21,14 @@ const ChatSearch = ({ isSearchInput, setIsSearchInput }) => {
     isSearchInput && collapseElement.classList.add("show");
     setSearchedUsers(users?.users);
   }, [isSearchInput, users]);
-
-  const handleClearUsers = () => {
+  
+  let timer;
+  const handleDebounceGetUsers = () => {
+    clearTimeout(timer);
     setSearchedUsers([]);
+    timer = setTimeout(() => handleSearch(), 650);
   };
+  // const handleClearUsers = () => {};
 
   const searchKeyword = useRef();
 
@@ -56,7 +60,7 @@ const ChatSearch = ({ isSearchInput, setIsSearchInput }) => {
             aria-label="Sizing example input"
             aria-describedby="inputGroup-sizing-sm"
             placeholder="Name or Email..."
-            onChange={handleClearUsers}
+            onChange={handleDebounceGetUsers}
           />
           <button
             className="btn input-group-text eyeButton"
