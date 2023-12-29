@@ -26,13 +26,13 @@ const App = () => {
   const dispatch = useDispatch();
   let user = JSON.parse(localStorage.getItem("profile"));
 
-  const [isAuth, setIsAuth] = useState(true);
-
+  const [isAuth, setIsAuth] = useState("");
   useEffect(() => {
     user && dispatch(getProfileDetails(user?.id, true));
-    window.location.pathname !== "/auth" && setIsAuth(!isAuth);
-  }, [window.location]);
-
+  }, []);
+  useEffect(() => {
+    window.location.pathname === "/auth" ? setIsAuth(true) : setIsAuth(false);
+  }, [window.location.pathname, user]);
   return (
     <>
       <ToastContainer />
