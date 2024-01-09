@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { useSelector } from "react-redux";
 import CommentItem from "./commentItem";
@@ -8,8 +8,10 @@ const CommentsWidget = ({ post, isModal }) => {
   const { postComments, isPostCommentsLoading } = useSelector(
     (state) => state.posts
   );
-  postComments?.comments?.sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  useMemo(() =>
+    postComments?.comments?.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    )
   );
   return (
     <>

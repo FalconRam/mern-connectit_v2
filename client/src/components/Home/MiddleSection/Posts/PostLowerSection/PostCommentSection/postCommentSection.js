@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 import "./postCommentSection.css";
 import CommentsWidget from "../../../../../Shared/CommentsWidget/commentsWidget";
@@ -10,14 +10,15 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
     setComments(post?.commentsInfo);
   }, [post]);
 
-  let commentSliced = comments?.postComment
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .slice(0, 1);
-
+  let commentSliced = useMemo(() =>
+    comments?.postComment
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 1)
+  );
   return (
     <>
       {/* <div className={isPostDetails && "customDetails"}> */}
-      <div className={isModal ? "p-2" : "card-footer p-1 pt-1"}>
+      <div className={isModal ? "p-2 mx-1 ps-0" : "card-footer p-1 pt-1"}>
         <div>
           <div>
             {!commentSliced?.length ? (
