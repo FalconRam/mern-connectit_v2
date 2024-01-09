@@ -80,17 +80,39 @@ const CommentItem = ({ post, isModal, comment }) => {
         className="ms-1 mb-2 py-1"
         // {...(isModal && { "data-bs-dismiss": "modal", "aria-label": "Close" })}
       >
-        <div className="d-flex justify-content-between">
-          <div className="d-flex align-items-center gap-2">
-            <div
-              className="likeIcon text-success"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            >
-              <MiniProfilePicture isComment={true} comment={comment} />
+        <div className="d-flex align-items-start gap-2">
+          {/* MiniProfilePicture */}
+          <div className="likeIcon" data-bs-dismiss="modal" aria-label="Close">
+            <MiniProfilePicture isComment={true} comment={comment} />
+          </div>
+
+          <div className="d-flex flex-column flex-grow-1">
+            {/* Commenter Name, Comment */}
+            <div className="">
+              <span className="commenterName me-2">
+                {comment?.commenterName}
+              </span>
+              <span className="commenterCmt">{comment?.comment}</span>
             </div>
-            <h5 className="mb-0 commenterName">{comment?.commenterName}</h5>
-            <p className="mb-0 commenterCmt">{comment?.comment}</p>
+            {/* Timestamp, Like Count, Reply btn */}
+            <div className=" d-flex align-items-center gap-3">
+              <p className="mb-0 commenterCmt text-muted">
+                {moment(comment?.createdAt).fromNow()}
+              </p>
+              <p className="mb-0 commenterName text-muted">
+                {comment?.commentLikes?.length > 1
+                  ? `${comment?.commentLikes?.length} Likes`
+                  : `${
+                      comment?.commentLikes?.length === 0 ? "Like" : "1 Like"
+                    }`}
+              </p>
+              <span
+                className="mb-0 commenterName text-muted likeBtn"
+                onClick={handleReplyToComment}
+              >
+                Reply
+              </span>
+            </div>
           </div>
           <Likes
             isComment={true}
@@ -100,25 +122,7 @@ const CommentItem = ({ post, isModal, comment }) => {
             handleCommentLike={handleCommentLike}
           />
         </div>
-        <div className="ms-3 ps-4 d-flex align-items-center gap-3">
-          <p className="mb-0 commenterCmt text-muted">
-            {moment(comment?.createdAt).fromNow()}
-          </p>
-          <p className="mb-0 commenterName text-muted">
-            {comment?.commentLikes?.length > 1
-              ? `${comment?.commentLikes?.length} Likes`
-              : `${comment?.commentLikes?.length === 0 ? "Like" : "1 Like"}`}
-          </p>
-          <span
-            className="mb-0 commenterName text-muted likeBtn"
-            onClick={handleReplyToComment}
-          >
-            Reply
-            {/* {comment?.replyComments?.length > 1
-              ? `${comment?.replyComments?.length} Replies`
-              : `${comment?.replyComments?.length} Reply`} */}
-          </span>
-        </div>
+
         {comment?.replyComments?.length > 0 &&
           !viewReplies &&
           !isApiLoading && (

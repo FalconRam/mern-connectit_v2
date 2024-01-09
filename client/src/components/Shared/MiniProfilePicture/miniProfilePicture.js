@@ -13,7 +13,7 @@ const MiniProfilePicture = ({ post, isComment, comment, reply }) => {
   return (
     <>
       <div
-        className=" d-flex flex-row align-items-center gap-2 likeBtn"
+        className="d-flex flex-row align-items-center gap-2 likeBtn"
         onClick={handleProfile}
       >
         {isComment ? (
@@ -28,7 +28,7 @@ const MiniProfilePicture = ({ post, isComment, comment, reply }) => {
                     reply?.profilePicture ||
                     "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
               }
-              className="img-thumbnail rounded-circle miniPostProfilePic d-flex align-items-center justify-content-center"
+              className="rounded-circle miniPostProfilePic d-flex align-items-center justify-content-center"
               alt={
                 comment?.commenterName?.charAt(0).toUpperCase() ||
                 reply?.replierName?.charAt(0).toUpperCase()

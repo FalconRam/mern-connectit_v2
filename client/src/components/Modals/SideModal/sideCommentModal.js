@@ -37,7 +37,7 @@ const SideCommentModal = ({
   return (
     <div>
       <div
-        className="offcanvas offcanvas-end"
+        className="offcanvas offcanvas-end offcanvas-custom-style"
         tabindex="-1"
         id={`offcanvasRight${post?._id}`}
         aria-labelledby="offcanvasRightLabel"
@@ -60,14 +60,14 @@ const SideCommentModal = ({
             aria-label="Close"
           ></button>
         </div> */}
-        <div className="ms-3 ps-1 me-4">
+        <div className="ms-2 ps-1 me-4">
           <LikeCommentSave
             post={post}
             isPostSaved={isPostSaved}
             handleCopy={handleCopy}
             isCommentsNotOpened={true}
           />
-          <div className="d-flex justify-content-end mb-1">
+          <div className="float-end mb-1">
             <p className="mb-0 commenterCmt text-muted">
               {post?.commentsInfo?.postComment?.length} Comments
             </p>

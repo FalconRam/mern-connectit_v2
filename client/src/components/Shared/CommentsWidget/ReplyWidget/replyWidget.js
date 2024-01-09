@@ -52,35 +52,39 @@ const ReplyWidget = ({ user, reply, comment, post }) => {
   return (
     <>
       <div className="ms-3 ps-2 mt-2 py-1">
-        <div className="d-flex justify-content-between">
-          <div className="d-flex align-items-center gap-2">
-            <div
-              className="likeIcon text-success"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            >
-              <MiniProfilePicture isComment={true} reply={reply} />
-            </div>
-            <h5 className="mb-0 commenterName">{reply?.replierName}</h5>
-            <p className="mb-0 commenterCmt">{reply?.reply}</p>
+        <div className="d-flex align-items-start gap-2">
+          {/* MiniProfilePicture */}
+          <div className="likeIcon" data-bs-dismiss="modal" aria-label="Close">
+            <MiniProfilePicture isComment={true} reply={reply} />
           </div>
-        </div>
-        <div className="ms-3 ps-4 d-flex align-items-center gap-3">
-          <p className="mb-0 commenterCmt text-muted">
-            {moment(reply?.createdAt).fromNow()}
-          </p>
-          <Likes
-            isLiked={isLiked}
-            likes={likes}
-            likeFrom={"commentModal"}
-            handleCommentLike={handleReplyLike}
-          />
-          <span
-            className="mb-0 commenterName text-muted likeBtn"
-            onClick={handleReplyToReply}
-          >
-            Reply
-          </span>
+
+          <div className="d-flex flex-column flex-grow-1">
+            {/* Replier Name, Reply */}
+            <div className="">
+              <span className="mb-0 commenterName me-2">
+                {reply?.replierName}
+              </span>
+              <span className="mb-0 commenterCmt">{reply?.reply}</span>
+            </div>
+            {/* Timestamp, Like Count, Reply btn */}
+            <div className="d-flex align-items-center gap-3">
+              <p className="mb-0 commenterCmt text-muted">
+                {moment(reply?.createdAt).fromNow()}
+              </p>
+              <Likes
+                isLiked={isLiked}
+                likes={likes}
+                likeFrom={"commentModal"}
+                handleCommentLike={handleReplyLike}
+              />
+              <span
+                className="mb-0 commenterName text-muted likeBtn"
+                onClick={handleReplyToReply}
+              >
+                Reply
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </>

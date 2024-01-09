@@ -1,3 +1,7 @@
+.offcanvas-custom-style {
+    width: 480px !important
+}
+
 .modal-dialog-custom-side {
     margin-right: 0;
     margin-top: 0;
@@ -21,5 +25,9 @@
     .modal-dialog-custom-side {
         margin-right: auto;
         margin-left: auto;
+    }
+
+    .offcanvas-custom-style {
+        width: 100% !important
     }
 }
