@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 import User from "../models/user.js";
-import { convertImgToCloudinaryURL } from "../services/HelperFunctions/convertImgToCloudinaryURL.js";
+import { convertImgToCloudinaryURL } from "../services/cloudinary/convertImgToCloudinaryURL.js";
 
 export const followingAndFollowersCount = async (req, res) => {
   const { profileId } = req.query;
