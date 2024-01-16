@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import * as api from "../api";
 import {
   START_PROFILE_LOADING,
@@ -82,37 +83,35 @@ export const getFollowersProfileDetails = (id) => async (dispatch) => {
   }
 };
 
-export const getProfileDetails =
-  (id, isUser, tokenFromCookie) => async (dispatch) => {
-    try {
-      if (isUser) {
-        dispatch({ type: START_USER_PROFILE_LOADING });
+export const getProfileDetails = (id, isUser) => async (dispatch) => {
+  try {
+    const accessTokenFromCookie = Cookies.get("userToken");
+    if (isUser) {
+      dispatch({ type: START_USER_PROFILE_LOADING });
 
-        const { data } = await api.fetchProfileDetails(id, tokenFromCookie);
-        dispatch({ type: GET_USER_PROFILE_DETAILS, payload: data });
+      const { data } = await api.fetchProfileDetails(id, accessTokenFromCookie);
+      dispatch({ type: GET_USER_PROFILE_DETAILS, payload: data });
 
-        dispatch({ type: END_USER_PROFILE_LOADING });
-      } else {
-        dispatch({ type: START_PROFILE_LOADING });
+      dispatch({ type: END_USER_PROFILE_LOADING });
+    } else {
+      dispatch({ type: START_PROFILE_LOADING });
 
-        const { data } = await api.fetchProfileDetails(id, tokenFromCookie);
-        dispatch({ type: GET_PROFILE_DETAILS, payload: data });
+      const { data } = await api.fetchProfileDetails(id, accessTokenFromCookie);
+      dispatch({ type: GET_PROFILE_DETAILS, payload: data });
 
-        dispatch({ type: END_PROFILE_LOADING });
-      }
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.message)
-        if (error.response.data.message === "jwt expired")
-          window.location.href = "/auth";
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      toast.error(message);
+      dispatch({ type: END_PROFILE_LOADING });
     }
-  };
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.message)
+      if (error.response.data.message === "jwt expired")
+        window.location.href = "/auth";
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+  }
+};
 
 export const updateProfileDetails = (id, userData) => async (dispatch) => {
   try {

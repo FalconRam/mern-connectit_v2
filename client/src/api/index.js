@@ -1,6 +1,13 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+
 import { toast } from "react-toastify";
+import { tokenMiddleware } from "../middleware/tokenMiddleware";
+
+// let URL =
+//   window.location.origin === process.env.REACT_APP_LOCAL_HOST_FE_URL
+//     ? process.env.REACT_APP_LOCAL_HOST_BE_URL
+//     : process.env.REACT_APP_PRODUCTION_BE_URL;
 
 let localURL = "http://localhost:5000/";
 let productionURL = "https://connectit.onrender.com/";
@@ -11,13 +18,13 @@ let URL =
 const API = axios.create({ baseURL: URL });
 
 API.interceptors.request.use(async (req) => {
-  let tokenFromCookie = await Cookies.get("userToken");
+  let accessTokenFromCookie = await Cookies.get("userToken");
   try {
-    if (tokenFromCookie) {
-      req.headers.authorization = `Bearer ${tokenFromCookie}`;
+    if (accessTokenFromCookie) {
+      req.headers.authorization = `Bearer ${accessTokenFromCookie}`;
     } else if (localStorage.getItem("profile")) {
       req.headers.Authorization = `Bearer ${
-        JSON.parse(localStorage.getItem("profile")).token
+        JSON.parse(localStorage.getItem("profile")).accessToken
       }`;
     }
     return req;
@@ -29,6 +36,51 @@ API.interceptors.request.use(async (req) => {
     toast.error(message);
   }
 });
+
+let refreshTokenCount = 0;
+let failedApiRequests = [];
+
+API.interceptors.response.use(
+  async (response) => {
+    return response;
+  },
+  async (error) => {
+    failedApiRequests.push(error.config);
+    if (
+      error?.response?.status === 403 &&
+      !error?.config?.sent &&
+      refreshTokenCount === 0
+    ) {
+      refreshTokenCount += 1; // To block the Cascading Request
+      error.config.sent = true; // To block the Cascading Request
+
+      await tokenMiddleware();
+
+      failedApiRequests.map(async (failedReq) => {
+        try {
+          failedReq.headers["authorization"] = `Bearer ${
+            JSON.parse(localStorage.getItem("profile")).accessToken
+          }`;
+
+          await API(failedReq);
+        } catch (retryError) {
+          // console.error("Retrying request failed:", retryError);
+        }
+      });
+      window.location.reload();
+    }
+
+    return error;
+  }
+);
+
+// Login/Signup APIs
+export const logIn = (formData) => API.post("/user/login-user", formData);
+
+export const signUp = (formData) => API.post("/user/create-user", formData);
+
+// export const refreshSession = (refreshToken) =>
+//   API.post("/user/refresh-session", refreshToken);
 
 // Post Related APIs
 export const fetchPostsByFollowing = () => API.get(`/posts/feeds`);
@@ -80,11 +132,6 @@ export const replyToCommentPost = (postId, replyToCommentBody) =>
 export const replyToReplyOfComment = (postId, replyToReplyBody) =>
   API.patch(`/posts/${postId}/addReplyToReply`, replyToReplyBody);
 
-// Login/Signup APIs
-export const logIn = (formData) => API.post("/user/login-user", formData);
-
-export const signUp = (formData) => API.post("/user/create-user", formData);
-
 // Profile APIs
 export const fetchFollowingAndFollowersCount = (id) =>
   API.get(`/profile/following-followers/count?profileId=${id}`);
@@ -95,8 +142,10 @@ export const fetchFollowingProfileDetails = (id) =>
 export const fetchFollowersProfileDetails = (id) =>
   API.get(`/profile/followers/details?profileId=${id}`);
 
-export const fetchProfileDetails = (id, tokenFromCookie) =>
-  API.post(`/profile/details?profileId=${id}`, { token: tokenFromCookie });
+export const fetchProfileDetails = (id, accessTokenFromCookie) =>
+  API.post(`/profile/details?profileId=${id}`, {
+    token: accessTokenFromCookie,
+  });
 
 export const updateProfileDetails = (id, userData) =>
   API.patch(`/profile/update/${id}`, userData);

@@ -3,12 +3,16 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 
 import User from "../models/user.js";
+import {
+  saveUserToken,
+  signAccessToken,
+  signRefreshToken,
+  verifyRefreshToken,
+} from "../services/jwtTokenService/jwtTokenService.js";
 
 dotenv.config();
-const secretKey = process.env.SECRET_KEY;
 
 export const logIn = async (req, res) => {
   const { email, password } = req.body;
@@ -32,23 +36,41 @@ export const logIn = async (req, res) => {
         .status(400)
         .json({ status: false, message: "Email or Password is incorrect." });
 
-    // If User is authorized one...
-    const token = jwt.sign(
-      { email: existingUser.email, id: existingUser._id },
-      secretKey,
-      { expiresIn: "2h" }
-    );
+    [req.emailId, req.userId] = [existingUser.email, existingUser._id];
+    // Generate AccessToken
+    const accessToken = await signAccessToken(req);
+
+    // Generate Refresh token
+    const refreshToken = await signRefreshToken(req);
+    let token;
+    try {
+      token = await saveUserToken(req.userId.toString(), {
+        accessToken,
+        refreshToken,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        message: error.message || error.stack || error,
+      });
+    }
 
     let result = {
       id: existingUser._id,
       name: existingUser.name,
       email: existingUser.email,
-      token: token,
     };
 
-    res.status(200).json({ status: true, data: result });
+    res.status(200).json({
+      status: true,
+      data: result,
+      accessToken: token.accessToken,
+      refreshToken: token.refreshToken,
+    });
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    res
+      .status(500)
+      .json({ status: false, message: error.messsage || error.stack || error });
   }
 };
 
@@ -82,20 +104,71 @@ export const signUp = async (req, res) => {
       country,
     });
 
-    const token = jwt.sign({ email: result.email, id: result._id }, secretKey, {
-      expiresIn: "2h",
-    });
+    [req.emailId, req.userId] = [result.email, result._id];
+    // Generate AccessToken
+    const accessToken = await signAccessToken(req);
+
+    // Generate Refresh token
+    const refreshToken = await signRefreshToken(req);
 
     let resultUser = {
       id: result._id,
       name: result.name,
       email: result.email,
-      token: token,
     };
 
-    res.status(200).json({ status: true, data: resultUser });
+    res
+      .status(200)
+      .json({ status: true, data: resultUser, accessToken, refreshToken });
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    res
+      .status(500)
+      .json({ status: false, message: error.messsage || error.stack || error });
+  }
+};
+
+export const refreshUserController = async (req, res) => {
+  const { refreshToken: oldRefreshToken } = req.body;
+  try {
+    const isRefreshTokenValid = await verifyRefreshToken(req, oldRefreshToken);
+    let newAccessToken, newRefreshToken, savedToken;
+
+    if (isRefreshTokenValid) {
+      try {
+        // Generate a Access Token
+        newAccessToken = await signAccessToken(req);
+
+        // Generate a Refresh Token
+        newRefreshToken = await signRefreshToken(req);
+
+        // Save the New Access Token & Refresh Token to DB
+        savedToken = await saveUserToken(req.userId, {
+          accessToken: newAccessToken,
+          refreshToken: newRefreshToken,
+        });
+      } catch (error) {
+        return res.status(500).json({
+          status: false,
+          message: error.messsage || error.stack || error,
+        });
+      }
+    } else
+      return res.status(403).json({
+        status: false,
+        message: "Refresh Token Not Exist",
+      });
+
+    return res.status(200).json({
+      status: true,
+      data: {
+        accessToken: savedToken.accessToken,
+        refreshToken: savedToken.refreshToken,
+      },
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: false, message: error.messsage || error.stack || error });
   }
 };
 
@@ -130,6 +203,8 @@ export const getSearchUsers = async (req, res) => {
 
     res.status(200).json({ status: true, data: { users: users } });
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    res
+      .status(500)
+      .json({ status: false, message: error.messsage || error.stack || error });
   }
 };
