@@ -25,9 +25,10 @@ const NavBar = () => {
     const token = user?.token;
     if (token) {
       const decodedToken = decode(token);
-      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+      // if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
     setUser(JSON.parse(localStorage.getItem("profile")));
+    // TODO: Need to check why we are setting user on location change
   }, [location]);
 
   const isChatPage = useLocation().pathname === "/chats";
