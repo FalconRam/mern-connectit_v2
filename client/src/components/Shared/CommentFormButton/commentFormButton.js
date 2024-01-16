@@ -8,7 +8,7 @@ import {
   submitReplyToReplyAction,
 } from "../../../actions/posts";
 
-const CommentFormButton = ({ post }) => {
+const CommentFormButton = ({ post, setComments }) => {
   let actionTo;
   let inputCommentReply = useRef(null);
 
@@ -82,6 +82,8 @@ const CommentFormButton = ({ post }) => {
     const updatedPostWithComment = await dispatch(
       commentPostWithUserDetails(post?._id, { postComment })
     );
+    console.log(updatedPostWithComment);
+    setComments(updatedPostWithComment);
     setComment("");
     setIsPostingComment(false);
     dispatch(getCommentsWithProfilePicture(post?._id, false));
