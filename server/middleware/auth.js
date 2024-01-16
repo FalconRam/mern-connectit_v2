@@ -19,9 +19,7 @@ const auth = async (req, res, next) => {
         : req.headers.authorization.split(" ")[1];
 
     if (!token) {
-      return res
-        .status(401)
-        .json({ status: false, message: "Token not provided" });
+      return res.status(401).json({ status: false, message: "Unauthorized" });
     }
 
     const isCustomAuth = token.length < 500;
@@ -29,9 +27,26 @@ const auth = async (req, res, next) => {
     let decodedData;
     // For CustomAuth
     if (token && isCustomAuth) {
-      decodedData = jwt.verify(token, secretKey);
-
-      req.userId = decodedData.id;
+      // Validates, if the Active/Expired token sent from client
+      // If verify fails, throw 403
+      try {
+        decodedData = jwt.verify(
+          token,
+          process.env.AUTH_ACCESS_TOKEN_SECRET_KEY
+        );
+        [req.userId, req.emailId] = [decodedData.id, decodedData.email];
+      } catch (error) {
+        if (req.url === "/refresh-session") {
+          decodedData = jwt.decode(token);
+          [req.userId, req.emailId] = [decodedData.id, decodedData.email];
+          next();
+          return;
+        } else
+          return res.status(403).json({
+            status: false,
+            message: "Forbidden Access",
+          }); // Only on Auth Middleware we should throw 403, to initiate refresh token on client
+      }
     }
     // Google Oauth2
     else {
