@@ -83,6 +83,8 @@ const CommentFormButton = ({ post, setComments }) => {
     const updatedPostWithComment = await dispatch(
       commentPostWithUserDetails(post?._id, { postComment })
     );
+    console.log(updatedPostWithComment);
+    setComments(updatedPostWithComment);
     setComment("");
     setIsPostingComment(false);
     dispatch(getCommentsWithProfilePicture(post?._id, false));
