@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 
 import User from "../models/user.js";
 import PostMessage from "../models/postMessage.js";
-import { convertImgToCloudinaryURL } from "../services/HelperFunctions/convertImgToCloudinaryURL.js";
-import { deleteCloudinaryImg } from "../services/HelperFunctions/deleteCloudinaryImg.js";
+import { convertImgToCloudinaryURL } from "../services/cloudinary/convertImgToCloudinaryURL.js";
+import { deleteCloudinaryImg } from "../services/cloudinary/deleteCloudinaryImg.js";
 
 export const getPostsByFollowing = async (req, res) => {
   try {

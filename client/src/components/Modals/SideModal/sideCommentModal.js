@@ -38,7 +38,7 @@ const SideCommentModal = ({
     <div>
       <div
         className="offcanvas offcanvas-end offcanvas-custom-style"
-        tabindex="-1"
+        tabIndex="-1"
         id={`offcanvasRight${post?._id}`}
         aria-labelledby="offcanvasRightLabel"
         data-bs-backdrop="static"
