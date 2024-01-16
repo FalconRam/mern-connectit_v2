@@ -1,17 +1,15 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useMemo } from "react";
 
 import "./postCommentSection.css";
 import CommentsWidget from "../../../../../Shared/CommentsWidget/commentsWidget";
 import CommentFormButton from "../../../../../Shared/CommentFormButton/commentFormButton";
+import { useSelector } from "react-redux";
 
 const PostCommentSection = ({ post, isModal, isSideModal }) => {
-  const [comments, setComments] = useState(post?.commentsInfo);
-  useEffect(() => {
-    setComments(post?.commentsInfo);
-  }, [post]);
+  const { postComments } = useSelector((state) => state.posts);
 
   let commentSliced = useMemo(() =>
-    comments?.postComment
+    postComments?.comments
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 1)
   );
@@ -46,7 +44,7 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
                     </div>
                     <div className="">
                       <p className="mb-0 me-1 commenterCmt text-muted">
-                        {comments?.postComment?.length} Comments
+                        {postComments?.postComment?.length} Comments
                       </p>
                     </div>
                   </div>
@@ -54,9 +52,7 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
               </>
             )}
           </div>
-          {!isSideModal && (
-            <CommentFormButton post={post} setComments={setComments} />
-          )}
+          {!isSideModal && <CommentFormButton post={post} />}
         </div>
       </div>
       {/* </div> */}
