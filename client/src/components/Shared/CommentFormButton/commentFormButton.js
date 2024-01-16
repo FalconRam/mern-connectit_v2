@@ -8,7 +8,7 @@ import {
   submitReplyToReplyAction,
 } from "../../../actions/posts";
 
-const CommentFormButton = ({ post }) => {
+const CommentFormButton = ({ post, setComments }) => {
   let actionTo;
   let inputCommentReply = useRef(null);
 
@@ -70,6 +70,7 @@ const CommentFormButton = ({ post }) => {
           commentId: commentReplyDetails.commentId,
           repliedTo: commentReplyDetails.replyId,
         };
+        // console.log(replyToReplyBody);
         submitReplyToReply(replyToReplyBody);
         break;
       default:
@@ -85,6 +86,7 @@ const CommentFormButton = ({ post }) => {
     setComment("");
     setIsPostingComment(false);
     dispatch(getCommentsWithProfilePicture(post?._id, false));
+    setComments(updatedPostWithComment);
   };
 
   const submitReplyToComment = async (replyToCommentBody) => {
