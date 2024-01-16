@@ -17,7 +17,7 @@ const tokenSchema = mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 25 * 60 * 60, // 25 hours * 00 minutes * 00 seconds - To auto clearr the token from DB
+    expires: "24h", // 25 hours * 00 minutes * 00 seconds - To auto clearr the token from DB
   },
 });
 
