@@ -13,48 +13,51 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
   useEffect(() => {
     setComments(post?.commentsInfo);
   }, [post]);
+  let slicedComment = useMemo(() => {
+    return comments?.postComment
+      ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 1);
+  }, [post, comments]);
 
-  let commentSliced = useMemo(() =>
-    comments?.postComment
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .slice(0, 1)
-  );
   return (
     <>
       {/* <div className={isPostDetails && "customDetails"}> */}
       <div className={isModal ? "p-2 mx-1 ps-0" : "card-footer p-1 pt-1"}>
         <div>
           <div>
-            {!commentSliced?.length ? (
+            {isModal ? (
+              // Shows Comments Widget
+              <>
+                <CommentsWidget
+                  post={post}
+                  isModal={isModal}
+                  setComments={setComments}
+                />
+              </>
+            ) : // if no comments
+            !comments?.postComment?.length ? (
               <p className="text-start text-muted ms-2 mb-0 pb-1 p-like">
                 Be first to comment...
               </p>
             ) : (
+              // Shows last comment
               <>
-                {isModal ? (
-                  // Shows Comments Widget
-                  <>
-                    <CommentsWidget post={post} isModal={isModal} />
-                  </>
-                ) : (
-                  // Shows last comment
-                  <div className="d-flex justify-content-between">
-                    <div className="d-flex align-items-center ms-1 gap-2 ">
-                      <i className="bi bi-chat-left likeIcon text-success "></i>
-                      <h5 className="mb-0 commenterName">
-                        {commentSliced?.map((comment) => comment.commenterName)}
-                      </h5>
-                      <p className="mb-0 commenterCmt">
-                        {commentSliced?.map((comment) => comment.comment)}
-                      </p>
-                    </div>
-                    <div className="">
-                      <p className="mb-0 me-1 commenterCmt text-muted">
-                        {comments?.postComment?.length} Comments
-                      </p>
-                    </div>
+                <div className="d-flex justify-content-between">
+                  <div className="d-flex align-items-center ms-1 gap-2 ">
+                    <i className="bi bi-chat-left likeIcon text-success "></i>
+                    <h5 className="mb-0 commenterName">
+                      {slicedComment?.map((comment) => comment.commenterName)}
+                    </h5>
+                    <p className="mb-0 commenterCmt">
+                      {slicedComment?.map((comment) => comment.comment)}
+                    </p>
                   </div>
-                )}
+                  <div className="">
+                    <p className="mb-0 me-1 commenterCmt text-muted">
+                      {comments?.postComment?.length} Comments
+                    </p>
+                  </div>
+                </div>
               </>
             )}
           </div>
@@ -63,7 +66,6 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
           )}
         </div>
       </div>
-      {/* </div> */}
     </>
   );
 };
