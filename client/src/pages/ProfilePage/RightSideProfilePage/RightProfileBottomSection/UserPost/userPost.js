@@ -16,33 +16,35 @@ const UserPost = ({ post, profileDetails }) => {
   }, [post?.likes, post?.commentsInfo?.postComment]);
 
   return (
-    <>
-      <div className="">
-        <div className="card imageHover customPostCard">
-          <img
-            className="img-fluid d-block m-auto image-only"
-            src={post?.selectedFile}
-            alt="Post Image"
-            data-bs-toggle="modal"
-            data-bs-target={`#viewEditModal${post._id}`}
-          />
-          <div
-            className="d-flex justify-content-center align-items-center hoverDiv"
-            data-bs-toggle="modal"
-            data-bs-target={`#viewEditModal${post._id}`}
-          >
-            <p className="hoverDiv-likeIcon">
-              <i className="bi bi-heart-fill text-danger" /> {postLikesCount}
-            </p>
-            <p className="hoverDiv-commentIcon">
-              <i className="bi bi-chat-fill text-danger" /> {postCommentsCount}
-            </p>
-          </div>
+    <div>
+      <div
+        className="card imageHover customPostCard"
+        data-bs-toggle="modal"
+        data-bs-target={`#viewEditModal${post._id}`}
+      >
+        <img
+          className="img-fluid d-block m-auto image-only"
+          src={post?.selectedFile}
+          alt="Post Image"
+          // data-bs-toggle="modal"
+          // data-bs-target={`#viewEditModal${post._id}`}
+        />
+        <div
+          className="d-flex justify-content-center align-items-center hoverDiv"
+          // data-bs-toggle="modal"
+          // data-bs-target={`#viewEditModal${post._id}`}
+        >
+          <p className="hoverDiv-likeIcon">
+            <i className="bi bi-heart-fill text-danger" /> {postLikesCount}
+          </p>
+          <p className="hoverDiv-commentIcon">
+            <i className="bi bi-chat-fill text-danger" /> {postCommentsCount}
+          </p>
         </div>
-        {/* <PostDetailsModal post={post} profileDetails={profileDetails} /> */}
-        <ViewEditModal post={post} profileDetails={profileDetails} />
       </div>
-    </>
+      {/* <PostDetailsModal post={post} profileDetails={profileDetails} /> */}
+      <ViewEditModal post={post} profileDetails={profileDetails} />
+    </div>
   );
 };
 
