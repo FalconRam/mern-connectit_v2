@@ -4,38 +4,38 @@ import { useSelector } from "react-redux";
 import CommentItem from "./commentItem";
 import LoaderMini from "../utils/loaderMini";
 
-const CommentsWidget = ({ post, isModal, comments }) => {
+const CommentsWidget = ({ post, isModal, setComments }) => {
   const { postComments, isPostCommentsLoading } = useSelector(
     (state) => state.posts
   );
-  // const [postCommentsArr, setPostCommentsArr] = useState(postComments);
 
-  // useEffect(() => {
-  //   setPostCommentsArr(postCommentsArr);
-  // }, [postComments]);
-
-  useMemo(() =>
-    postComments?.comments?.sort(
+  let sortedComments = useMemo(() => {
+    return postComments?.comments?.sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    )
-  );
-
+    );
+  }, [postComments, post]);
   return (
     <>
       {isPostCommentsLoading ? (
         <LoaderMini />
+      ) : sortedComments?.length ? ( // Load comments only if comments exists
+        isModal &&
+        sortedComments?.map((comment, index) => {
+          console.log({ comment, isModal });
+          return (
+            <CommentItem
+              post={post}
+              comment={comment}
+              key={index}
+              isModal={isModal}
+            />
+          );
+        })
       ) : (
-        <>
-          {isModal &&
-            postComments?.comments?.map((comment, index) => (
-              <CommentItem
-                post={post}
-                comment={comment}
-                key={index}
-                isModal={isModal}
-              />
-            ))}
-        </>
+        // Shows below, if no comments
+        <p className="text-start text-muted ms-2 mb-0 pb-1 p-like">
+          Be first to comment...
+        </p>
       )}
     </>
   );
