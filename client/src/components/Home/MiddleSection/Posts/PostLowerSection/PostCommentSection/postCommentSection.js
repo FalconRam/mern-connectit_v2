@@ -23,13 +23,11 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
           <div>
             {isModal ? (
               // Shows Comments Widget
-              <>
-                <CommentsWidget
-                  post={post}
-                  isModal={isModal}
-                  setComments={setComments}
-                />
-              </>
+              <CommentsWidget
+                post={post}
+                isModal={isModal}
+                setComments={setComments}
+              />
             ) : // if no comments
             !comments?.postComment?.length ? (
               <p className="text-start text-muted ms-2 mb-0 pb-1 p-like">
@@ -37,7 +35,6 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
               </p>
             ) : (
               // Shows last comment
-              <>
                 <div className="d-flex justify-content-between">
                   <div className="d-flex align-items-center ms-1 gap-2 ">
                     <i className="bi bi-chat-left likeIcon text-success "></i>
@@ -54,7 +51,6 @@ const PostCommentSection = ({ post, isModal, isSideModal }) => {
                     </p>
                   </div>
                 </div>
-              </>
             )}
           </div>
           {!isSideModal && (
