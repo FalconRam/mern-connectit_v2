@@ -143,7 +143,7 @@ export const fetchFollowersProfileDetails = (id) =>
   API.get(`/profile/followers/details?profileId=${id}`);
 
 export const fetchProfileDetails = (id, accessTokenFromCookie) =>
-  API.post(`/profile/details?profileId=${id}`, {
+  API.get(`/profile/details?profileId=${id}`, {
     token: accessTokenFromCookie,
   });
 
