@@ -19,7 +19,7 @@ router.get("/following/details", auth, followingProfileDetails);
 
 router.get("/followers/details", auth, followersProfileDetails);
 
-router.post("/details", auth, userDetails);
+router.get("/details", auth, userDetails);
 
 router.patch("/update/:id", auth, updateUserDetails);
 

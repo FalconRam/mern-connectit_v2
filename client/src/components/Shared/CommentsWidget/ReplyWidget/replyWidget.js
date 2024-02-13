@@ -9,8 +9,9 @@ import {
   likeCommentReply,
   setCommentReplydetails,
 } from "../../../../actions/posts";
+import DeleteIconButton from "../../DeleteIconButton/deleteIconButton";
 
-const ReplyWidget = ({ user, reply, comment, post }) => {
+const ReplyWidget = ({ user, reply, comment, post, setOnCommentHover }) => {
   const dispatch = useDispatch();
 
   const [isLiked, setIsLiked] = useState(reply?.replyLikes?.includes(user?.id));
@@ -49,9 +50,37 @@ const ReplyWidget = ({ user, reply, comment, post }) => {
       })
     );
   };
+
+  const [onReplyHover, setOnReplyHover] = useState(false);
+  const [replyDeletePayload, setReplyDeletePayload] = useState({
+    commentId: "",
+    replyId: "",
+    postId: "",
+  });
+  const handleReplyHover = () => {
+    setOnCommentHover(false);
+    setOnReplyHover(!onReplyHover);
+    setReplyDeletePayload({
+      replyId: reply._id,
+      commentId: comment._id,
+      postId: post._id,
+    });
+  };
+
+  const handleReplyTouch = () => {
+    setOnCommentHover(false);
+    handleReplyHover();
+    setTimeout(() => setOnReplyHover(false), 5000);
+  };
+
   return (
     <>
-      <div className="ms-3 ps-2 mt-2 py-1">
+      <div
+        className="ms-3 ps-2 mt-2 py-1 position-relative"
+        onMouseEnter={handleReplyHover}
+        onMouseLeave={handleReplyHover}
+        onTouchStart={handleReplyTouch}
+      >
         <div className="d-flex align-items-start gap-2">
           {/* MiniProfilePicture */}
           <div className="likeIcon" data-bs-dismiss="modal" aria-label="Close">
@@ -86,6 +115,14 @@ const ReplyWidget = ({ user, reply, comment, post }) => {
             </div>
           </div>
         </div>
+        {onReplyHover && (
+          <div className="position-absolute bottom-0 end-0">
+            <DeleteIconButton
+              type="post_comment_reply"
+              payload={replyDeletePayload}
+            />
+          </div>
+        )}
       </div>
     </>
   );

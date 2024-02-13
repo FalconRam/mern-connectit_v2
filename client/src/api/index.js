@@ -132,6 +132,16 @@ export const replyToCommentPost = (postId, replyToCommentBody) =>
 export const replyToReplyOfComment = (postId, replyToReplyBody) =>
   API.patch(`/posts/${postId}/addReplyToReply`, replyToReplyBody);
 
+export const deletePostComment = (commentId, postId) =>
+  API.delete(
+    `/posts/comment/deleteComment?commentId=${commentId}&postId=${postId}`
+  );
+
+export const deletePostReply = (replyId, commentId, postId) =>
+  API.delete(
+    `/posts/reply/deleteReply?replyId=${replyId}&commentId=${commentId}&postId=${postId}`
+  );
+
 // Profile APIs
 export const fetchFollowingAndFollowersCount = (id) =>
   API.get(`/profile/following-followers/count?profileId=${id}`);
@@ -143,7 +153,7 @@ export const fetchFollowersProfileDetails = (id) =>
   API.get(`/profile/followers/details?profileId=${id}`);
 
 export const fetchProfileDetails = (id, accessTokenFromCookie) =>
-  API.post(`/profile/details?profileId=${id}`, {
+  API.get(`/profile/details?profileId=${id}`, {
     token: accessTokenFromCookie,
   });
 

@@ -15,6 +15,8 @@ import {
   getRepliesByComment,
   likeComentReply,
   addReplyToReply,
+  deleteComment,
+  deleteReply,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
@@ -55,5 +57,9 @@ router.patch("/:postId/addReplyToComment", addReplyToComment);
 router.patch("/:postId/addReplyToReply", addReplyToReply);
 
 router.get("/user-posts/:id", postsByUserId);
+
+router.delete("/comment/deleteComment", deleteComment);
+
+router.delete("/reply/deleteReply", deleteReply);
 
 export default router;
