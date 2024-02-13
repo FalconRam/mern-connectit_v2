@@ -4,18 +4,23 @@ import bcrypt from "bcryptjs";
 
 import User from "../models/user.js";
 import { convertImgToCloudinaryURL } from "../services/cloudinary/convertImgToCloudinaryURL.js";
+import {
+  createErrorResponse,
+  createSuccessResponse,
+} from "../services/returnResponse/createResponse.js";
 
 export const followingAndFollowersCount = async (req, res) => {
   const { profileId } = req.query;
   try {
     const user = await User.findById(profileId);
     const [following, followers] = [user.following, user.followers];
-    res.status(200).json({
-      status: true,
-      data: { following: following, followers: followers },
+
+    return createSuccessResponse(res, 200, {
+      following: following,
+      followers: followers,
     });
   } catch (error) {
-    res.status(404).json({ status: false, data: { message: error.message } });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -30,10 +35,10 @@ export const followingProfileDetails = async (req, res) => {
       return user;
     });
     Promise.all(followingActDetail).then((followingActDetails) =>
-      res.status(200).json({ status: true, data: followingActDetails })
+      createSuccessResponse(res, 200, followingActDetails)
     );
   } catch (error) {
-    res.status(404).json({ status: false, data: { message: error.message } });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -48,10 +53,10 @@ export const followersProfileDetails = async (req, res) => {
       return user;
     });
     Promise.all(followerActDetail).then((followerActDetails) =>
-      res.status(200).json({ status: true, data: followerActDetails })
+      createSuccessResponse(res, 200, followerActDetails)
     );
   } catch (error) {
-    res.status(404).json({ status: false, data: { message: error.message } });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -61,13 +66,13 @@ export const userDetails = async (req, res) => {
     const user = await User.findById(id);
     user.password = undefined;
     if (id === req.userId) {
-      res.status(200).json({ status: true, data: { userDetails: user } });
+      return createSuccessResponse(res, 200, { userDetails: user });
     } else {
       user.password = undefined;
-      res.status(200).json({ status: true, data: { userDetails: user } });
+      return createSuccessResponse(res, 200, { userDetails: user });
     }
   } catch (error) {
-    res.status(404).json({ status: false, data: { message: error.message } });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -76,7 +81,7 @@ export const updateUserDetails = async (req, res) => {
   const newUserDetails = req.body;
   try {
     if (!mongoose.Types.ObjectId.isValid(userId))
-      return res.status(404).json({ status: false, message: "User not Found" });
+      return createErrorResponse(res, 404, {}, "User not Found");
 
     newUserDetails.name = `${newUserDetails.firstName} ${newUserDetails.lastName}`;
 
@@ -88,9 +93,7 @@ export const updateUserDetails = async (req, res) => {
       }
     );
     updatedUserDetails.password = undefined;
-    res
-      .status(200)
-      .json({ status: true, data: { userDetails: updatedUserDetails } });
+    return createSuccessResponse(res, 200, { userDetails: updatedUserDetails });
   } catch (error) {
     res.status(500).json({ status: false, message: error.message });
   }
@@ -102,22 +105,15 @@ export const updateUserPassword = async (req, res) => {
   let { oldPassword, newPassword, confirmNewPassword } = newUpdatePassword;
   try {
     if (!mongoose.Types.ObjectId.isValid(userId))
-      return res.status(404).json({ status: false, message: "User not Found" });
+      return createErrorResponse(res, 404, {}, "User not Found");
     let user = await User.findById(userId);
 
     let isSame = await bcrypt.compare(oldPassword, user.password);
 
-    if (!isSame)
-      return res.status(400).json({
-        status: false,
-        message: "Password Mismatch",
-      });
+    if (!isSame) return createErrorResponse(res, 400, {}, "Password Mismatch");
 
     if (newPassword !== confirmNewPassword)
-      return res.status(400).json({
-        status: false,
-        message: "New Password Mismatch",
-      });
+      return createErrorResponse(res, 400, {}, "New Password Mismatch");
 
     const newHashedPassword = await bcrypt.hash(newPassword, 12);
 
@@ -126,12 +122,9 @@ export const updateUserPassword = async (req, res) => {
     await User.findByIdAndUpdate(userId, user, {
       new: true,
     });
-
-    res
-      .status(200)
-      .json({ status: true, message: "Password updated Successfully" });
+    return createSuccessResponse(res, 200, {}, "Password updated Successfully");
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -140,7 +133,7 @@ export const updateUserProfilePictures = async (req, res) => {
   const { bgWallPicture, profilePicture } = req.body;
   try {
     if (!mongoose.Types.ObjectId.isValid(userId))
-      return res.status(404).json({ status: false, message: "User not Found" });
+      return createErrorResponse(res, 404, {}, "User not Found");
     let user = await User.findById(userId);
 
     let folderNamePP = "ProfilePicture";
@@ -156,19 +149,21 @@ export const updateUserProfilePictures = async (req, res) => {
     ]);
 
     if (profilePicturecloudinaryResponse.status === "rejected") {
-      res.status(500).json({
-        status: false,
-        message: profilePicturecloudinaryResponse.reason,
-      });
-      return;
+      return createErrorResponse(
+        res,
+        500,
+        {},
+        profilePicturecloudinaryResponse.reason
+      );
     }
 
     if (profileBgWallPicturecloudinaryResponse.status === "rejected") {
-      res.status(500).json({
-        status: false,
-        message: profileBgWallPicturecloudinaryResponse.reason,
-      });
-      return;
+      return createErrorResponse(
+        res,
+        500,
+        {},
+        profilePicturecloudinaryResponse.reason
+      );
     }
 
     user.profilePicture = profilePicturecloudinaryResponse.value.secure_url;
@@ -181,20 +176,18 @@ export const updateUserProfilePictures = async (req, res) => {
 
     updatedUserDetails.password = undefined;
 
-    res.status(200).json({
-      status: true,
-      data: {
-        message: "BgWall and Profile Pictures Updated",
-        userDetails: updatedUserDetails,
-      },
-    });
+    return createSuccessResponse(
+      res,
+      200,
+      { userDetails: updatedUserDetails },
+      "BgWall and Profile Pictures Updated"
+    );
   } catch (error) {
-    res.status(500).json({
-      status: false,
-      data: {
-        message: "BgWall and Profile Pictures Not Updated",
-        errorMessage: error.message,
-      },
-    });
+    return createErrorResponse(
+      res,
+      500,
+      {},
+      "BgWall and Profile Pictures Not Updated"
+    );
   }
 };

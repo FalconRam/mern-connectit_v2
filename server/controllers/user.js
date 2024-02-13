@@ -11,6 +11,10 @@ import {
   signRefreshToken,
   verifyRefreshToken,
 } from "../services/jwtTokenService/jwtTokenService.js";
+import {
+  createErrorResponse,
+  createSuccessResponse,
+} from "../services/returnResponse/createResponse.js";
 
 dotenv.config();
 
@@ -22,9 +26,12 @@ export const logIn = async (req, res) => {
 
     // If User is Unauthorized one...
     if (!existingUser)
-      return res
-        .status(400)
-        .json({ status: false, message: "Email or Password is incorrect." });
+      return createErrorResponse(
+        res,
+        400,
+        {},
+        "Email or Password is incorrect."
+      );
 
     const isPasswordCorrect = await bcrypt.compare(
       password,
@@ -32,9 +39,12 @@ export const logIn = async (req, res) => {
     );
 
     if (!isPasswordCorrect)
-      return res
-        .status(400)
-        .json({ status: false, message: "Email or Password is incorrect." });
+      return createErrorResponse(
+        res,
+        400,
+        {},
+        "Email or Password is incorrect."
+      );
 
     [req.emailId, req.userId] = [existingUser.email, existingUser._id];
     // Generate AccessToken
@@ -49,10 +59,12 @@ export const logIn = async (req, res) => {
         refreshToken,
       });
     } catch (error) {
-      return res.status(500).json({
-        status: false,
-        message: error.message || error.stack || error,
-      });
+      return createErrorResponse(
+        res,
+        500,
+        {},
+        error.messsage || error.stack || error
+      );
     }
 
     let result = {
@@ -68,9 +80,7 @@ export const logIn = async (req, res) => {
       refreshToken: token.refreshToken,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ status: false, message: error.messsage || error.stack || error });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -89,10 +99,10 @@ export const signUp = async (req, res) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser)
-      return res.status(400).json({ message: "User already exists." });
+      return createErrorResponse(res, 400, {}, "User already exists.");
 
     if (password !== confirmPassword)
-      return res.status(400).json({ message: "Password doesn't match." });
+      return createErrorResponse(res, 400, {}, "Password doesn't match.");
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -121,9 +131,7 @@ export const signUp = async (req, res) => {
       .status(200)
       .json({ status: true, data: resultUser, accessToken, refreshToken });
   } catch (error) {
-    res
-      .status(500)
-      .json({ status: false, message: error.messsage || error.stack || error });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -147,28 +155,26 @@ export const refreshUserController = async (req, res) => {
           refreshToken: newRefreshToken,
         });
       } catch (error) {
-        return res.status(500).json({
-          status: false,
-          message: error.messsage || error.stack || error,
-        });
+        return createErrorResponse(
+          res,
+          500,
+          {},
+          error.messsage || error.stack || error
+        );
       }
-    } else
-      return res.status(403).json({
-        status: false,
-        message: "Refresh Token Not Exist",
-      });
+    } else return createErrorResponse(res, 403, {}, "Refresh Token Not Exist");
 
-    return res.status(200).json({
-      status: true,
-      data: {
+    return createSuccessResponse(
+      res,
+      200,
+      {
         accessToken: savedToken.accessToken,
         refreshToken: savedToken.refreshToken,
       },
-    });
+      "Token refreshed successfully"
+    );
   } catch (error) {
-    return res
-      .status(500)
-      .json({ status: false, message: error.messsage || error.stack || error });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -176,8 +182,7 @@ export const getSearchUsers = async (req, res) => {
   let keyword = req.query.search;
   try {
     if (!keyword || keyword.trim() === "") {
-      res.status(200).json({ status: true, message: "No Users", data: [] });
-      return;
+      return createSuccessResponse(res, 200, { users: [] }, "No Users");
     }
 
     const keywordResults = keyword && {
@@ -201,10 +206,8 @@ export const getSearchUsers = async (req, res) => {
       "-password -following -followers -city -country -bio -profileBgWallPicture -createdAt -__v"
     );
 
-    res.status(200).json({ status: true, data: { users: users } });
+    createSuccessResponse(res, 200, { users });
   } catch (error) {
-    res
-      .status(500)
-      .json({ status: false, message: error.messsage || error.stack || error });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
