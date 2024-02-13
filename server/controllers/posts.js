@@ -5,6 +5,10 @@ import User from "../models/user.js";
 import PostMessage from "../models/postMessage.js";
 import { convertImgToCloudinaryURL } from "../services/cloudinary/convertImgToCloudinaryURL.js";
 import { deleteCloudinaryImg } from "../services/cloudinary/deleteCloudinaryImg.js";
+import {
+  createErrorResponse,
+  createSuccessResponse,
+} from "../services/returnResponse/createResponse.js";
 
 export const getPostsByFollowing = async (req, res) => {
   try {
@@ -64,9 +68,10 @@ export const getPostsByFollowing = async (req, res) => {
     });
 
     // Wait for the loop to finish before sending the response
-    res.status(200).json({ status: true, data: sortedPosts });
+
+    return createSuccessResponse(res, 200, sortedPosts);
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -81,12 +86,13 @@ export const postsByUserId = async (req, res) => {
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
-    res.status(200).json({ status: true, data: { userPosts: sortedPosts } });
+    return createSuccessResponse(res, 200, { userPosts: sortedPosts });
   } catch (error) {
-    res.status(404).json({ status: false, message: error.message });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
+// Old version for get all post with pagination
 export const getPosts = async (req, res) => {
   const { page } = req.query;
 
@@ -110,7 +116,12 @@ export const getPosts = async (req, res) => {
       numberOfPages: Math.ceil(total / LIMIT),
     });
   } catch (error) {
-    res.status(404).json({ status: false, message: error.message });
+    return createErrorResponse(
+      res,
+      500,
+      {},
+      error.messsage || error.stack || error
+    );
   }
 };
 
@@ -127,9 +138,14 @@ export const getPostsBySearch = async (req, res) => {
     if (searchQuery === "none" && tags === "none")
       postMessages = await PostMessage.find();
 
-    res.status(200).json({ status: true, data: postMessages });
+    return createSuccessResponse(res, 200, postMessages);
   } catch (error) {
-    res.status(400).json({ status: false, message: error.message });
+    return createErrorResponse(
+      res,
+      500,
+      {},
+      error.messsage || error.stack || error
+    );
   }
 };
 
@@ -177,9 +193,14 @@ export const getPostsById = async (req, res) => {
       },
     ]);
 
-    res.status(201).json({ status: true, data: updatedPostWithprofPic[0] });
+    return createSuccessResponse(res, 200, updatedPostWithprofPic[0]);
   } catch (error) {
-    res.status(404).json({ status: false, message: error.message });
+    return createErrorResponse(
+      res,
+      500,
+      {},
+      error.messsage || error.stack || error
+    );
   }
 };
 
@@ -189,11 +210,9 @@ export const getCommentsByPost = async (req, res) => {
     const post = await PostMessage.findById(postId);
 
     if (!postId)
-      return res
-        .status(400)
-        .json({ status: false, message: "PostId cannot be Empty!" });
-    if (!post)
-      return res.status(404).json({ status: false, message: "No Post found" });
+      return createErrorResponse(res, 404, {}, "PostId cannot be Empty!");
+
+    if (!post) return createErrorResponse(res, 404, {}, "Post not Found.");
 
     const result = await PostMessage.aggregate([
       {
@@ -239,10 +258,9 @@ export const getCommentsByPost = async (req, res) => {
         },
       },
     ]);
-
-    res.status(200).json({ status: true, data: result[0] });
+    return createSuccessResponse(res, 200, result[0]);
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -252,11 +270,9 @@ export const getRepliesByComment = async (req, res) => {
     const post = await PostMessage.findById(postId);
 
     if (!postId)
-      return res
-        .status(400)
-        .json({ status: false, message: "PostId cannot be Empty!" });
-    if (!post)
-      return res.status(404).json({ status: false, message: "No Post found" });
+      return createErrorResponse(res, 404, {}, "PostId cannot be Empty!");
+
+    if (!post) return createErrorResponse(res, 404, {}, "Post not Found.");
 
     // const result = await PostMessage.aggregate([
     //   {
@@ -364,9 +380,9 @@ export const getRepliesByComment = async (req, res) => {
       },
     ]);
 
-    res.status(200).json({ status: true, data: result[0] });
+    return createSuccessResponse(res, 200, result[0]);
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -394,7 +410,7 @@ export const createPost = async (req, res) => {
     // Delete the created Post and send faliure response, if the cloudinary Image upload fails
     if (!cloudinaryResponse.secure_url) {
       await PostMessage.findByIdAndDelete(createdPost._id);
-      res.status(500).json({ status: false, message: cloudinaryResponse });
+      createErrorResponse(res, 500, {}, cloudinaryResponse);
       return;
     }
 
@@ -410,9 +426,9 @@ export const createPost = async (req, res) => {
       }
     );
 
-    res.status(201).json({ status: true, data: createdPost });
+    return createSuccessResponse(res, 201, createdPost);
   } catch (error) {
-    res.status(409).json({ status: false, message: error.message });
+    createErrorResponse(res, 409, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -423,7 +439,7 @@ export const updatePost = async (req, res) => {
     const user = await User.findById(req.userId);
 
     if (!mongoose.Types.ObjectId.isValid(_id))
-      return res.status(404).send("No post found");
+      return createErrorResponse(res, 404, {}, "Post not Found.");
 
     const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
       new: true,
@@ -466,9 +482,9 @@ export const updatePost = async (req, res) => {
       },
     ]);
 
-    res.status(201).json({ status: true, data: updatedPostWithprofPic[0] });
+    return createSuccessResponse(res, 201, updatedPostWithprofPic[0]);
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -478,17 +494,12 @@ export const addCommentByPost = async (req, res) => {
 
   try {
     if (!postId || !postComment) {
-      return res
-        .status(400)
-        .json({ status: false, message: "All fields are required." });
+      return createErrorResponse(res, 400, {}, "All fields are required.");
     }
 
     const post = await PostMessage.findById(postId);
 
-    if (!post)
-      return res
-        .status(404)
-        .json({ status: false, message: "Post not Found." });
+    if (!post) return createErrorResponse(res, 404, {}, "Post not Found.");
 
     post.commentsInfo.postComment.push(postComment[0]);
 
@@ -537,9 +548,9 @@ export const addCommentByPost = async (req, res) => {
       },
     ]);
 
-    res.status(201).json({ status: true, data: updatedPostWithprofPic[0] });
+    return createSuccessResponse(res, 201, updatedPostWithprofPic[0]);
   } catch (error) {
-    res.status(409).json({ status: false, message: error.message });
+    createErrorResponse(res, 409, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -549,17 +560,12 @@ export const addReplyToComment = async (req, res) => {
 
   try {
     if (!postId || !commentReply || !repliedTo) {
-      return res
-        .status(400)
-        .json({ status: false, message: "All fields are required." });
+      return createErrorResponse(res, 400, {}, "All fields are required.");
     }
 
     const post = await PostMessage.findById(postId);
 
-    if (!post)
-      return res
-        .status(404)
-        .json({ status: false, message: "Post not Found." });
+    if (!post) return createErrorResponse(res, 404, {}, "Post not Found.");
 
     post.commentsInfo.postComment.map((comment) => {
       if (comment._id === repliedTo) {
@@ -571,9 +577,9 @@ export const addReplyToComment = async (req, res) => {
       new: true,
     });
 
-    res.status(200).json({ status: true });
+    return createSuccessResponse(res, 200, {});
   } catch (error) {
-    res.status(409).json({ status: false, message: error.message });
+    createErrorResponse(res, 409, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -590,17 +596,12 @@ export const addReplyToReply = async (req, res) => {
       !repliedTo ||
       !commentId
     ) {
-      return res
-        .status(400)
-        .json({ status: false, message: "All fields are required." });
+      return createErrorResponse(res, 400, {}, "All fields are required.");
     }
 
     const post = await PostMessage.findById(postId);
 
-    if (!post)
-      return res
-        .status(404)
-        .json({ status: false, message: "Post not Found." });
+    if (!post) return createErrorResponse(res, 404, {}, "Post not Found.");
 
     post.commentsInfo.postComment.map((comment) => {
       if (comment._id === commentId) {
@@ -612,43 +613,9 @@ export const addReplyToReply = async (req, res) => {
       new: true,
     });
 
-    res.status(200).json({ status: true });
+    return createSuccessResponse(res, 200, {});
   } catch (error) {
-    res.status(409).json({ status: false, message: error.message });
-  }
-};
-
-export const deletePost = async (req, res) => {
-  const { id: _id } = req.params;
-
-  try {
-    if (!mongoose.Types.ObjectId.isValid(_id))
-      return res
-        .status(404)
-        .json({ status: false, message: "No Post found to Delete" });
-    let folderName = "Posts";
-    const result = await deleteCloudinaryImg(_id, folderName);
-
-    if (result.result === "ok") {
-      await PostMessage.findByIdAndDelete(_id);
-      res.status(200).json({ status: true, message: "Post Deleted" });
-      return;
-    }
-
-    if (result.result === "not found") {
-      res.status(400).json({
-        status: true,
-        message: "No Asset found to Delete in Cloudinary",
-      });
-      return;
-    } else {
-      res.status(500).json({
-        status: true,
-        message: "Error occured at Cloudinary to delete Asset",
-      });
-    }
-  } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    createErrorResponse(res, 409, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -657,11 +624,10 @@ export const likePost = async (req, res) => {
 
   try {
     const user = await User.findById(req.userId);
-    if (!req.userId)
-      return res.status(400).json({ message: "User not authorized" });
+    if (!user) return createErrorResponse(res, 404, {}, "User not Found.");
 
     if (!mongoose.Types.ObjectId.isValid(_id))
-      return res.status(404).send("No Post found");
+      return createErrorResponse(res, 404, {}, "Post not Found.");
 
     const post = await PostMessage.findById(_id);
 
@@ -717,9 +683,9 @@ export const likePost = async (req, res) => {
       },
     ]);
 
-    res.status(200).json({ status: true, data: updatedPostWithprofPic[0] });
+    return createSuccessResponse(res, 200, updatedPostWithprofPic[0]);
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };
 
@@ -727,26 +693,18 @@ export const likeComentReply = async (req, res) => {
   const { postId, commentId, replyId, isComment } = req.query;
   try {
     const user = await User.findById(req.userId);
-    if (!user)
-      return res
-        .status(400)
-        .json({ status: false, message: "User not authorized" });
+    if (!user) return createErrorResponse(res, 404, {}, "User not Found.");
 
     const post = await PostMessage.findById(postId);
-    if (!post)
-      return res.status(404).send({
-        status: false,
-        message: "No Post found",
-      });
+    if (!post) return createErrorResponse(res, 404, {}, "Post not Found.");
+
     if (
       !post.commentsInfo.postComment.map((comment) =>
         comment.commentLikes.includes(commentId)
       )
     )
-      return res.status(404).send({
-        status: false,
-        message: "No Comment found",
-      });
+      return createErrorResponse(res, 404, {}, "Comment not Found.");
+
     if (isComment === "true") {
       // For comment like and Dislike
       post.commentsInfo.postComment.map((comment) => {
@@ -799,8 +757,111 @@ export const likeComentReply = async (req, res) => {
       new: true,
     });
 
-    return res.status(200).json({ status: true, data: updatedPost });
+    return createSuccessResponse(res, 200, updatedPost);
   } catch (error) {
-    return res.status(500).json({ status: false, message: error.message });
+    return createErrorResponse(
+      res,
+      500,
+      {},
+      error.messsage || error.stack || error
+    );
+  }
+};
+
+export const deletePost = async (req, res) => {
+  const { id: _id } = req.params;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(_id))
+      return createErrorResponse(res, 404, {}, "Post not Found.");
+    let folderName = "Posts";
+    const result = await deleteCloudinaryImg(_id, folderName);
+
+    if (result.result === "ok") {
+      await PostMessage.findByIdAndDelete(_id);
+      return createSuccessResponse(res, 200, {}, "Post Deleted");
+    }
+
+    if (result.result === "not found") {
+      return createErrorResponse(res, 400, {}, "Image not Found");
+    } else {
+      return createErrorResponse(
+        res,
+        500,
+        { errorMessage: error.messsage || error.stack || error },
+        "Error occured at Cloudinary to delete Asset"
+      );
+    }
+  } catch (error) {
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
+  }
+};
+
+export const deleteComment = async (req, res) => {
+  const { commentId, postId } = req.query;
+  try {
+    if (!commentId || !postId)
+      return createErrorResponse(res, 400, {}, "All fields are required.");
+
+    let post = await PostMessage.findById(postId);
+    if (!post) return createErrorResponse(res, 404, {}, "Post not Found.");
+
+    // Filtering out the comment from postComment array
+    let filteredComment = post.commentsInfo.postComment.filter(
+      (comment) => comment._id !== commentId
+    );
+    // Updating the post with the filtered comments in DB
+    const updatedPost = await PostMessage.findByIdAndUpdate(
+      postId,
+      {
+        $set: { "commentsInfo.postComment": filteredComment },
+      },
+      { new: true }
+    );
+
+    // Direct remove comments in post doc
+    // post.commentsInfo.postComment = post.commentsInfo.postComment.filter(
+    //   (comment) => comment._id !== commentId
+    // );
+
+    return createSuccessResponse(res, 200, {}, "Comment Deleted");
+  } catch (error) {
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
+  }
+};
+
+export const deleteReply = async (req, res) => {
+  const { replyId, commentId, postId } = req.query;
+  try {
+    if (!replyId || !commentId || !postId)
+      return createErrorResponse(res, 400, {}, "All fields are required.");
+
+    let post = await PostMessage.findById(postId);
+    if (!post) return createErrorResponse(res, 404, {}, "Post not Found.");
+
+    // Filtering out the Reply from comment's  postComment array
+    let filteredReplyOnCommentArr = post.commentsInfo.postComment.map(
+      (comment) => {
+        if (comment._id === commentId) {
+          comment.replyComments = comment.replyComments.filter(
+            (replyComment) => replyComment._id !== replyId
+          );
+        }
+
+        return comment;
+      }
+    );
+
+    // Updating the post with the filtered Replies on Comments in DB
+    const updatedPost = await PostMessage.findByIdAndUpdate(
+      postId,
+      {
+        $set: { "commentsInfo.postComment": filteredReplyOnCommentArr },
+      },
+      { new: true }
+    );
+
+    return createSuccessResponse(res, 200, {}, "Reply Deleted");
+  } catch (error) {
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
 };

@@ -16,6 +16,8 @@ import {
   END_POST_LOADING,
   COMMENT_POST_WITH_USER_DETAILS,
   SUBMIT_REPLY_TO_COMMENT_OR_REPLY,
+  DELETE_POST_COMMENT,
+  DELETE_POST_REPLY,
   START_FETCH_COMMENT_BY_POST_ID,
   END_FETCH_COMMENT_BY_POST_ID,
   START_FETCH_REPLIES_BY_COMMENT,
@@ -143,6 +145,43 @@ export default (
         ...state,
         posts: state.posts.filter((post) => post._id !== action.payload),
       };
+    // Directly update the redux state won't detect the changes
+    // Below is an example for state update is not done immutably
+    // case DELETE_POST_COMMENT:
+    //   state.postComments.comments = state.postComments.comments.filter(
+    //     (comment) => comment._id !== action.payload.commentId
+    //   );
+    //   return {
+    //     ...state,
+    //     postComments: state.postComments,
+    //   };
+    // Here Immutable Updates.
+    // Where Instead of directly modifying state.postComments.comments,
+    // you should create a new array with the filtered comments
+    // and return a new state object.
+    case DELETE_POST_COMMENT:
+      const filteredComments = state.postComments.comments.filter(
+        (comment) => comment._id !== action.payload.commentId
+      );
+      return {
+        ...state,
+        postComments: {
+          ...state.postComments,
+          comments: filteredComments,
+        },
+      };
+    case DELETE_POST_REPLY:
+      const filteredReplies = state.commentReplies.replyComments.filter(
+        (reply) => reply._id !== action.payload.replyId
+      );
+      return {
+        ...state,
+        commentReplies: {
+          ...state.commentReplies,
+          replyComments: filteredReplies,
+        },
+      };
+
     case SET_STATE_FOR_COMMENT_REPLY:
       return {
         ...state,

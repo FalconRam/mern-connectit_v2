@@ -24,6 +24,8 @@ import {
   END_FETCH_REPLIES_BY_COMMENT,
   SET_STATE_FOR_COMMENT_REPLY,
   SET_COMMENT_REPLY_DETAILS,
+  DELETE_POST_COMMENT,
+  DELETE_POST_REPLY,
 } from "../constants/actionTypes";
 import { toast } from "react-toastify";
 
@@ -390,6 +392,46 @@ export const submitReplyToReplyAction =
       if (error.response && error.response.data && error.response.data.message)
         if (error.response.data.message === "jwt expired")
           window.location.href = "/auth";
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+    }
+  };
+
+export const deletePostCommentAction =
+  (commentId, postId) => async (dispatch) => {
+    try {
+      await api.deletePostComment(commentId, postId);
+      dispatch({ type: DELETE_POST_COMMENT, payload: { commentId, postId } });
+
+      const { data } = await api.fetchCommentsByPostId(postId);
+      dispatch({ type: FETCH_COMMENT_BY_POST_ID, payload: data });
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+    }
+  };
+
+export const deletePostReplyAction =
+  (replyId, commentId, postId) => async (dispatch) => {
+    try {
+      await api.deletePostReply(replyId, commentId, postId);
+      dispatch({
+        type: DELETE_POST_REPLY,
+        payload: { replyId, commentId, postId },
+      });
+      const { data } = await api.fetchRepliesByComment(commentId, postId);
+      dispatch({ type: FETCH_REPLIES_BY_COMMENT, payload: data });
+    } catch (error) {
       const message =
         (error.response &&
           error.response.data &&

@@ -12,6 +12,7 @@ import {
 import ReplyWidget from "./ReplyWidget/replyWidget";
 import LoaderMini from "../utils/loaderMini";
 import Likes from "../Likes/likes";
+import DeleteIconButton from "../DeleteIconButton/deleteIconButton";
 
 const CommentItem = ({ post, isModal, comment }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -21,6 +22,11 @@ const CommentItem = ({ post, isModal, comment }) => {
   const [viewReplies, setviewReplies] = useState(false);
   const [isApiLoading, setIsApiLoading] = useState(false);
   const [replies, setReplies] = useState({});
+  const [onCommentHover, setOnCommentHover] = useState(false);
+  const [commentDeletePayload, setCommentcommentDeletePayload] = useState({
+    commentId: "",
+    postId: "",
+  });
 
   const handleReplies = async () => {
     if (comment.replyComments.length && !viewReplies) {
@@ -74,67 +80,102 @@ const CommentItem = ({ post, isModal, comment }) => {
       })
     );
   };
+
+  const handleCommentHover = () => {
+    setOnCommentHover(!onCommentHover);
+    setCommentcommentDeletePayload({
+      commentId: comment._id,
+      postId: post._id,
+    });
+  };
+
+  const handleCommentTouch = () => {
+    handleCommentHover();
+    setTimeout(() => setOnCommentHover(false), 5000);
+  };
+
   return (
     <>
       <div
         className="ms-1 mb-2 py-1"
         // {...(isModal && { "data-bs-dismiss": "modal", "aria-label": "Close" })}
       >
-        <div className="d-flex align-items-start gap-2">
-          {/* MiniProfilePicture */}
-          <div className="likeIcon" data-bs-dismiss="modal" aria-label="Close">
-            <MiniProfilePicture isComment={true} comment={comment} />
+        <div
+          className="position-relative"
+          onMouseEnter={handleCommentHover}
+          onMouseLeave={handleCommentHover}
+          onTouchStart={handleCommentTouch}
+        >
+          <div className="d-flex align-items-start gap-2">
+            {/* MiniProfilePicture */}
+            <div
+              className="likeIcon"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <MiniProfilePicture isComment={true} comment={comment} />
+            </div>
+
+            <div className="d-flex flex-column flex-grow-1">
+              {/* Commenter Name, Comment */}
+              <div className="">
+                <span className="commenterName me-2">
+                  {comment?.commenterName}
+                </span>
+                <span className="commenterCmt">{comment?.comment}</span>
+              </div>
+              {/* Timestamp, Like Count, Reply btn */}
+              <div className=" d-flex align-items-center gap-3">
+                <p className="mb-0 commenterCmt text-muted">
+                  {moment(comment?.createdAt).fromNow()}
+                </p>
+                <p className="mb-0 commenterName text-muted">
+                  {comment?.commentLikes?.length > 1
+                    ? `${comment?.commentLikes?.length} Likes`
+                    : `${
+                        comment?.commentLikes?.length === 0 ? "Like" : "1 Like"
+                      }`}
+                </p>
+                <span
+                  className="mb-0 commenterName text-muted likeBtn"
+                  onClick={handleReplyToComment}
+                >
+                  Reply
+                </span>
+              </div>
+            </div>
+            <div className="d-flex flex-column gap-1 align-items-center">
+              <Likes
+                isComment={true}
+                isLiked={isLiked}
+                likes={likes}
+                likeFrom={"commentModal"}
+                handleCommentLike={handleCommentLike}
+              />
+              {onCommentHover && (
+                <div className="position-absolute bottom-0 end-0">
+                  <DeleteIconButton
+                    type="post_comment"
+                    payload={commentDeletePayload}
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="d-flex flex-column flex-grow-1">
-            {/* Commenter Name, Comment */}
-            <div className="">
-              <span className="commenterName me-2">
-                {comment?.commenterName}
-              </span>
-              <span className="commenterCmt">{comment?.comment}</span>
-            </div>
-            {/* Timestamp, Like Count, Reply btn */}
-            <div className=" d-flex align-items-center gap-3">
-              <p className="mb-0 commenterCmt text-muted">
-                {moment(comment?.createdAt).fromNow()}
-              </p>
-              <p className="mb-0 commenterName text-muted">
-                {comment?.commentLikes?.length > 1
-                  ? `${comment?.commentLikes?.length} Likes`
-                  : `${
-                      comment?.commentLikes?.length === 0 ? "Like" : "1 Like"
-                    }`}
-              </p>
-              <span
-                className="mb-0 commenterName text-muted likeBtn"
-                onClick={handleReplyToComment}
-              >
-                Reply
-              </span>
-            </div>
-          </div>
-          <Likes
-            isComment={true}
-            isLiked={isLiked}
-            likes={likes}
-            likeFrom={"commentModal"}
-            handleCommentLike={handleCommentLike}
-          />
+          {comment?.replyComments?.length > 0 &&
+            !viewReplies &&
+            !isApiLoading && (
+              <div className="ms-4">
+                <span
+                  className="commenterName text-muted ms-3 likeBtn"
+                  onClick={handleReplies}
+                >
+                  View replies ({comment?.replyComments?.length})
+                </span>
+              </div>
+            )}
         </div>
-
-        {comment?.replyComments?.length > 0 &&
-          !viewReplies &&
-          !isApiLoading && (
-            <div className="ms-4">
-              <span
-                className="commenterName text-muted ms-3 likeBtn"
-                onClick={handleReplies}
-              >
-                View replies ({comment?.replyComments?.length})
-              </span>
-            </div>
-          )}
         <>
           {isApiLoading ? (
             <LoaderMini />
@@ -148,6 +189,7 @@ const CommentItem = ({ post, isModal, comment }) => {
                     comment={comment}
                     post={post}
                     key={i}
+                    setOnCommentHover={setOnCommentHover}
                   />
                 ))}
             </>
