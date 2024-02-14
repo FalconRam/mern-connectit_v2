@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import moment from "moment";
@@ -16,6 +16,12 @@ const ReplyWidget = ({ user, reply, comment, post, setOnCommentHover }) => {
 
   const [isLiked, setIsLiked] = useState(reply?.replyLikes?.includes(user?.id));
   const [likes, setLikes] = useState(reply?.replyLikes?.length);
+
+  const [canDeleteReply, setCanDeleteReply] = useState(false);
+  useEffect(() => {
+    if (reply.replierId === user?.id || post.creator === user?.id)
+      setCanDeleteReply(true);
+  }, [reply, comment]);
 
   const likeCommentReplyParams = {
     postId: post._id,
@@ -115,7 +121,7 @@ const ReplyWidget = ({ user, reply, comment, post, setOnCommentHover }) => {
             </div>
           </div>
         </div>
-        {onReplyHover && (
+        {onReplyHover && canDeleteReply && (
           <div className="position-absolute bottom-0 end-0">
             <DeleteIconButton
               type="post_comment_reply"
