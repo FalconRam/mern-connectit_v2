@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import MiniProfilePicture from "../MiniProfilePicture/miniProfilePicture";
 
@@ -27,6 +27,12 @@ const CommentItem = ({ post, isModal, comment }) => {
     commentId: "",
     postId: "",
   });
+
+  const [canDeleteComment, setCanDeleteComment] = useState(false);
+  useEffect(() => {
+    if (comment.commenterId === user?.id || post.creator === user?.id)
+      setCanDeleteComment(true);
+  }, [comment]);
 
   const handleReplies = async () => {
     if (comment.replyComments.length && !viewReplies) {
@@ -152,7 +158,7 @@ const CommentItem = ({ post, isModal, comment }) => {
                 likeFrom={"commentModal"}
                 handleCommentLike={handleCommentLike}
               />
-              {onCommentHover && (
+              {onCommentHover && canDeleteComment && (
                 <div className="position-absolute bottom-0 end-0">
                   <DeleteIconButton
                     type="post_comment"
