@@ -2,19 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js",
+      "src": "dist/server.js",
       "use": "@now/node",
-      "config": {
-        "node": {
-          "esModules": true
-        }
-      }
+      "config": { "includeFiles": ["dist/**"] }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "server.js"
+      "dest": "dist/server.js"
     }
   ]
 }
