@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 //     : process.env.REACT_APP_PRODUCTION_BE_URL;
 
 let localURL = "http://localhost:5000/";
-let productionURL = "https://connectit.onrender.com/";
+let productionURL = "https://connectit-v2-api.onrender.com/";
 
 let URL =
   window.location.origin === "http://localhost:3000" ? localURL : productionURL;
