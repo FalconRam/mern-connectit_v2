@@ -21,6 +21,7 @@ import { getProfileDetails } from "./actions/profile";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NotFound from "./components/NotFound/notFound";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const App = () => {
   useEffect(() => {
     window.location.pathname === "/auth" ? setIsAuth(true) : setIsAuth(false);
   }, [window.location.pathname, user]);
+
   return (
     <>
       <ToastContainer />
@@ -52,9 +54,9 @@ const App = () => {
             }
           />
           <Route path="/feeds" exact component={Home} />
-          <Route path="/post/:id" exact component={PostDetailsWithProfile} />
+          <Route path="/post" exact component={PostDetailsWithProfile} />
           <Route path="/profile/details" exact component={ProfilePage} />
-          <Route path="/profile/edit/:id" exact component={ProfileEdit} />
+          <Route path="/profile/edit" exact component={ProfileEdit} />
           <Route
             path="/profile/following-followers/details"
             exact
@@ -64,6 +66,7 @@ const App = () => {
           <Route path="/chats" exact component={Messages} />
           <Route path="/notification" exact component={Notification} />
           <Route path="/search" exact component={Search} />
+          <Route path="*" exact component={NotFound} />
         </Switch>
         {!isAuth && <MobileNavigationBar />}
       </BrowserRouter>

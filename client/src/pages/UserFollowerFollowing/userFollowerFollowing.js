@@ -16,6 +16,7 @@ function useQuery() {
 
 const UserFollowerFollowing = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [isFollowingNavTab, setIsFollowingNavTab] = useState(true);
 
@@ -26,8 +27,7 @@ const UserFollowerFollowing = () => {
 
   const query = useQuery();
   const profileId = query.get("profileId");
-
-  const history = useHistory();
+  if (!profileId) history.push("/");
 
   const {
     followingProfile,
@@ -37,8 +37,10 @@ const UserFollowerFollowing = () => {
   } = useSelector((state) => state.profile);
 
   useEffect(() => {
-    dispatch(getFollowingProfileDetails(profileId));
-    dispatch(getFollowersProfileDetails(profileId));
+    if (!profileId) {
+      dispatch(getFollowingProfileDetails(profileId));
+      dispatch(getFollowersProfileDetails(profileId));
+    }
   }, []);
 
   return (

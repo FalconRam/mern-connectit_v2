@@ -5,7 +5,7 @@ import PostLowerSectionModal from "./PostLowerSectionModal/PostLowerSectionModal
 
 import "./postDetails.css";
 
-const PostDetails = ({ post, profileDetails,setComments }) => {
+const PostDetails = ({ post, profileDetails, setComments }) => {
   return (
     <>
       <div className="gap-3">

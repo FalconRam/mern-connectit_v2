@@ -19,9 +19,12 @@ function useQuery() {
 const ProfilePage = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
-  const query = useQuery();
-  const profileId = query.get("profileId");
   const history = useHistory();
+  const query = useQuery();
+
+  const profileId = query.get("profileId");
+  if (!profileId) history.push("/");
+
   const isLoggedInUser = user?.id === profileId;
   if (!user) {
     if (window.location.pathname !== "/auth") history.push("/auth");
@@ -39,7 +42,7 @@ const ProfilePage = () => {
   let tokenFromCookie = Cookies.get("userToken");
 
   useEffect(() => {
-    if (user) {
+    if (user && profileId) {
       dispatch(getPostByUser(profileId));
       dispatch(getProfileDetails(profileId, isLoggedInUser, tokenFromCookie));
     }

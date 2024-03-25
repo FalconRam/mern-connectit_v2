@@ -37,7 +37,7 @@ const Likes = ({
         <>
           {isLiked ? (
             // Red Heart
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center likeBtn">
               <i
                 className="bi bi-heart-fill likeIcon likeIcon-danger"
                 onClick={handleLike}
@@ -49,7 +49,7 @@ const Likes = ({
             </div>
           ) : (
             // Heart Outline
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center likeBtn">
               <i className="bi bi-heart likeIcon" onClick={handleLike} />
               &nbsp;
               <p className="p-like">
@@ -63,7 +63,7 @@ const Likes = ({
         <>
           {isLiked ? (
             // Red Heart
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center likeBtn">
               <i
                 className="bi bi-heart-fill likeIcon likeIcon-danger"
                 onClick={handleLike}
@@ -71,7 +71,7 @@ const Likes = ({
             </div>
           ) : (
             // Heart Outline
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center likeBtn">
               <i className="bi bi-heart likeIcon" onClick={handleLike} />
             </div>
           )}

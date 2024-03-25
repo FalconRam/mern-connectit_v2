@@ -38,7 +38,7 @@ const TopSectionRightProfile = ({
   };
 
   const handleProfileEdit = () => {
-    history.push(`/profile/edit/${profileDetails?.userDetails?._id}`);
+    history.push(`/profile/edit?profileId=${profileDetails?.userDetails?._id}`);
   };
 
   return (

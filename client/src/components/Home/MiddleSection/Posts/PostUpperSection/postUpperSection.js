@@ -20,7 +20,9 @@ const PostUpperSection = ({ post, profileDetails }) => {
   let isProfilePage = window.location.pathname === "/profile/details";
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
+    navigator.clipboard.writeText(
+      `${window.location.origin}/post?postId=${post._id}`
+    );
   };
 
   const handleProfile = () => {
@@ -28,7 +30,7 @@ const PostUpperSection = ({ post, profileDetails }) => {
   };
 
   const openPost = () => {
-    history.push(`/post/${post._id}`);
+    history.push(`/post?postId=${post._id}`);
   };
 
   return (

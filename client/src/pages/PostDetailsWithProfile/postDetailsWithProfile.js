@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getProfileDetails } from "../../actions/profile";
@@ -13,10 +13,18 @@ import {
 } from "../../actions/posts";
 import Loader from "../../components/Shared/utils/loader";
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 const PostDetailsWithProfile = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { id } = useParams();
+
+  const query = useQuery();
+  const postId = query.get("postId");
+  if (!postId) {
+    history.push("/");
+  }
 
   const user = JSON.parse(localStorage.getItem("profile"));
 
@@ -30,8 +38,10 @@ const PostDetailsWithProfile = () => {
   );
 
   useEffect(() => {
-    dispatch(getPostById(id));
-    dispatch(getCommentsWithProfilePicture(id, true));
+    if (postId) {
+      dispatch(getPostById(postId));
+      dispatch(getCommentsWithProfilePicture(postId, true));
+    }
   }, []);
 
   let profileId = post?.creator;
@@ -55,7 +65,7 @@ const PostDetailsWithProfile = () => {
               <LeftSection
                 userProfileDetails={profileDetails}
                 isProfileLoading={isProfileLoading}
-                id={id}
+                id={postId}
                 profileId={profileId}
                 post={post}
               />

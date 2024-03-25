@@ -17,7 +17,9 @@ const PostLowerSection = ({ post, comments, setComments }) => {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/post/${post._id}`);
+    navigator.clipboard.writeText(
+      `${window.location.origin}/post?postId=${post._id}`
+    );
   };
 
   return (
