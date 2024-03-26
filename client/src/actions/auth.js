@@ -2,6 +2,7 @@ import * as api from "../api";
 import { AUTH } from "../constants/actionTypes";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import { getProfileDetails } from "./profile";
 
 // action creators
 export const signUp = (formData, history) => async (dispatch) => {
@@ -16,6 +17,7 @@ export const signUp = (formData, history) => async (dispatch) => {
     });
     // step : 4 disptach action type and data to reducers and it retuns something
     dispatch({ type: AUTH, data });
+    dispatch(getProfileDetails(data.data.id, true));
     history.push("/");
   } catch (error) {
     const message =
@@ -37,6 +39,7 @@ export const logIn = (formData, history) => async (dispatch) => {
       secure: true,
     });
     dispatch({ type: AUTH, data });
+    dispatch(getProfileDetails(data.data.id, true));
     history.push("/");
   } catch (error) {
     const message =

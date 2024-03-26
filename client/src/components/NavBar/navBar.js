@@ -16,7 +16,8 @@ import { getPostByUser } from "../../actions/posts";
 const NavBar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
-  const { userProfileDetails } = useSelector((state) => state.profile);
+  const [userProfileDetails, setUserProfileDetails] = useState({});
+  
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
@@ -28,8 +29,11 @@ const NavBar = () => {
       // if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
     setUser(JSON.parse(localStorage.getItem("profile")));
+    setUserProfileDetails(
+      JSON.parse(localStorage.getItem("userProfileDetails"))
+    );
     // TODO: Need to check why we are setting user on location change
-  }, [location]);
+  }, [location, user]);
 
   const isChatPage = useLocation().pathname === "/chats";
 
