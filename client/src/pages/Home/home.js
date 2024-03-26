@@ -18,8 +18,9 @@ const Home = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { userProfileDetails, isUserProfileLoading } = useSelector(
-    (state) => state.profile
+  const { isUserProfileLoading } = useSelector((state) => state.profile);
+  const userProfileDetails = JSON.parse(
+    localStorage.getItem("userProfileDetails")
   );
   const { posts, isPostLoading } = useSelector((state) => state.posts);
 
@@ -28,7 +29,6 @@ const Home = () => {
   }
 
   useEffect(() => {
-    user && dispatch(getProfileDetails(id, true));
     user && dispatch(getPostsByFollowing());
   }, []);
 

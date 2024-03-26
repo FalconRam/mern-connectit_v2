@@ -90,6 +90,9 @@ export const getProfileDetails = (id, isUser) => async (dispatch) => {
       dispatch({ type: START_USER_PROFILE_LOADING });
 
       const { data } = await api.fetchProfileDetails(id, accessTokenFromCookie);
+
+      localStorage.setItem("userProfileDetails", JSON.stringify(data.data));
+
       dispatch({ type: GET_USER_PROFILE_DETAILS, payload: data });
 
       dispatch({ type: END_USER_PROFILE_LOADING });

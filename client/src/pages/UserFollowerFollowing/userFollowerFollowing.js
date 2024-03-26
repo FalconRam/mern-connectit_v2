@@ -37,7 +37,7 @@ const UserFollowerFollowing = () => {
   } = useSelector((state) => state.profile);
 
   useEffect(() => {
-    if (!profileId) {
+    if (profileId) {
       dispatch(getFollowingProfileDetails(profileId));
       dispatch(getFollowersProfileDetails(profileId));
     }
