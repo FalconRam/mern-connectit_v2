@@ -10,8 +10,8 @@ import { tokenMiddleware } from "../middleware/tokenMiddleware";
 //     : process.env.REACT_APP_PRODUCTION_BE_URL;
 
 let localURL = "http://localhost:5000/";
-let productionURL = "https://52.88.88.188/";
-// let productionURL = "https://connectit-v2-api.onrender.com/"; // Render
+// let productionURL = "https://52.88.88.188/";
+let productionURL = "https://connectit-v2-api.onrender.com/"; // Render
 
 let URL =
   window.location.origin === "http://localhost:3000" ? localURL : productionURL;
