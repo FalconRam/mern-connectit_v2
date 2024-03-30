@@ -24,7 +24,8 @@ app.use(
     extended: true,
   })
 );
-app.use(cors());
+
+app.use(cors({ origin: "https://connectit-v2.vercel.app" }));
 
 app.use("/posts", postRoutes);
 app.use("/user", userRoutes);
