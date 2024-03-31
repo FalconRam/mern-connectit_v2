@@ -25,8 +25,11 @@ app.use(
   })
 );
 
-app.use(cors());
+// app.use(cors());
 // app.use(cors({ origin: "https://connectit-v2.vercel.app" }));
+app.use(
+  cors({ origin: ["https://connectit-v2.vercel.app", "http://localhost:3000"] })
+);
 
 app.use("/posts", postRoutes);
 app.use("/user", userRoutes);
