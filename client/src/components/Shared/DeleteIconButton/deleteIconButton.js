@@ -8,7 +8,6 @@ const DeleteIconButton = ({ type, payload }) => {
     switch (type) {
       case "post_comment":
         const { commentId, postId } = payload;
-        console.log({ commentId, postId });
         dispatch(deletePostCommentAction(commentId, postId));
         break;
       case "post_comment_reply":

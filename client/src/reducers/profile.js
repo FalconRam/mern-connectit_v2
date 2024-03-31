@@ -62,7 +62,6 @@ export default (state = initState, action) => {
         followersProfile: action.payload.data,
       };
     case GET_USER_PROFILE_DETAILS:
-      console.log(action.payload.data);
       return {
         ...state,
         userProfileDetails: action.payload.data,

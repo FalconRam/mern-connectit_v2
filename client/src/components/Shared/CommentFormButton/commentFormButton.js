@@ -70,7 +70,6 @@ const CommentFormButton = ({ post, setComments }) => {
           commentId: commentReplyDetails.commentId,
           repliedTo: commentReplyDetails.replyId,
         };
-        // console.log(replyToReplyBody);
         submitReplyToReply(replyToReplyBody);
         break;
       default:
@@ -83,7 +82,6 @@ const CommentFormButton = ({ post, setComments }) => {
     const updatedPostWithComment = await dispatch(
       commentPostWithUserDetails(post?._id, { postComment })
     );
-    console.log(updatedPostWithComment);
     setComments(updatedPostWithComment);
     setComment("");
     setIsPostingComment(false);
