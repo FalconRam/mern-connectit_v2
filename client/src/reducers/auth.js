@@ -7,14 +7,15 @@ const authReducer = (state = { authData: null }, action) => {
       localStorage.setItem(
         "profile",
         JSON.stringify({
-          ...action?.data.data,
-          accessToken: action?.data.accessToken,
-          refreshToken: action?.data.refreshToken,
+          ...action?.userData?.loginData.data, // spreading login data, since need id
+          ...action?.userData?.profileData?.userDetails, // contains other information of User
+          accessToken: action?.userData?.loginData.accessToken,
+          refreshToken: action?.userData?.loginData.refreshToken,
         })
       );
       return {
         ...state,
-        authData: action?.data,
+        authData: action?.userData,
         loading: false,
         errors: null,
       };

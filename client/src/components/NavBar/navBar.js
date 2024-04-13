@@ -14,10 +14,8 @@ import { getProfileDetails } from "../../actions/profile";
 import { getPostByUser } from "../../actions/posts";
 
 const NavBar = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  let user = JSON.parse(localStorage.getItem("profile"));
 
-  const [userProfileDetails, setUserProfileDetails] = useState({});
-  
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
@@ -28,10 +26,6 @@ const NavBar = () => {
       const decodedToken = decode(token);
       // if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
-    setUser(JSON.parse(localStorage.getItem("profile")));
-    setUserProfileDetails(
-      JSON.parse(localStorage.getItem("userProfileDetails"))
-    );
     // TODO: Need to check why we are setting user on location change
   }, [location, user]);
 
@@ -119,18 +113,14 @@ const NavBar = () => {
                   <a className="nav-link d-flex align-items-center justify-content-center gap-2">
                     <img
                       src={
-                        userProfileDetails?.userDetails?.profilePicture ||
-                        userProfileDetails?.userDetails?.name
-                          .charAt(0)
-                          .toUpperCase() ||
+                        user?.profilePicture ||
+                        user?.name.charAt(0).toUpperCase() ||
                         "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
                       }
                       className="img-thumbnail rounded-circle navProfilePic d-flex align-items-center justify-content-center"
-                      alt={userProfileDetails?.userDetails?.name
-                        .charAt(0)
-                        .toUpperCase()}
+                      alt={user?.name.charAt(0).toUpperCase()}
                     />
-                    {userProfileDetails?.userDetails?.name}
+                    {user?.name}
                   </a>
                 </li>
                 <li className="nav-item sideNavButton">
@@ -183,7 +173,7 @@ const NavBar = () => {
                   onClick={handleProfile}
                 >
                   <a className="dropdown-item dropdown-item-custom">
-                    {userProfileDetails?.userDetails?.name}
+                    {user?.name}
                   </a>
                 </li>
                 <li className="nav-item sideNavButton" onClick={handleProfile}>

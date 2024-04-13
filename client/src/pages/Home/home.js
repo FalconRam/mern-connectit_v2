@@ -19,9 +19,6 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const { isUserProfileLoading } = useSelector((state) => state.profile);
-  const userProfileDetails = JSON.parse(
-    localStorage.getItem("userProfileDetails")
-  );
   const { posts, isPostLoading } = useSelector((state) => state.posts);
 
   if (!user) {
@@ -38,13 +35,13 @@ const Home = () => {
         <div className="row">
           <div className="col-sm-12 col-md-4 mb-3 col-lg-3">
             <LeftSection
-              userProfileDetails={userProfileDetails}
+              userProfileDetails={user}
               isUserProfileLoading={isUserProfileLoading}
             />
           </div>
           <div className="col-sm-12 col-md-8 col-lg-6">
             <ShareCard
-              userProfileDetails={userProfileDetails}
+              userProfileDetails={user}
               isUserProfileLoading={isUserProfileLoading}
             />
             <MiddleSection posts={posts} isPostLoading={isPostLoading} />

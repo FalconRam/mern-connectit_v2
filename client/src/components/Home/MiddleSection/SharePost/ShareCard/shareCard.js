@@ -14,12 +14,12 @@ const ShareCard = ({ userProfileDetails, isProfileLoading }) => {
             <div className="d-flex align-items-center gap-3 mb-2">
               <img
                 src={
-                  userProfileDetails?.userDetails?.profilePicture ||
-                  userProfileDetails?.userDetails?.name.charAt(0).toUpperCase() ||
+                  userProfileDetails?.profilePicture ||
+                  userProfileDetails?.name.charAt(0).toUpperCase() ||
                   "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
                 }
                 className="img-thumbnail rounded-circle profilePic-share d-flex align-items-center justify-content-center"
-                alt={userProfileDetails?.userDetails?.name.charAt(0).toUpperCase()}
+                alt={userProfileDetails?.name.charAt(0).toUpperCase()}
               ></img>
               <div className="mb-2 w-100">
                 <button

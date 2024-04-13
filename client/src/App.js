@@ -23,12 +23,12 @@ import NotFound from "./components/NotFound/notFound";
 
 const App = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
-
-  const [isAuth, setIsAuth] = useState("");
+  const [isAuth, setIsAuth] = useState(true);
 
   useEffect(() => {
-    window.location.pathname === "/auth" ? setIsAuth(true) : setIsAuth(false);
-  }, [window.location.pathname, user]);
+    if (user) setIsAuth(false)
+    else setIsAuth(true)
+  }, [user]);
 
   return (
     <>

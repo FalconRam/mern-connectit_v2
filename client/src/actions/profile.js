@@ -91,7 +91,13 @@ export const getProfileDetails = (id, isUser) => async (dispatch) => {
 
       const { data } = await api.fetchProfileDetails(id, accessTokenFromCookie);
 
-      localStorage.setItem("userProfileDetails", JSON.stringify(data.data));
+      localStorage.setItem(
+        "profile",
+        JSON.stringify({
+          ...JSON.parse(localStorage.getItem("profile")),
+          ...data.data.userDetails,
+        })
+      );
 
       dispatch({ type: GET_USER_PROFILE_DETAILS, payload: data });
 
@@ -122,8 +128,15 @@ export const updateProfileDetails = (id, userData) => async (dispatch) => {
 
     const { data } = await api.updateProfileDetails(id, userData);
     dispatch({ type: UPDATE_PROFILE_DETAILS, payload: data });
-
     dispatch({ type: END_PROFILE_LOADING });
+
+    localStorage.setItem(
+      "profile",
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem("profile")),
+        ...data.data.userDetails,
+      })
+    );
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")

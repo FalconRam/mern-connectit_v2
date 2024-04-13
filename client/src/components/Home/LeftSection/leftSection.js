@@ -60,7 +60,7 @@ const LeftSection = ({
         <div className="card sticky-md-top sticky-lg-top">
           <img
             src={
-              userProfileDetails?.userDetails?.profileBgWallPicture ||
+              user?.profileBgWallPicture ||
               "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
             }
             className="card-img-top profileBgWall"
@@ -69,22 +69,22 @@ const LeftSection = ({
 
           <img
             src={
-              userProfileDetails?.userDetails?.profilePicture ||
-              userProfileDetails?.userDetails?.name.charAt(0).toUpperCase() ||
+              user?.profilePicture ||
+              user?.name.charAt(0).toUpperCase() ||
               "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
             }
             className="img-thumbnail rounded-circle profilePic d-flex align-items-center justify-content-center"
-            alt={userProfileDetails?.userDetails?.name.charAt(0).toUpperCase()}
+            alt={user?.name.charAt(0).toUpperCase()}
           ></img>
           <div
             className="card-body pt-2 profileUser"
-            onClick={() => handleProfile(userProfileDetails?.userDetails?._id)}
+            onClick={() => handleProfile(user?._id)}
           >
             <h6 className="card-title text-center text-primary">
-              {userProfileDetails?.userDetails?.name}
+              {user?.name}
             </h6>
             <p className="card-text text-center text-muted headline">
-              {userProfileDetails?.userDetails?.bio}
+              {user?.bio}
             </p>
           </div>
           <ul className="list-group list-group-flush">
@@ -92,18 +92,18 @@ const LeftSection = ({
               <div
                 className="text-center d-flex flex-row justify-content-center text-muted followFollows"
                 onClick={() =>
-                  handleFollowFollows(userProfileDetails?.userDetails?._id)
+                  handleFollowFollows(user?._id)
                 }
               >
                 <span className="card-link followCount">
                   <p className="mb-0 followCount">
-                    {userProfileDetails?.userDetails?.following?.length}
+                    {user?.following?.length}
                   </p>
                   Following
                 </span>
                 <span className="card-link followCount">
                   <p className="mb-0 followCount">
-                    {userProfileDetails?.userDetails?.followers?.length}
+                    {user?.followers?.length}
                   </p>
                   Followers
                 </span>

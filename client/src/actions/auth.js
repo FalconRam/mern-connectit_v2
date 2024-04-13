@@ -16,8 +16,12 @@ export const signUp = (formData, history) => async (dispatch) => {
       secure: true,
     });
     // step : 4 disptach action type and data to reducers and it retuns something
-    dispatch({ type: AUTH, data });
-    dispatch(getProfileDetails(data.data.id, true));
+    const profileData = await api.fetchProfileDetails(
+      data.data.id,
+      data.data.accessToken
+    );
+    let userData = { loginData: data, profileData: profileData.data.data };
+    dispatch({ type: AUTH, userData });
     history.push("/");
   } catch (error) {
     const message =
@@ -38,8 +42,13 @@ export const logIn = (formData, history) => async (dispatch) => {
       sameSite: "None",
       secure: true,
     });
-    dispatch({ type: AUTH, data });
-    dispatch(getProfileDetails(data.data.id, true));
+    const profileData = await api.fetchProfileDetails(
+      data.data.id,
+      data.data.accessToken
+    );
+    let userData = { loginData: data, profileData: profileData.data.data };
+    dispatch({ type: AUTH, userData });
+
     history.push("/");
   } catch (error) {
     const message =
