@@ -95,7 +95,7 @@ const NavBar = () => {
         <nav className="navbar fixed-top navbar-dark navBgColor">
           <a
             className="navbar-brand mx-3 navFontColor d-flex align-items-center text-primary"
-            href={user ? "/" : "/auth"}
+            href={user ? "/feeds" : "/"}
           >
             <img
               src={logo}
