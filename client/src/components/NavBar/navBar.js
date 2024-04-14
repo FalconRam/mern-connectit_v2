@@ -12,6 +12,7 @@ import Chat from "../Chat/chat";
 import "./navBar.css";
 import { getProfileDetails } from "../../actions/profile";
 import { getPostByUser } from "../../actions/posts";
+import LandingNav from "../LandingComponent/landingNav";
 
 const NavBar = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
@@ -30,6 +31,7 @@ const NavBar = () => {
   }, [location, user]);
 
   const isChatPage = useLocation().pathname === "/chats";
+  const islandingPage = useLocation().pathname === "/";
 
   const [isScreenBelowMd, setIsScreenBelowMd] = useState(false);
   const [winHeight, setWinHeight] = useState(window.outerHeight);
@@ -104,6 +106,7 @@ const NavBar = () => {
             />
             ConnectIT
           </a>
+          {islandingPage && <LandingNav />}
 
           {/* From Medium to xxl Devices Component*/}
           {user && (
@@ -166,12 +169,8 @@ const NavBar = () => {
               >
                 <img src={more} alt="more" title="More" className="more-icon" />
               </button>
-              <ul className="dropdown-menu text-center">
-                <li
-                  className="nav-item sideNavButton"
-                  {...(isChatPage || spanProps)}
-                  onClick={handleProfile}
-                >
+              <ul className="dropdown-menu text-center nav-listItems">
+                <li className="nav-item sideNavButton" onClick={handleProfile}>
                   <a className="dropdown-item dropdown-item-custom">
                     {user?.name}
                   </a>
@@ -181,7 +180,11 @@ const NavBar = () => {
                     My Profile
                   </a>
                 </li>
-                <li className="nav-item sideNavButton" onClick={handleMessages}>
+                <li
+                  className="nav-item sideNavButton"
+                  {...(isChatPage || spanProps)}
+                  onClick={handleMessages}
+                >
                   <a className="dropdown-item dropdown-item-custom">Messages</a>
                 </li>
                 <li

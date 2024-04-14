@@ -20,6 +20,7 @@ import UserFollowerFollowing from "./pages/UserFollowerFollowing/userFollowerFol
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NotFound from "./components/NotFound/notFound";
+import LandingPage from "./pages/LandingPage/landingPage";
 
 const App = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
@@ -36,7 +37,8 @@ const App = () => {
       <BrowserRouter>
         <NavBar />
         <Switch>
-          <Route path="/" exact component={() => <Redirect to="/feeds" />} />
+          <Route path="/" exact component={LandingPage} />
+          {/* <Route path="/" exact component={() => <Redirect to="/feeds" />} /> */}
           <Route
             path="/auth"
             exact

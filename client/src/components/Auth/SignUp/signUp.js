@@ -86,6 +86,7 @@ const SignUp = ({
   const switchMode = () => {
     clearForm();
     setIsLogin(!isLogin);
+    history.push("/auth");
   };
 
   const handleShowPassword = () => {
@@ -256,9 +257,7 @@ const SignUp = ({
 
             <div className="d-flex flex-column flex-md-row justify-content-center ">
               <button onClick={switchMode} className="p-0 mt-3 switchButton">
-                {isLogin
-                  ? "Don't have an account?"
-                  : "Already have an account?"}
+                {isLogin ? "Still no Account?" : "Already have an account?"}
               </button>
             </div>
           </div>
