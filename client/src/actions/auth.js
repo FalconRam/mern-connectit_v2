@@ -22,7 +22,7 @@ export const signUp = (formData, history) => async (dispatch) => {
     );
     let userData = { loginData: data, profileData: profileData.data.data };
     dispatch({ type: AUTH, userData });
-    history.push("/");
+    history.push("/feeds");
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -49,7 +49,7 @@ export const logIn = (formData, history) => async (dispatch) => {
     let userData = { loginData: data, profileData: profileData.data.data };
     dispatch({ type: AUTH, userData });
 
-    history.push("/");
+    history.push("/feeds");
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||

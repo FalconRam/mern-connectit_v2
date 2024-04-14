@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import "../../components/Auth/auth.css";
 import LogIn from "../../components/Auth/Login/login";
 import SignUp from "../../components/Auth/SignUp/signUp";
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 const Auth = ({ isAuth, setIsAuth }) => {
+  const query = useQuery();
   const history = useHistory();
-
   const [isLogin, setIsLogin] = useState(true);
   const [isLoginLoading, setIsLoginLoading] = useState(false);
 
@@ -17,6 +20,10 @@ const Auth = ({ isAuth, setIsAuth }) => {
   if (user) {
     history.push("/");
   }
+  useEffect(() => {
+    if (query.get("new") === "true") setIsLogin(false);
+    else setIsLogin(true);
+  }, [history]);
 
   return (
     <>

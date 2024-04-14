@@ -74,6 +74,7 @@ const LogIn = ({
   const switchMode = () => {
     clearForm();
     setIsLogin(!isLogin);
+    history.push("/auth?new=true");
   };
 
   const handleShowPassword = () => {
@@ -166,7 +167,7 @@ const LogIn = ({
             <div className="d-flex flex-column flex-md-row justify-content-between mt-3 gap-2">
               <button onClick={switchMode} className="p-0  switchButton">
                 {isLogin
-                  ? "Don't have an account?"
+                  ? "Still no Account?"
                   : "Already have an account? Sign In"}
               </button>
               <button className="p-0 switchButton">
