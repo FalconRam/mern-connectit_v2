@@ -3,9 +3,12 @@ import { useHistory } from "react-router-dom";
 
 import two_people from "../../assets/two-people.png";
 
+import LoaderMini from "../Shared/utils/loaderMini";
+import { useTestAccountLogin } from "../../hooks";
 
 const LandingComponent = () => {
   const history = useHistory();
+  const [isLoadingWithTest, handleTestAccountLogin] = useTestAccountLogin();
 
   const handleLoginPage = () => {
     history.push("/auth");
@@ -15,7 +18,7 @@ const LandingComponent = () => {
   };
   return (
     <div className="d-flex flex-column flex-lg-row mt-5 justify-content-around align-items-center gap-3">
-      <div className="">
+      <div className="d-flex flex-column align-items-start">
         <img src={two_people} alt="two_people" className="h-auto mw-100" />
         <h2 className="fw-bold text-primary">ConnectIT</h2>
         <h4 className="fw-light">
@@ -28,10 +31,10 @@ const LandingComponent = () => {
             className="d-flex align-items-center gap-3 mb-2"
             onClick={handleLoginPage}
           >
-            <button className="btn btn-md btn-primary text-wrap">
-              Continue Connecting !..
+            <button className="btn btn-sm btn-primary text-wrap">
+              Continue Connecting!..
             </button>
-            <p className="mb-0 text-muted d-none d-md-block">
+            <p className="mb-0 text-muted d-none d-md-block p-like">
               Login to your Account
             </p>
           </div>
@@ -41,6 +44,23 @@ const LandingComponent = () => {
           >
             Create an Account
           </button>
+          {/* Test Account Login Button */}
+          {isLoadingWithTest ? (
+            <div className="d-flex justify-content-center mt-2 switchButton">
+              <LoaderMini />
+            </div>
+          ) : (
+            <div className="d-flex justify-content-center">
+              <button
+                disabled={isLoadingWithTest}
+                type="submit"
+                className="p-0 switchButton"
+                onClick={handleTestAccountLogin}
+              >
+                Explore with Test Account?
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

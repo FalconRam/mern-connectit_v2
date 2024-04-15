@@ -9,6 +9,7 @@ import LoaderMini from "../../Shared/utils/loaderMini";
 // import dotenv from "dotenv";
 
 import "./login.css";
+import { useTestAccountLogin } from "../../../hooks";
 
 // dotenv.config();
 
@@ -24,10 +25,11 @@ const LogIn = ({
   const history = useHistory();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingWithTest, setIsLoadingWithTest] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [showFormError, setShowFormError] = useState(false);
+
+  const [isLoadingWithTest, handleTestAccountLogin] = useTestAccountLogin();
 
   const email = useRef("");
   const password = useRef("");
@@ -79,20 +81,6 @@ const LogIn = ({
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
-  };
-
-  const handleTestAccountLogin = async () => {
-    setIsLoadingWithTest(true);
-    await dispatch(
-      logIn(
-        {
-          email: process.env.REACT_APP_TEST_EMAIL,
-          password: process.env.REACT_APP_TEST_PASSWORD,
-        },
-        history
-      )
-    );
-    setIsLoadingWithTest(false);
   };
 
   return (
