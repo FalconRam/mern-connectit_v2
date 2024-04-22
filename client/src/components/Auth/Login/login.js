@@ -82,7 +82,7 @@ const LogIn = ({
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
+  
   const handleForgotPassword = () => {
     history.push("/reset-account");
   };
