@@ -95,6 +95,10 @@ const LogIn = ({
     setIsLoadingWithTest(false);
   };
 
+  const handleForgotPassword = () => {
+    history.push("/reset-account");
+  };
+
   return (
     <>
       <div className="container bg-white col-sm-10 col-md-7 col-lg-5">
@@ -170,7 +174,10 @@ const LogIn = ({
                   ? "Still no Account?"
                   : "Already have an account? Sign In"}
               </button>
-              <button className="p-0 switchButton">
+              <button
+                className="p-0 switchButton"
+                onClick={handleForgotPassword}
+              >
                 {isLogin && "Forgot Password?"}
               </button>
             </div>

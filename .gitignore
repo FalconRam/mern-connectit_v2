@@ -1,6 +1,7 @@
 client/.env
 server/.env
 server/package-lock.json
+server/node_modules
 client/package-lock.json
 package-lock.json
 client_secret.json

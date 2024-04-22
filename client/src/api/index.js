@@ -13,7 +13,7 @@ let localURL = "http://localhost:5000/";
 let productionURL = "https://connectit-v2.ramvh.in/"; // Own Domain
 // let productionURL = "https://connectit-v2-api.onrender.com/"; // Render
 
-let URL =
+export let URL =
   window.location.origin === "http://localhost:3000" ? localURL : productionURL;
 
 const API = axios.create({ baseURL: URL });

@@ -21,14 +21,16 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NotFound from "./components/NotFound/notFound";
 import LandingPage from "./pages/LandingPage/landingPage";
+import ForgotPassword from "./pages/ForgotPassword/forgotPassword";
+import PasswordReset from "./pages/ForgotPassword/passwordReset";
 
 const App = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
   const [isAuth, setIsAuth] = useState(true);
 
   useEffect(() => {
-    if (user) setIsAuth(false)
-    else setIsAuth(true)
+    if (user) setIsAuth(false);
+    else setIsAuth(true);
   }, [user]);
 
   return (
@@ -54,6 +56,8 @@ const App = () => {
           <Route path="/post" exact component={PostDetailsWithProfile} />
           <Route path="/profile/details" exact component={ProfilePage} />
           <Route path="/profile/edit" exact component={ProfileEdit} />
+          <Route path="/reset-account" exact component={ForgotPassword} />
+          <Route path="/reset-password" exact component={PasswordReset} />
           <Route
             path="/profile/following-followers/details"
             exact

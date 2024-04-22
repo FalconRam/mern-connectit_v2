@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 import bcrypt from "bcryptjs";
 
-import User from "../models/user.js";
+import User, { PasswordLink } from "../models/user.js";
 import {
   saveUserToken,
   signAccessToken,
@@ -15,12 +15,13 @@ import {
   createErrorResponse,
   createSuccessResponse,
 } from "../services/returnResponse/createResponse.js";
+import { nanoid } from "nanoid";
+import { sendResetEmail } from "../services/emailService/index.js";
 
 dotenv.config();
 
 export const logIn = async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const existingUser = await User.findOne({ email });
 
@@ -132,6 +133,45 @@ export const signUp = async (req, res) => {
       .json({ status: true, data: resultUser, accessToken, refreshToken });
   } catch (error) {
     createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
+  }
+};
+
+export const initiateResetPassword = async (req, res) => {
+  try {
+    if (!req.body.email)
+      return createErrorResponse(res, 400, {}, "Email is Required");
+
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (!existingUser)
+      return createErrorResponse(res, 404, {}, "User not found");
+
+    const resetId = nanoid(20);
+    let baseURL = req.headers.origin;
+    let resetLink = `${baseURL}/reset-password?resetId=${resetId}`;
+
+    const result = await PasswordLink.create({
+      email: existingUser.email,
+      resetId,
+      resetLink,
+    });
+
+
+    await sendResetEmail({
+      email: existingUser.email,
+      userName: existingUser.name,
+      resetId,
+      resetLink,
+      baseURL,
+    });
+
+    return createSuccessResponse(
+      res,
+      200,
+      { email: existingUser.email },
+      "Reset Link Sent"
+    );
+  } catch (error) {
+    return createErrorResponse(res, 500, {}, "Failed on Creating Reset link");
   }
 };
 
