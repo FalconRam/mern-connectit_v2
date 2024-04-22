@@ -82,12 +82,16 @@ const LogIn = ({
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+  
+  const handleForgotPassword = () => {
+    history.push("/reset-account");
+  };
 
   return (
     <>
       <div className="container bg-white col-sm-10 col-md-7 col-lg-5">
         <div className="row justify-content-center">
-          <div className="border rounded p-5 border-primary">
+          <div className="border rounded p-5">
             <p className="h3 text-center loginIcon fw-bold">
               <i className="bi bi-box-arrow-in-right me-2" />
               LogIn
@@ -158,7 +162,10 @@ const LogIn = ({
                   ? "Still no Account?"
                   : "Already have an account? Sign In"}
               </button>
-              <button className="p-0 switchButton">
+              <button
+                className="p-0 switchButton"
+                onClick={handleForgotPassword}
+              >
                 {isLogin && "Forgot Password?"}
               </button>
             </div>

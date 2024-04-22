@@ -28,6 +28,9 @@ export const END_FETCH_REPLIES_BY_COMMENT = "END_FETCH_REPLIES_BY_COMMENT";
 // Auth CRUD Constants
 export const AUTH = "AUTH";
 export const LOGOUT = "LOGOUT";
+export const INITIATE_RESET = "INITIATE_RESET";
+export const RE_INITIATE_RESET = "RE_INITIATE_RESET";
+export const FAILED_INITIATE_RESET = "FAILED_INITIATE_RESET";
 
 // Post CRUD Constants
 export const FETCH_ALL_POSTS = "FETCH_ALL_POSTS";

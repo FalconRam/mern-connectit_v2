@@ -24,6 +24,18 @@ const userSchema = mongoose.Schema({
   country: { type: String, required: true },
 });
 
+const passwordLinkSchema = mongoose.Schema({
+  email: { type: String, required: true },
+  resetId: { type: String, required: true },
+  resetLink: { type: String, required: true },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    expires: 1800, // 30 minutes in seconds - To auto clear the link from DB
+  },
+});
+
 const User = mongoose.model("User", userSchema);
+export const PasswordLink = mongoose.model("PasswordLink", passwordLinkSchema);
 
 export default User;

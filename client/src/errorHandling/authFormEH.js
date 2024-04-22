@@ -15,6 +15,41 @@ export const findLoginFormErrors = (loginCred) => {
   return newErrors;
 };
 
+// Password Intiate Error Handling
+export const findPasswordInitiateFormErrors = (email) => {
+  const newErrors = {};
+  const regex = /\S+@\S+\.\S+/;
+  // Email errors
+  if (!email || email === "") newErrors.email = "Please enter your Email.";
+  else if (!regex.test(email)) newErrors.email = "Email address is invalid";
+
+  return newErrors;
+};
+
+// Password Reset Error Handling
+export const findPasswordResetFormErrors = ({
+  newPassword,
+  confirmPassword,
+}) => {
+  const newErrors = {};
+  // Password errors
+  if (!newPassword || newPassword === "")
+    newErrors.newPassword = "Please enter your Password.";
+  else if (newPassword.length <= 5)
+    newErrors.newPassword = "Password is too Short!";
+
+  // Confirm Password errors
+  if (!confirmPassword || confirmPassword === "")
+    newErrors.confirmPassword = "Please confirm your Password.";
+  else if (
+    newPassword.length !== confirmPassword.length ||
+    confirmPassword !== newPassword
+  )
+    newErrors.confirmPassword = "Password is not Matching!";
+
+  return newErrors;
+};
+
 // Signin Error Handling
 export const findSigninFormErrors = (signInData) => {
   const {

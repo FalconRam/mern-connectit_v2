@@ -16,19 +16,22 @@ import Search from "./pages/Search/search";
 import Messages from "./pages/Messages/messages";
 import ProfileEdit from "./pages/ProfilePage/ProfileEdit/profileEdit";
 import UserFollowerFollowing from "./pages/UserFollowerFollowing/userFollowerFollowing";
+import NotFound from "./components/NotFound/notFound";
+import LandingPage from "./pages/LandingPage/landingPage";
+import ForgotPassword from "./pages/ForgotPassword/forgotPassword";
+import PasswordConfirmation from "./pages/ForgotPassword/passwordConfirmation";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import NotFound from "./components/NotFound/notFound";
-import LandingPage from "./pages/LandingPage/landingPage";
+import ReportPasswordRequest from "./pages/ForgotPassword/reportPasswordRequest";
 
 const App = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
   const [isAuth, setIsAuth] = useState(true);
 
   useEffect(() => {
-    if (user) setIsAuth(false)
-    else setIsAuth(true)
+    if (user) setIsAuth(false);
+    else setIsAuth(true);
   }, [user]);
 
   return (
@@ -54,6 +57,17 @@ const App = () => {
           <Route path="/post" exact component={PostDetailsWithProfile} />
           <Route path="/profile/details" exact component={ProfilePage} />
           <Route path="/profile/edit" exact component={ProfileEdit} />
+          <Route path="/reset-account" exact component={ForgotPassword} />
+          <Route
+            path="/reset-password"
+            exact
+            component={PasswordConfirmation}
+          />
+          <Route
+            path="/report-password"
+            exact
+            component={ReportPasswordRequest}
+          />
           <Route
             path="/profile/following-followers/details"
             exact

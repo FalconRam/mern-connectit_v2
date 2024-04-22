@@ -1,8 +1,14 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { logIn } from "../actions/auth";
+
+
+const useQuery = () => {
+  return [new URLSearchParams(useLocation().search)];
+};
+
 
 const useTestAccountLogin = () => {
   const dispatch = useDispatch();
@@ -26,4 +32,4 @@ const useTestAccountLogin = () => {
   return [isLoadingWithTest, handleTestAccountLogin];
 };
 
-export { useTestAccountLogin };
+export { useTestAccountLogin, useQuery };
