@@ -5,6 +5,9 @@ import {
   getSearchUsers,
   refreshUserController,
   initiateResetPassword,
+  validateResetLink,
+  resetPassword,
+  reportPassword,
 } from "../controllers/user.js";
 
 import auth from "../middleware/auth.js";
@@ -15,7 +18,13 @@ router.post("/create-user", signUp);
 
 router.post("/login-user", logIn);
 
-router.post('/initiate-resetPassword', initiateResetPassword)
+router.post("/initiate-resetPassword", initiateResetPassword);
+
+router.get("/validate-resetLink", validateResetLink);
+
+router.post("/resetPassword", resetPassword);
+
+router.post("/reportPassword", reportPassword);
 
 router.post("/refresh-session", auth, refreshUserController); // By Refresh token, Generate Access Token
 

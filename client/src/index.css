@@ -25,7 +25,7 @@ body {
   border-radius: 50%;
   border: 3px solid transparent;
   border-top-color: #0c56a5;
-  animation: spin 2s linear infinite;
+  animation: spin 1s linear infinite;
   z-index: 1001;
 }
 

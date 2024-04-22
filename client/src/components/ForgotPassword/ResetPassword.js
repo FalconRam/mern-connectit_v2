@@ -2,14 +2,16 @@ import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import LoaderMini from "../Shared/utils/loaderMini";
-import { findPasswordResetFormErrors } from "../../errorHandling/authFormEH";
-
 import reset_password_img from "../../assets/reset-password.png";
+import LoaderMini from "../Shared/utils/loaderMini";
 
-const ResetPassword = () => {
+import { findPasswordResetFormErrors } from "../../errorHandling/authFormEH";
+import { confirmResetPassword } from "../../actions/auth";
+
+const ResetPassword = ({ resetId }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -30,11 +32,11 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let resetData = {
-      password: password.current.value,
+    let passwordData = {
+      newPassword: password.current.value,
       confirmPassword: confirmPassword.current.value,
     };
-    const newErrors = findPasswordResetFormErrors(resetData);
+    const newErrors = findPasswordResetFormErrors(passwordData);
     // Conditional logic:
     if (Object.keys(newErrors).length > 0) {
       // We got errors!
@@ -43,10 +45,9 @@ const ResetPassword = () => {
     } else {
       setIsLoading(true);
       // No errors!
-      //   await dispatch(confirmResetPassword(signInData, history));
-      //   clearForm();
+      const payload = { ...passwordData, resetId };
+      await dispatch(confirmResetPassword(payload, history));
       setIsLoading(false);
-      history("/auth");
     }
   };
 
@@ -142,7 +143,7 @@ const ResetPassword = () => {
                   className="btn btn-primary d-grid col-12 col-md-5 col-lg-4 mt-3 mx-auto"
                   onClick={handleSubmit}
                 >
-                  Confrim
+                  Confirm
                 </button>
               )}
             </form>

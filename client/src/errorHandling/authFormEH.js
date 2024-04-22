@@ -27,19 +27,23 @@ export const findPasswordInitiateFormErrors = (email) => {
 };
 
 // Password Reset Error Handling
-export const findPasswordResetFormErrors = ({ password, confirmPassword }) => {
+export const findPasswordResetFormErrors = ({
+  newPassword,
+  confirmPassword,
+}) => {
   const newErrors = {};
   // Password errors
-  if (!password || password === "")
-    newErrors.password = "Please enter your Password.";
-  else if (password.length <= 5) newErrors.password = "Password is too Short!";
+  if (!newPassword || newPassword === "")
+    newErrors.newPassword = "Please enter your Password.";
+  else if (newPassword.length <= 5)
+    newErrors.newPassword = "Password is too Short!";
 
   // Confirm Password errors
   if (!confirmPassword || confirmPassword === "")
     newErrors.confirmPassword = "Please confirm your Password.";
   else if (
-    password.length !== confirmPassword.length ||
-    confirmPassword !== password
+    newPassword.length !== confirmPassword.length ||
+    confirmPassword !== newPassword
   )
     newErrors.confirmPassword = "Password is not Matching!";
 

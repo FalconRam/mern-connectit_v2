@@ -24,7 +24,7 @@ const ForgotPasswordComp = () => {
     setEmailReSend(emailReInitiated);
   }, [emailInitiated, emailReInitiated]);
   const email = useRef();
-  console.log({ emailSent, emailReSend });
+  // console.log({ emailSent, emailReSend });
   // Check and see if errors exist, and remove them from the error object:
   const setField = (field) => {
     if (!!errors[field])
@@ -46,11 +46,18 @@ const ForgotPasswordComp = () => {
     } else {
       setIsLoading(true);
       // No errors!
-      await dispatch(initiatePasswordReset({ email: email.current.value }));
+      const isSent = await dispatch(
+        initiatePasswordReset({ email: email.current.value })
+      );
       //   clearForm();
-      setIsLoading(false);
-      setEmailSent(true);
-      reduceTimer();
+      if (isSent) {
+        setIsLoading(false);
+        setEmailSent(true);
+        reduceTimer();
+      } else {
+        setIsLoading(false);
+        // setEmailSent(true);
+      }
     }
   };
   let timerInterval;

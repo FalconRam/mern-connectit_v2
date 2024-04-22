@@ -3,6 +3,7 @@ import {
   AUTH,
   INITIATE_RESET,
   RE_INITIATE_RESET,
+  // FAILED_INITIATE_RESET,
   LOGOUT,
 } from "../constants/actionTypes";
 
@@ -12,6 +13,7 @@ const authReducer = (
     emailInitiated: false,
     emailIdSent: "",
     emailReInitiated: false,
+    isEmailInitiated: false,
   },
   action
 ) => {
@@ -44,6 +46,12 @@ const authReducer = (
         emailReInitiated: true,
         emailIdSent: action.data.data.email,
       };
+    // case FAILED_INITIATE_RESET:
+    //   return {
+    //     ...state,
+    //     isEmailInitiated: true,
+    //     emailIdSent: action.payload.email,
+    //   };
     case LOGOUT:
       localStorage.clear();
       Cookies.remove("userToken");

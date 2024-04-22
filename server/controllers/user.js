@@ -155,7 +155,6 @@ export const initiateResetPassword = async (req, res) => {
       resetLink,
     });
 
-
     await sendResetEmail({
       email: existingUser.email,
       userName: existingUser.name,
@@ -172,6 +171,97 @@ export const initiateResetPassword = async (req, res) => {
     );
   } catch (error) {
     return createErrorResponse(res, 500, {}, "Failed on Creating Reset link");
+  }
+};
+
+export const validateResetLink = async (req, res) => {
+  try {
+    const { resetId } = req.query;
+    if (!resetId)
+      return createErrorResponse(res, 400, { valid: false }, "Invalid Link");
+
+    const isValid = await PasswordLink.findOne({ resetId });
+    if (!isValid)
+      return createErrorResponse(res, 200, { valid: false }, "Invalid Link");
+
+    if (isValid)
+      return createSuccessResponse(
+        res,
+        200,
+        { resetId, valid: true },
+        "Success"
+      );
+    return createErrorResponse(res, 500, { valid: false }, "Invalid Link");
+  } catch (error) {
+    return createErrorResponse(
+      res,
+      500,
+      { valid: false },
+      "Error Occured While validating"
+    );
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { newPassword, confirmPassword, resetId } = req.body;
+    if (!newPassword || !confirmPassword || !resetId)
+      return createErrorResponse(
+        res,
+        400,
+        { valid: false },
+        "All the fields are Required"
+      );
+
+    const resetLinkDetails = await PasswordLink.findOne({ resetId });
+    if (!resetLinkDetails)
+      return createErrorResponse(res, 404, { valid: false }, "Invalid Link");
+
+    const { email } = resetLinkDetails;
+    let userDetails = await User.findOne({ email });
+
+    if (!userDetails)
+      return createErrorResponse(res, 404, { valid: false }, "Invalid User");
+    if (newPassword !== confirmPassword)
+      return createErrorResponse(res, 400, {}, "Password doesn't match.");
+
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    const { _id } = userDetails;
+
+    userDetails.password = hashedPassword;
+
+    await User.findByIdAndUpdate(_id, userDetails, {
+      new: true,
+    });
+
+    await PasswordLink.findByIdAndDelete(resetLinkDetails._id);
+
+    return createSuccessResponse(res, 200, {}, "Password Reset Success");
+  } catch (error) {
+    return createErrorResponse(res, 500, {}, "Error Occured While reset");
+  }
+};
+
+export const reportPassword = async (req, res) => {
+  try {
+    const { resetId } = req.body;
+    if (!resetId)
+      return createErrorResponse(
+        res,
+        400,
+        { valid: false },
+        "Reset link are Required"
+      );
+
+    const resetLinkDetails = await PasswordLink.findOne({ resetId });
+    if (!resetLinkDetails)
+      return createErrorResponse(res, 404, { valid: false }, "Invalid Link");
+
+    await PasswordLink.findByIdAndDelete(resetLinkDetails._id);
+
+    return createSuccessResponse(res, 200, {}, "Report Success");
+  } catch (error) {
+    return createErrorResponse(res, 500, {}, "Error Occured While reporting");
   }
 };
 

@@ -21,6 +21,7 @@ export const sendResetEmail = async ({
   baseURL,
 }) => {
   try {
+    // console.log(resetLink);
     const mailOptions = {
       from: `"ConnectIT Support" <${process.env.NODE_MAIL_AUTH_EMAILID}>`,
       to: `${process.env.NODE_MAIL_AUTH_EMAILID}, ${email}`,
