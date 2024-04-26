@@ -4,6 +4,7 @@ import more from "../../assets/more.png";
 
 const LandingNav = () => {
   const history = useHistory();
+  const user = JSON.parse(localStorage.getItem("profile"));
 
   const handleLoginPage = (e) => {
     e.stopPropagation();

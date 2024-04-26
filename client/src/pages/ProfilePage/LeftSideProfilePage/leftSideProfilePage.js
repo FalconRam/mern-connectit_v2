@@ -48,7 +48,7 @@ const LeftSideProfilePage = () => {
     };
 
   const handleHome = () => {
-    history.push("/");
+    history.push("/feeds");
   };
 
   const handleSearch = () => {

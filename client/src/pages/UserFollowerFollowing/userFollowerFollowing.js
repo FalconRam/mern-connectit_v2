@@ -21,9 +21,6 @@ const UserFollowerFollowing = () => {
   const [isFollowingNavTab, setIsFollowingNavTab] = useState(true);
 
   const user = JSON.parse(localStorage.getItem("profile"));
-  if (!user) {
-    if (window.location.pathname !== "/auth") history.push("/auth");
-  }
 
   const query = useQuery();
   const profileId = query.get("profileId");

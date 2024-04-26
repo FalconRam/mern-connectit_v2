@@ -17,7 +17,7 @@ const LandingComponent = () => {
     history.push("/auth?new=true");
   };
   return (
-    <div className="d-flex flex-column flex-lg-row mt-5 justify-content-around align-items-center gap-3">
+    <div className="d-flex flex-column flex-lg-row my-5 justify-content-around align-items-center gap-3">
       <div className="d-flex flex-column align-items-start">
         <img src={two_people} alt="two_people" className="h-auto mw-100" />
         <h2 className="fw-bold text-primary">ConnectIT</h2>
