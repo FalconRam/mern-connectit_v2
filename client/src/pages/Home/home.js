@@ -21,9 +21,6 @@ const Home = () => {
   const { isUserProfileLoading } = useSelector((state) => state.profile);
   const { posts, isPostLoading } = useSelector((state) => state.posts);
 
-  if (!user) {
-    if (window.location.pathname !== "/auth") history.push("/auth");
-  }
 
   useEffect(() => {
     user && dispatch(getPostsByFollowing());

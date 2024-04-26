@@ -76,13 +76,16 @@ const LogIn = ({
   const switchMode = () => {
     clearForm();
     setIsLogin(!isLogin);
-    history.push("/auth?new=true");
+    if (window.location.search.includes("redirectURL=")) {
+      console.log(`/auth?new=true&${window.location.search.slice(1)}`);
+      history.push(`/auth?new=true&${window.location.search.slice(1)}`);
+    } else history.push("/auth?new=true");
   };
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-  
+
   const handleForgotPassword = () => {
     history.push("/reset-account");
   };

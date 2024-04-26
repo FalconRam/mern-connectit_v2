@@ -14,7 +14,7 @@ export const signUp = (formData, history) => async (dispatch) => {
   try {
     // create user
     const { data } = await api.signUp(formData); // step : 2 - call to api and server db returns the data ; step : 3 check in api/index
-    toast.success(`Welcome ${data.data.name.slice(0, 3)}..!`);
+
     // Save token in a cookie
     Cookies.set("userToken", data.accessToken, {
       sameSite: "None",
@@ -27,7 +27,13 @@ export const signUp = (formData, history) => async (dispatch) => {
     );
     let userData = { loginData: data, profileData: profileData.data.data };
     dispatch({ type: AUTH, userData });
-    history.push("/feeds");
+
+    if (localStorage.getItem("redirectURL")) {
+      history.push(localStorage.getItem("redirectURL"));
+      localStorage.removeItem("redirectURL");
+    } else history.push("/feeds");
+
+    toast.success(`Welcome ${data.data.name.slice(0, 3)}..!`);
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -41,7 +47,6 @@ export const logIn = (formData, history) => async (dispatch) => {
   try {
     // login user
     const { data } = await api.logIn(formData);
-    toast.success(`Welcome ${data.data.name.slice(0, 3)}..!`);
     // Save token in a cookie
     Cookies.set("userToken", data.accessToken, {
       sameSite: "None",
@@ -54,8 +59,14 @@ export const logIn = (formData, history) => async (dispatch) => {
     let userData = { loginData: data, profileData: profileData.data.data };
     dispatch({ type: AUTH, userData });
 
-    history.push("/feeds");
+    if (localStorage.getItem("redirectURL")) {
+      history.push(localStorage.getItem("redirectURL"));
+      localStorage.removeItem("redirectURL");
+    } else history.push("/feeds");
+
+    toast.success(`Welcome ${data.data.name.slice(0, 3)}..!`);
   } catch (error) {
+    console.log(error);
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||

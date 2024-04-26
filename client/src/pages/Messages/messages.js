@@ -10,10 +10,6 @@ const Messages = () => {
 
   let user = JSON.parse(localStorage.getItem("profile"));
 
-  if (!user) {
-    if (window.location.pathname !== "/auth") history.push("/auth");
-  }
-
   return (
     <>
       <div className="">

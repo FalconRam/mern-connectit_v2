@@ -22,9 +22,6 @@ const ProfileEdit = () => {
   }
 
   const user = JSON.parse(localStorage.getItem("profile"));
-  if (!user) {
-    if (window.location.pathname !== "/auth") history.push("/auth");
-  }
 
   let isUser = user.id === profileId;
 

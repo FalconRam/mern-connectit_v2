@@ -72,6 +72,7 @@ const NavBar = () => {
 
   const logout = () => {
     dispatch({ type: LOGOUT });
+    history.push("/");
   };
 
   const handleProfile = () => {
@@ -87,6 +88,10 @@ const NavBar = () => {
 
   const handleNotification = () => {
     history.push("/notification");
+  };
+
+  const handleSettings = () => {
+    history.push("/profile/settings");
   };
 
   return (
@@ -106,7 +111,7 @@ const NavBar = () => {
             />
             ConnectIT
           </a>
-          {islandingPage && <LandingNav />}
+          {islandingPage && !user && <LandingNav />}
 
           {/* From Medium to xxl Devices Component*/}
           {user && (
@@ -144,11 +149,11 @@ const NavBar = () => {
                 >
                   <a className="nav-link">Notification</a>
                 </li>
-                <li className="nav-item sideNavButton">
+                <li className="nav-item sideNavButton" onClick={handleSettings}>
                   <a className="nav-link">Settings</a>
                 </li>
                 <li className="nav-item sideNavButton">
-                  <a className="dropdown-item" href="/auth">
+                  <a className="dropdown-item">
                     <button className="btn" onClick={logout}>
                       Logout
                     </button>
@@ -195,11 +200,11 @@ const NavBar = () => {
                     Notification
                   </a>
                 </li>
-                <li className="nav-item sideNavButton">
+                <li className="nav-item sideNavButton" onClick={handleSettings}>
                   <a className="dropdown-item dropdown-item-custom">Settings</a>
                 </li>
                 <li className="nav-item sideNavButton">
-                  <a className="dropdown-item" href="/auth">
+                  <a className="dropdown-item">
                     <button
                       className="post-image-btn dropdown-item dropdown-item-custom"
                       onClick={logout}

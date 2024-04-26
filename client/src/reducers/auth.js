@@ -55,7 +55,6 @@ const authReducer = (
     case LOGOUT:
       localStorage.clear();
       Cookies.remove("userToken");
-      window.location.href = "/auth";
       return { ...state, authData: null };
     default:
       return state;

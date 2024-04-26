@@ -26,9 +26,6 @@ const ProfilePage = () => {
   if (!profileId) history.push("/");
 
   const isLoggedInUser = user?.id === profileId;
-  if (!user) {
-    if (window.location.pathname !== "/auth") history.push("/auth");
-  }
 
   const dispatch = useDispatch();
 
