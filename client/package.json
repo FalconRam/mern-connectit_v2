@@ -20,6 +20,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-file-base64": "^1.0.3",
+    "react-mobile-share": "^1.0.31",
     "react-redux": "^8.0.5",
     "react-router-dom": "^5.3.4",
     "react-scripts": "5.0.1",

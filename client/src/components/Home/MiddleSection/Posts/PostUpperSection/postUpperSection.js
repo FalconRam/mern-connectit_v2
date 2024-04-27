@@ -8,6 +8,8 @@ import { deleteUserPost } from "../../../../../actions/posts";
 
 import "./postUpperSection.css";
 import PostEditModal from "../../SharePost/ShareModal/postEditModal";
+import imgURLToBase64 from "../../../../../utils/imageURLToBase64";
+import { shareOnMobile } from "react-mobile-share";
 
 const PostUpperSection = ({ post, profileDetails }) => {
   const dispatch = useDispatch();
@@ -19,10 +21,26 @@ const PostUpperSection = ({ post, profileDetails }) => {
 
   let isProfilePage = window.location.pathname === "/profile/details";
 
-  const handleCopy = () => {
+  const handleCopy = () =>
     navigator.clipboard.writeText(
       `${window.location.origin}/post?postId=${post._id}`
     );
+
+  const handleShare = async () => {
+    const imgBase64 = await imgURLToBase64(post.selectedFile);
+
+    const data = {
+      text: `Hey checkout out ${post.name}'s Post`,
+      url: `${window.location.origin}/post?postId=${post._id}`,
+      title: `${post.title}`,
+      images: [imgBase64],
+    };
+    try {
+      shareOnMobile(data, handleCopy);
+    } catch (error) {
+      handleCopy();
+    }
+    return;
   };
 
   const handleProfile = () => {
@@ -102,6 +120,16 @@ const PostUpperSection = ({ post, profileDetails }) => {
                     onClick={handleCopy}
                   >
                     Copy Link
+                  </button>
+                </a>
+              </li>
+              <li>
+                <a className="dropdown-item">
+                  <button
+                    className="btn dropdown-item-custom"
+                    onClick={handleShare}
+                  >
+                    Share
                   </button>
                 </a>
               </li>

@@ -6,6 +6,8 @@ import PostCaption from "../../../Home/MiddleSection/Posts/PostLowerSection/Post
 import PostCommentSection from "../../../Home/MiddleSection/Posts/PostLowerSection/PostCommentSection/postCommentSection";
 
 import "../../../Home/MiddleSection/Posts/PostLowerSection/postLowerSection.css";
+import imgURLToBase64 from "../../../../utils/imageURLToBase64";
+import { shareOnMobile } from "react-mobile-share";
 
 const PostLowerSectionModal = ({
   post,
@@ -19,10 +21,23 @@ const PostLowerSectionModal = ({
   const handleReadMore = () => {
     setIsReadMore(!isReadMore);
   };
-  const handleCopy = () =>
-    navigator.clipboard.writeText(
-      `${window.location.origin}/post?postId=${post._id}`
-    );
+
+  const handleShare = async () => {
+    const imgBase64 = await imgURLToBase64(post.selectedFile);
+
+    const data = {
+      text: `Hey checkout out ${post.name}'s Post`,
+      url: `${window.location.origin}/post?postId=${post._id}`,
+      title: `${post.title}`,
+      images: [imgBase64],
+    };
+    try {
+      shareOnMobile(data, () => navigator.clipboard.writeText(data.url));
+    } catch (error) {
+      navigator.clipboard.writeText(data.url);
+    }
+  };
+
   return (
     <>
       <div className="card-body p-2">
@@ -93,7 +108,7 @@ const PostLowerSectionModal = ({
           </span>
           <span
             className="d-flex align-items-center gap-1 likeBtn"
-            onClick={handleCopy}
+            onClick={handleShare}
           >
             <i className="bi bi-send"></i>
             <p className="mb-0 p-like">Share</p>
