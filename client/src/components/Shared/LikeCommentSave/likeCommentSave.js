@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
+
 import PostLikeSection from "../../Home/MiddleSection/Posts/PostLikeSection/postLikeSection";
 import MiniProfilePicture from "../MiniProfilePicture/miniProfilePicture";
 import { getCommentsWithProfilePicture } from "../../../actions/posts";
 
 const LikeCommentSave = ({
   post,
-  handleCopy,
+  handleShare,
   isPostSaved,
   isCommentsNotOpened,
 }) => {
@@ -15,6 +16,7 @@ const LikeCommentSave = ({
     isCommentsNotOpened &&
       dispatch(getCommentsWithProfilePicture(post?._id, true));
   };
+
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center">
@@ -36,7 +38,7 @@ const LikeCommentSave = ({
           </span>
           <span
             className="d-flex align-items-center gap-1 likeBtn"
-            onClick={handleCopy}
+            onClick={handleShare}
           >
             <i className="bi bi-send"></i>
             <p className="mb-0 p-like">Share</p>

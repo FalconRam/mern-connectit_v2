@@ -9,7 +9,7 @@ import { setCommentReplydetails } from "../../../actions/posts";
 
 const SideCommentModal = ({
   post,
-  handleCopy,
+  handleShare,
   isPostSaved,
   comments,
   setComments,
@@ -64,7 +64,7 @@ const SideCommentModal = ({
           <LikeCommentSave
             post={post}
             isPostSaved={isPostSaved}
-            handleCopy={handleCopy}
+            handleShare={handleShare}
             isCommentsNotOpened={true}
           />
           <div className="float-end mb-1">
@@ -114,7 +114,7 @@ const SideCommentModal = ({
               <LikeCommentSave
                 post={post}
                 isPostSaved={isPostSaved}
-                handleCopy={handleCopy}
+                handleShare={handleShare}
                 isCommentsNotOpened={true}
               />
               <div className="d-flex justify-content-end mb-1">

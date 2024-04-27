@@ -5,6 +5,8 @@ import PostCommentSection from "./PostCommentSection/postCommentSection";
 import LikeCommentSave from "../../../../Shared/LikeCommentSave/likeCommentSave";
 import PostCaptionMain from "../../../../Shared/PostCaptionMain/postCaptionMain";
 import SideCommentModal from "../../../../Modals/SideModal/sideCommentModal";
+import imgURLToBase64 from "../../../../../utils/imageURLToBase64";
+import { shareOnMobile } from "react-mobile-share";
 
 const PostLowerSection = ({ post, comments, setComments }) => {
   const [isPostSaved, setIsPostSaved] = useState(false);
@@ -16,10 +18,26 @@ const PostLowerSection = ({ post, comments, setComments }) => {
     setIsReadMore(!isReadMore);
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}/post?postId=${post._id}`
-    );
+  // const handleShare = () => {
+  //   navigator.clipboard.writeText(
+  //     `${window.location.origin}/post?postId=${post._id}`
+  //   );
+  // };
+
+  const handleShare = async () => {
+    const imgBase64 = await imgURLToBase64(post.selectedFile);
+
+    const data = {
+      text: `Hey checkout out ${post.name}'s Post`,
+      url: `${window.location.origin}/post?postId=${post._id}`,
+      title: `${post.title}`,
+      images: [imgBase64],
+    };
+    try {
+      shareOnMobile(data, () => navigator.clipboard.writeText(data.url));
+    } catch (error) {
+      navigator.clipboard.writeText(data.url);
+    }
   };
 
   return (
@@ -30,13 +48,13 @@ const PostLowerSection = ({ post, comments, setComments }) => {
         <LikeCommentSave
           post={post}
           isPostSaved={isPostSaved}
-          handleCopy={handleCopy}
+          handleShare={handleShare}
           isCommentsNotOpened={true}
         />
         <SideCommentModal
           post={post}
           isPostSaved={isPostSaved}
-          handleCopy={handleCopy}
+          handleShare={handleShare}
           comments={comments}
           setComments={setComments}
         />
