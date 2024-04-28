@@ -57,6 +57,16 @@ const postSchema = mongoose.Schema({
   },
 });
 
+const savedUserPosts = mongoose.Schema(
+  {
+    userId: { type: String, ref: "User", required: true },
+    savedPosts: { type: [String], default: [] },
+  },
+  { timestamp: true }
+);
+
 const PostMessage = mongoose.model("PostMessage", postSchema);
+const SavedUserPosts = mongoose.model("SavedUserPosts", savedUserPosts);
 
 export default PostMessage;
+export { SavedUserPosts };

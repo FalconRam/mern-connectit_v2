@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 
 import User from "../models/user.js";
-import PostMessage from "../models/postMessage.js";
+import PostMessage, { SavedUserPosts } from "../models/postMessage.js";
 import { convertImgToCloudinaryURL } from "../services/cloudinary/convertImgToCloudinaryURL.js";
 import { deleteCloudinaryImg } from "../services/cloudinary/deleteCloudinaryImg.js";
 import {
@@ -21,6 +21,8 @@ export const getPostsByFollowing = async (req, res) => {
     // Retrieve the list of user IDs for the users that the given user is following
     const followedUserIds = user.following;
     followedUserIds.push(user._id);
+
+    const savedPosts = await SavedUserPosts.findOne({ userId: user._id });
 
     // Use the list of followed user IDs to retrieve the post objects
     // made by users by using mongoose db query
@@ -59,6 +61,9 @@ export const getPostsByFollowing = async (req, res) => {
           // (since we expect there to be only one element in the array)
           profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
           creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
+          isSaved: {
+            $in: [{ $toString: "$_id" }, savedPosts.savedPosts],
+          },
         },
       },
     ]);
@@ -156,6 +161,8 @@ export const getPostsById = async (req, res) => {
 
     const post = await PostMessage.findById(id);
 
+    const savedPosts = await SavedUserPosts.findOne({ userId: user._id });
+
     let updatedPostWithprofPic = await PostMessage.aggregate([
       {
         $match: {
@@ -189,6 +196,7 @@ export const getPostsById = async (req, res) => {
           createdAt: 1,
           profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
           creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
+          isSaved: { $in: [{ $toString: "$_id" }, savedPosts.savedPosts] },
         },
       },
     ]);
@@ -758,6 +766,63 @@ export const likeComentReply = async (req, res) => {
     });
 
     return createSuccessResponse(res, 200, updatedPost);
+  } catch (error) {
+    return createErrorResponse(
+      res,
+      500,
+      {},
+      error.messsage || error.stack || error
+    );
+  }
+};
+
+export const savePost = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) return createErrorResponse(res, 404, {}, "User not Found.");
+
+    const { postId } = req.query;
+    const post = await PostMessage.findById(postId);
+    if (!post) return createErrorResponse(res, 404, {}, "Post not Found.");
+
+    const existingSaved = await SavedUserPosts.findOne({ userId: req.userId });
+    if (!existingSaved) {
+      const newSavedPost = new SavedUserPosts({
+        userId: req.userId,
+        savedPosts: [].push(postId),
+      });
+      await newSavedPost.save();
+      return createSuccessResponse(res, 200, { isSaved: true }, "Post Saved");
+    }
+    let updatedSaved;
+    if (existingSaved.savedPosts.includes(postId)) {
+      existingSaved.savedPosts = existingSaved.savedPosts.filter(
+        (id) => postId !== id
+      );
+      updatedSaved = await SavedUserPosts.findByIdAndUpdate(
+        existingSaved._id,
+        existingSaved,
+        {
+          new: true,
+        }
+      );
+    } else {
+      existingSaved.savedPosts.push(postId);
+      updatedSaved = await SavedUserPosts.findByIdAndUpdate(
+        existingSaved._id,
+        existingSaved,
+        {
+          new: true,
+        }
+      );
+    }
+
+    return createSuccessResponse(
+      res,
+      200,
+      { isSaved: true, updatedSaved },
+      "Post Saved"
+    );
   } catch (error) {
     return createErrorResponse(
       res,

@@ -117,6 +117,9 @@ export const deletePost = (id) => API.delete(`/posts/${id}`);
 
 export const likePost = (id) => API.patch(`/posts/like/${id}`);
 
+export const saveUnSavePost = (postId) =>
+  API.patch(`/posts/save?postId=${postId}`);
+
 export const likeCommentReply = (postId, commentId, replyId, isComment) =>
   API.patch(
     `/posts/comment-reply-like?postId=${postId}&commentId=${commentId}&replyId=${

@@ -44,7 +44,7 @@ const Likes = ({
               />
               <p className="p-like">
                 &nbsp;
-                {likes > 1 ? `${likes} Likes` : `${likes} Like`}
+                {likes > 1 ? `${likes} Likes` : `${likes || ""} Like`}
               </p>
             </div>
           ) : (
@@ -54,7 +54,7 @@ const Likes = ({
               &nbsp;
               <p className="p-like">
                 &nbsp;
-                {likes > 1 ? `${likes} Likes` : `${likes} Like`}
+                {likes > 1 ? `${likes} Likes` : `${likes || ""} Like`}
               </p>
             </div>
           )}

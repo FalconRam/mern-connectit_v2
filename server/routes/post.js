@@ -17,6 +17,7 @@ import {
   addReplyToReply,
   deleteComment,
   deleteReply,
+  savePost,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
@@ -47,6 +48,8 @@ router.patch("/update/:id", updatePost);
 router.delete("/:id", deletePost);
 
 router.patch("/like/:id", likePost);
+
+router.patch("/save", savePost)
 
 router.patch("/comment-reply-like", likeComentReply);
 

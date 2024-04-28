@@ -2,6 +2,8 @@ import * as api from "../api";
 import {
   FETCH_ALL_POSTS,
   FETCH_POSTS_BY_FOLLOWING,
+  FETCH_POSTS_BY_FOLLOWING_UPDATED_SAVE,
+  FETCH_POSTS_BY_FOLLOWING_UPDATED_UNSAVE,
   FETCH_BY_SEARCH,
   CREATE_POST,
   UPDATE_POST,
@@ -304,6 +306,34 @@ export const unLikePost = (id) => async (dispatch) => {
       error.message ||
       error.toString();
     toast.error(message);
+  }
+};
+
+export const saveUnSavePost = (postId, shouldSave) => async (dispatch) => {
+  try {
+    const { data } = await api.saveUnSavePost(postId);
+    if (shouldSave) {
+      console.log("Saved");
+      dispatch({
+        type: FETCH_POSTS_BY_FOLLOWING_UPDATED_SAVE,
+        payload: postId,
+      });
+    } else {
+      console.log("Un-Saved");
+      dispatch({
+        type: FETCH_POSTS_BY_FOLLOWING_UPDATED_UNSAVE,
+        payload: postId,
+      });
+    }
+
+    return data.data.isSaved;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error(message);
+    return false;
   }
 };
 

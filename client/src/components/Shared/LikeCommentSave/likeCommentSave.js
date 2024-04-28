@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import PostLikeSection from "../../Home/MiddleSection/Posts/PostLikeSection/postLikeSection";
 import MiniProfilePicture from "../MiniProfilePicture/miniProfilePicture";
-import { getCommentsWithProfilePicture } from "../../../actions/posts";
+import {
+  getCommentsWithProfilePicture,
+  saveUnSavePost,
+} from "../../../actions/posts";
+import PostSave from "../PostSave/postSave";
 
 const LikeCommentSave = ({
   post,
@@ -16,6 +20,17 @@ const LikeCommentSave = ({
     isCommentsNotOpened &&
       dispatch(getCommentsWithProfilePicture(post?._id, true));
   };
+  const [sentSaved, setSentSaved] = useState(post.isSaved);
+  const handleSave = async () => {
+    if (sentSaved) {
+      const status = await dispatch(saveUnSavePost(post?._id, true));
+      status ? setSentSaved(true) : setSentSaved(post.isSaved);
+    } else {
+      const status = await dispatch(saveUnSavePost(post?._id, false));
+      status ? setSentSaved(false) : setSentSaved(post.isSaved);
+    }
+  };
+  console.log(sentSaved);
 
   return (
     <div>
@@ -44,11 +59,11 @@ const LikeCommentSave = ({
             <p className="mb-0 p-like">Share</p>
           </span>
         </div>
-        <span>
-          {!isPostSaved ? (
-            <i className="bi bi-bookmark likeIcon"></i>
+        <span onClick={handleSave}>
+          {!post.isSaved ? (
+            <i className="bi bi-bookmark likeIcon" />
           ) : (
-            <i className="bi bi-bookmark-fill likeIcon"></i>
+            <i className="bi bi-bookmark-fill likeIcon" />
           )}
         </span>
       </div>
