@@ -8,7 +8,7 @@ import "./profilePage.css";
 
 import LeftSideProfilePage from "./LeftSideProfilePage/leftSideProfilePage";
 import RightSideProfilePage from "./RightSideProfilePage/rightSideProfilePage";
-import { getPostByUser } from "../../actions/posts";
+import { getPostByUser, getSavedPosts } from "../../actions/posts";
 import { getProfileDetails } from "../../actions/profile";
 import ShareModal from "../../components/Home/MiddleSection/SharePost/ShareModal/shareModal";
 
@@ -29,7 +29,9 @@ const ProfilePage = () => {
 
   const dispatch = useDispatch();
 
-  const { userPosts, isPostLoading } = useSelector((state) => state.posts);
+  const { userPosts, savedPosts, isPostLoading } = useSelector(
+    (state) => state.posts
+  );
   const {
     profileDetails,
     userProfileDetails,
@@ -42,6 +44,7 @@ const ProfilePage = () => {
     if (user && profileId) {
       dispatch(getPostByUser(profileId));
       dispatch(getProfileDetails(profileId, isLoggedInUser, tokenFromCookie));
+      dispatch(getSavedPosts());
     }
   }, []);
 
@@ -58,6 +61,7 @@ const ProfilePage = () => {
           <div className="col-sm-11 col-md-10 col-lg-10  offset-md-1 offset-lg-2 customOffset customMargin">
             <RightSideProfilePage
               userPosts={userPosts}
+              savedPosts={savedPosts}
               profileDetails={
                 isLoggedInUser ? userProfileDetails : profileDetails
               }

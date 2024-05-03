@@ -23,11 +23,11 @@ const LeftSection = ({
   };
 
   const handleSettings = () => {
-    history.push("/");
+    history.push("/profile/settings");
   };
 
   const handleSavedItems = () => {
-    history.push("/");
+    history.push(`/profile/details?profileId=${user?.id}&type=my-items`);
   };
 
   let isCreator = true;
@@ -91,20 +91,14 @@ const LeftSection = ({
             <li className="list-group-item liLeft">
               <div
                 className="text-center d-flex flex-row justify-content-center text-muted followFollows"
-                onClick={() =>
-                  handleFollowFollows(user?._id)
-                }
+                onClick={() => handleFollowFollows(user?._id)}
               >
                 <span className="card-link followCount">
-                  <p className="mb-0 followCount">
-                    {user?.following?.length}
-                  </p>
+                  <p className="mb-0 followCount">{user?.following?.length}</p>
                   Following
                 </span>
                 <span className="card-link followCount">
-                  <p className="mb-0 followCount">
-                    {user?.followers?.length}
-                  </p>
+                  <p className="mb-0 followCount">{user?.followers?.length}</p>
                   Followers
                 </span>
               </div>

@@ -1,16 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import PostLikeSection from "../../Home/MiddleSection/Posts/PostLikeSection/postLikeSection";
 import MiniProfilePicture from "../MiniProfilePicture/miniProfilePicture";
 import { getCommentsWithProfilePicture } from "../../../actions/posts";
+import PostSave from "../PostSave/postSave";
 
-const LikeCommentSave = ({
-  post,
-  handleShare,
-  isPostSaved,
-  isCommentsNotOpened,
-}) => {
+const LikeCommentSave = ({ post, handleShare, isCommentsNotOpened }) => {
   const dispatch = useDispatch();
   const getComments = () => {
     isCommentsNotOpened &&
@@ -44,13 +40,7 @@ const LikeCommentSave = ({
             <p className="mb-0 p-like">Share</p>
           </span>
         </div>
-        <span>
-          {!isPostSaved ? (
-            <i className="bi bi-bookmark likeIcon"></i>
-          ) : (
-            <i className="bi bi-bookmark-fill likeIcon"></i>
-          )}
-        </span>
+        <PostSave post={post} />
       </div>
     </div>
   );

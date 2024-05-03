@@ -90,6 +90,8 @@ export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
 
 export const fetchPostById = (id) => API.get(`/posts/${id}`);
 
+export const fetchSavedPosts = () => API.get("/posts/saved-posts");
+
 export const fetchCommentsByPostId = (id) =>
   API.get(`/posts/getCommentsByPost?postId=${id}`);
 
@@ -116,6 +118,9 @@ export const updatePost = (id, updatedPost) =>
 export const deletePost = (id) => API.delete(`/posts/${id}`);
 
 export const likePost = (id) => API.patch(`/posts/like/${id}`);
+
+export const saveUnSavePost = (postId) =>
+  API.patch(`/posts/save?postId=${postId}`);
 
 export const likeCommentReply = (postId, commentId, replyId, isComment) =>
   API.patch(

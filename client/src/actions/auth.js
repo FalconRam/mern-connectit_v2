@@ -66,7 +66,6 @@ export const logIn = (formData, history) => async (dispatch) => {
 
     toast.success(`Welcome ${data.data.name.slice(0, 3)}..!`);
   } catch (error) {
-    console.log(error);
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||

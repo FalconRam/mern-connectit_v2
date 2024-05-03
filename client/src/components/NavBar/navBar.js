@@ -94,13 +94,24 @@ const NavBar = () => {
     history.push("/profile/settings");
   };
 
+  const handleLogoClick = () => {
+    if (window.location.pathname === "/feeds") {
+      window.location.reload();
+      return;
+    } else if (window.location.pathname !== "/feeds") {
+      user && history.push("/feeds");
+      return;
+    }
+    history.push("/");
+  };
+
   return (
     <>
       <div className="container-fluid">
         <nav className="navbar fixed-top navbar-dark navBgColor">
           <a
             className="navbar-brand mx-3 navFontColor d-flex align-items-center text-primary"
-            href={user ? "/feeds" : "/"}
+            onClick={handleLogoClick}
           >
             <img
               src={logo}

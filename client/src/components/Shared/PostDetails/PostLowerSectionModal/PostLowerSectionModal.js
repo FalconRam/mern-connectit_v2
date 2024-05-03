@@ -8,6 +8,7 @@ import PostCommentSection from "../../../Home/MiddleSection/Posts/PostLowerSecti
 import "../../../Home/MiddleSection/Posts/PostLowerSection/postLowerSection.css";
 import imgURLToBase64 from "../../../../utils/imageURLToBase64";
 import { shareOnMobile } from "react-mobile-share";
+import PostSave from "../../PostSave/postSave";
 
 const PostLowerSectionModal = ({
   post,
@@ -114,13 +115,7 @@ const PostLowerSectionModal = ({
             <p className="mb-0 p-like">Share</p>
           </span>
         </div>
-        <span>
-          {!isPostSaved ? (
-            <i className="bi bi-bookmark likeIcon"></i>
-          ) : (
-            <i className="bi bi-bookmark-fill likeIcon"></i>
-          )}
-        </span>
+        <PostSave post={post} />
       </div>
 
       {/* Comment Section */}

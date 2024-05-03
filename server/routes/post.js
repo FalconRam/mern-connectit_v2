@@ -17,6 +17,8 @@ import {
   addReplyToReply,
   deleteComment,
   deleteReply,
+  savePost,
+  getSavedPosts,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
@@ -34,9 +36,13 @@ router.get("/all", getPosts);
 
 router.get("/search", getPostsBySearch);
 
+router.get("/saved-posts", getSavedPosts);
+
 router.get("/:id", getPostsById);
 
 router.get("/replies/getRepliesByComment", getRepliesByComment);
+
+router.get("/user-posts/:id", postsByUserId);
 
 // Modification Methods (Create, Patch, Delete)
 
@@ -48,6 +54,8 @@ router.delete("/:id", deletePost);
 
 router.patch("/like/:id", likePost);
 
+router.patch("/save", savePost);
+
 router.patch("/comment-reply-like", likeComentReply);
 
 router.patch("/:postId/addCommentByPost", addCommentByPost);
@@ -55,8 +63,6 @@ router.patch("/:postId/addCommentByPost", addCommentByPost);
 router.patch("/:postId/addReplyToComment", addReplyToComment);
 
 router.patch("/:postId/addReplyToReply", addReplyToReply);
-
-router.get("/user-posts/:id", postsByUserId);
 
 router.delete("/comment/deleteComment", deleteComment);
 

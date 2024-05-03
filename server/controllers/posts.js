@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 
 import User from "../models/user.js";
-import PostMessage from "../models/postMessage.js";
+import PostMessage, { SavedUserPosts } from "../models/postMessage.js";
 import { convertImgToCloudinaryURL } from "../services/cloudinary/convertImgToCloudinaryURL.js";
 import { deleteCloudinaryImg } from "../services/cloudinary/deleteCloudinaryImg.js";
 import {
@@ -21,6 +21,8 @@ export const getPostsByFollowing = async (req, res) => {
     // Retrieve the list of user IDs for the users that the given user is following
     const followedUserIds = user.following;
     followedUserIds.push(user._id);
+
+    const savedPosts = await SavedUserPosts.findOne({ userId: user._id });
 
     // Use the list of followed user IDs to retrieve the post objects
     // made by users by using mongoose db query
@@ -59,6 +61,9 @@ export const getPostsByFollowing = async (req, res) => {
           // (since we expect there to be only one element in the array)
           profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
           creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
+          isSaved: {
+            $in: [{ $toString: "$_id" }, savedPosts.savedPosts],
+          },
         },
       },
     ]);
@@ -156,6 +161,8 @@ export const getPostsById = async (req, res) => {
 
     const post = await PostMessage.findById(id);
 
+    const savedPosts = await SavedUserPosts.findOne({ userId: user._id });
+
     let updatedPostWithprofPic = await PostMessage.aggregate([
       {
         $match: {
@@ -189,11 +196,73 @@ export const getPostsById = async (req, res) => {
           createdAt: 1,
           profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
           creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
+          isSaved: { $in: [{ $toString: "$_id" }, savedPosts.savedPosts] },
         },
       },
     ]);
 
     return createSuccessResponse(res, 200, updatedPostWithprofPic[0]);
+  } catch (error) {
+    return createErrorResponse(
+      res,
+      500,
+      {},
+      error.messsage || error.stack || error
+    );
+  }
+};
+
+export const getSavedPosts = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    const savedPosts = await SavedUserPosts.findOne({ userId: user._id });
+
+    let savedPostWithprofPic = await PostMessage.aggregate([
+      {
+        $match: {
+          _id: {
+            $in: savedPosts.savedPosts.map((id) => mongoose.Types.ObjectId(id)),
+          },
+        },
+      },
+      {
+        $addFields: {
+          creator: { $toObjectId: "$creator" },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "creator",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          message: 1,
+          name: 1,
+          creator: 1,
+          tags: 1,
+          selectedFile: 1,
+          likes: 1,
+          comments: 1,
+          commentsInfo: 1,
+          createdAt: 1,
+          profilePicture: {
+            $arrayElemAt: ["$userInfo.profilePicture", 0],
+          },
+          creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
+          isSaved: { $in: [{ $toString: "$_id" }, savedPosts.savedPosts] },
+        },
+      },
+    ]);
+
+    return createSuccessResponse(res, 200, {
+      savedPosts: savedPostWithprofPic,
+    });
   } catch (error) {
     return createErrorResponse(
       res,
@@ -387,16 +456,16 @@ export const getRepliesByComment = async (req, res) => {
 };
 
 export const createPost = async (req, res) => {
-  const { title, message, tags, selectedFile, name } = req.body;
-  const newPost = new PostMessage({
-    title,
-    message,
-    tags,
-    name,
-    creator: req.userId,
-    createdAt: new Date().toISOString(),
-  });
   try {
+    const { title, message, tags, selectedFile, name } = req.body;
+    const newPost = new PostMessage({
+      title,
+      message,
+      tags,
+      name,
+      creator: req.userId,
+      createdAt: new Date().toISOString(),
+    });
     let createdPost = await newPost.save();
 
     // Convert the Base64 Image to Cloudinary Image URL(Image uploaded in Cloudinary account)
@@ -758,6 +827,62 @@ export const likeComentReply = async (req, res) => {
     });
 
     return createSuccessResponse(res, 200, updatedPost);
+  } catch (error) {
+    return createErrorResponse(
+      res,
+      500,
+      {},
+      error.messsage || error.stack || error
+    );
+  }
+};
+
+export const savePost = async (req, res) => {
+  try {
+    let isSaved = false;
+    const user = await User.findById(req.userId);
+    if (!user) return createErrorResponse(res, 404, {}, "User not Found.");
+
+    const { postId } = req.query;
+    const post = await PostMessage.findById(postId);
+    if (!post) return createErrorResponse(res, 404, {}, "Post not Found.");
+
+    const existingSaved = await SavedUserPosts.findOne({ userId: req.userId });
+    if (!existingSaved) {
+      const newSavedPost = new SavedUserPosts({
+        userId: req.userId,
+        savedPosts: [].push(postId),
+      });
+      await newSavedPost.save();
+      isSaved = true; // Created New instance for the User and Post Saved
+      return createSuccessResponse(res, 200, { isSaved }, "");
+    }
+    let updatedSaved;
+    if (existingSaved.savedPosts.includes(postId)) {
+      existingSaved.savedPosts = existingSaved.savedPosts.filter(
+        (id) => postId !== id
+      );
+      updatedSaved = await SavedUserPosts.findByIdAndUpdate(
+        existingSaved._id,
+        existingSaved,
+        {
+          new: true,
+        }
+      );
+      isSaved = false; // Post Saved removed
+    } else {
+      existingSaved.savedPosts.push(postId);
+      updatedSaved = await SavedUserPosts.findByIdAndUpdate(
+        existingSaved._id,
+        existingSaved,
+        {
+          new: true,
+        }
+      );
+      isSaved = true; // Post Saved
+    }
+
+    return createSuccessResponse(res, 200, { isSaved }, "");
   } catch (error) {
     return createErrorResponse(
       res,
