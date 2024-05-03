@@ -5,7 +5,7 @@ import { updatePost } from "../../../../../actions/posts";
 
 import "./shareModal.css";
 
-const PostEditModal = ({ post }) => {
+const PostEditModal = ({ post, isSaved }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
   const dispatch = useDispatch();
@@ -27,7 +27,11 @@ const PostEditModal = ({ post }) => {
     <>
       <div
         className="modal fade"
-        id={`backdropEditPost${post._id}`}
+        id={
+          isSaved
+            ? `backdropEditPost${post._id}_saved`
+            : `backdropEditPost${post._id}`
+        }
         tabIndex="-1"
         aria-labelledby="backdropEditPostLabel"
         aria-hidden="true"
@@ -37,7 +41,11 @@ const PostEditModal = ({ post }) => {
             <div className="modal-header">
               <h2
                 className="modal-title fs-5"
-                id={`backdropEditPost${post?._id}`}
+                id={
+                  isSaved
+                    ? `backdropEditPost${post._id}_saved`
+                    : `backdropEditPost${post._id}`
+                }
               >
                 Update your Post
               </h2>

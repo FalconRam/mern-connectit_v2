@@ -77,7 +77,6 @@ const LogIn = ({
     clearForm();
     setIsLogin(!isLogin);
     if (window.location.search.includes("redirectURL=")) {
-      console.log(`/auth?new=true&${window.location.search.slice(1)}`);
       history.push(`/auth?new=true&${window.location.search.slice(1)}`);
     } else history.push("/auth?new=true");
   };

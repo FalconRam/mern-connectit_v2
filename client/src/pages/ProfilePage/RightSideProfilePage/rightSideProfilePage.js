@@ -7,6 +7,7 @@ import "./rightSideProfilePage.css";
 
 const RightSideProfilePage = ({
   userPosts,
+  savedPosts,
   profileDetails,
   isPostLoading,
   isProfileLoading,
@@ -24,6 +25,7 @@ const RightSideProfilePage = ({
       <div className="">
         <BottomSectionRightProfile
           userPosts={userPosts}
+          savedPosts={savedPosts}
           profileDetails={profileDetails}
           isPostLoading={isPostLoading}
         />

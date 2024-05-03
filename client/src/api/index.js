@@ -90,6 +90,8 @@ export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
 
 export const fetchPostById = (id) => API.get(`/posts/${id}`);
 
+export const fetchSavedPosts = () => API.get("/posts/saved-posts");
+
 export const fetchCommentsByPostId = (id) =>
   API.get(`/posts/getCommentsByPost?postId=${id}`);
 

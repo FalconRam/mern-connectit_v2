@@ -4,11 +4,9 @@ import { useDispatch } from "react-redux";
 
 import { logIn } from "../actions/auth";
 
-
 const useQuery = () => {
   return [new URLSearchParams(useLocation().search)];
 };
-
 
 const useTestAccountLogin = () => {
   const dispatch = useDispatch();

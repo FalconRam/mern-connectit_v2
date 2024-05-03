@@ -5,6 +5,7 @@ import {
   FETCH_POSTS_BY_FOLLOWING_UPDATED_SAVE,
   FETCH_POSTS_BY_FOLLOWING_UPDATED_UNSAVE,
   FETCH_BY_SEARCH,
+  FETCH_SAVED_POST_BY_USER,
   CREATE_POST,
   UPDATE_POST,
   LIKE_POST,
@@ -162,6 +163,28 @@ export const getPostByUser = (id) => async (dispatch) => {
   }
 };
 
+export const getSavedPosts =
+  (loadingRequired = false) =>
+  async (dispatch) => {
+    try {
+      loadingRequired && dispatch({ type: START_POST_LOADING });
+
+      const { data } = await api.fetchSavedPosts();
+
+      dispatch({ type: FETCH_SAVED_POST_BY_USER, payload: data.data });
+
+      loadingRequired && dispatch({ type: END_POST_LOADING });
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      toast.error(message);
+    }
+  };
+
 export const getPostsBySearch = (search) => async (dispatch) => {
   try {
     dispatch({ type: START_POST_LOADING });
@@ -313,13 +336,13 @@ export const saveUnSavePost = (postId, shouldSave) => async (dispatch) => {
   try {
     const { data } = await api.saveUnSavePost(postId);
     if (shouldSave) {
-      console.log("Saved");
+      console.log("Saving");
       dispatch({
         type: FETCH_POSTS_BY_FOLLOWING_UPDATED_SAVE,
         payload: postId,
       });
     } else {
-      console.log("Un-Saved");
+      console.log("Un-Saving");
       dispatch({
         type: FETCH_POSTS_BY_FOLLOWING_UPDATED_UNSAVE,
         payload: postId,

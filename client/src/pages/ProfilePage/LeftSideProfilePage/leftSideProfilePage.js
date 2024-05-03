@@ -4,6 +4,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import Chat from "../../../components/Chat/chat";
 
 import "./leftSideProfilePage.css";
+import MiniProfilePicture from "../../../components/Shared/MiniProfilePicture/miniProfilePicture";
 
 const LeftSideProfilePage = () => {
   const history = useHistory();
@@ -71,11 +72,11 @@ const LeftSideProfilePage = () => {
   return (
     <>
       <div className="">
-        <div className="nav flex-sm-row flex-md-column justify-content-between customMargin2 customFontSideNav">
+        <div className="nav flex-sm-row flex-md-column justify-content-between gap-2 customMargin2 customFontSideNav">
           <li className="nav-item p-2 text-dark">
             <span onClick={handleHome} className="sideNavButton">
               <i className="bi bi-house-door-fill"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none">
+              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
                 Home
               </h6>
             </span>
@@ -87,7 +88,7 @@ const LeftSideProfilePage = () => {
               data-bs-target="#createModal"
             >
               <i className="bi bi-plus-circle-fill"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none">
+              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
                 Create
               </h6>
             </span>
@@ -95,7 +96,7 @@ const LeftSideProfilePage = () => {
           <li className="nav-item p-2 text-dark">
             <span onClick={handleSearch} className="sideNavButton">
               <i className="bi bi-search"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none">
+              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
                 Search
               </h6>
             </span>
@@ -107,7 +108,7 @@ const LeftSideProfilePage = () => {
               onClick={handleMessages}
             >
               <i className="bi bi-chat-fill"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none">
+              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
                 Messages
               </h6>
             </span>
@@ -115,7 +116,7 @@ const LeftSideProfilePage = () => {
           <li className="nav-item p-2 text-dark">
             <span onClick={handleNotification} className="sideNavButton">
               <i className="bi bi-bell-fill"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none">
+              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
                 Notification
               </h6>
             </span>
@@ -123,11 +124,16 @@ const LeftSideProfilePage = () => {
           <li className="nav-item p-2 text-dark">
             <span onClick={handleSettings} className="sideNavButton">
               <i className="bi bi-gear-fill"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none">
+              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
                 Settings
               </h6>
             </span>
           </li>
+          <div className="d-none d-md-block">
+            <li className="nav-item p-2 text-dark">
+              <MiniProfilePicture isSideNav={true} />
+            </li>
+          </div>
         </div>
       </div>
       <Chat handleMessages={handleMessages} />

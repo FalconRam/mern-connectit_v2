@@ -8,7 +8,7 @@ import { setCommentReplydetails } from "../../../actions/posts";
 
 // import { clearCmtReplyState } from "../../../utils/clearCmtReplyState";
 
-const PostDetailsModal = ({ post, profileDetails }) => {
+const PostDetailsModal = ({ post, profileDetails, isSaved }) => {
   const dispatch = useDispatch();
   const clearCmtReplyState = async () => {
     await dispatch(
@@ -33,7 +33,11 @@ const PostDetailsModal = ({ post, profileDetails }) => {
     <>
       <div
         className="modal fade"
-        id={`exampleModalCenter${post._id}`}
+        id={
+          isSaved
+            ? `exampleModalCenter${post._id}_saved`
+            : `exampleModalCenter${post._id}`
+        }
         tabIndex="-1"
         aria-labelledby="exampleModalCenterTitle"
       >

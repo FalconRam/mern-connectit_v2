@@ -5,7 +5,7 @@ import { getCommentsWithProfilePicture } from "../../../actions/posts";
 
 import { useDispatch } from "react-redux";
 
-const ViewEditModal = ({ post, profileDetails }) => {
+const ViewEditModal = ({ post, profileDetails, isSaved }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
   let isCreator = post?.creator === user?.id;
@@ -18,7 +18,11 @@ const ViewEditModal = ({ post, profileDetails }) => {
     <>
       <div
         className="modal"
-        id={`viewEditModal${post._id}`}
+        id={
+          isSaved
+            ? `viewEditModal${post._id}_saved`
+            : `viewEditModal${post._id}`
+        }
         tabIndex="-1"
         aria-labelledby="viewEditModalLabel"
         aria-hidden="true"
@@ -40,7 +44,11 @@ const ViewEditModal = ({ post, profileDetails }) => {
                     className="list-group-item"
                     data-bs-dismiss="modal"
                     data-bs-toggle="modal"
-                    data-bs-target={`#backdropEditPost${post._id}`}
+                    data-bs-target={
+                      isSaved
+                        ? `#backdropEditPost${post._id}_saved`
+                        : `#backdropEditPost${post._id}`
+                    }
                   >
                     <a className="dropdown-item">
                       <button className="btn dropdown-item-custom">Edit</button>
@@ -51,7 +59,11 @@ const ViewEditModal = ({ post, profileDetails }) => {
                   className="list-group-item"
                   data-bs-dismiss="modal"
                   data-bs-toggle="modal"
-                  data-bs-target={`#exampleModalCenter${post._id}`}
+                  data-bs-target={
+                    isSaved
+                      ? `#exampleModalCenter${post._id}_saved`
+                      : `#exampleModalCenter${post._id}`
+                  }
                 >
                   <a className="dropdown-item" onClick={getComments}>
                     <button
@@ -67,8 +79,12 @@ const ViewEditModal = ({ post, profileDetails }) => {
           </div>
         </div>
       </div>
-      <PostEditModal post={post} />
-      <PostDetailsModal post={post} profileDetails={profileDetails} />
+      <PostEditModal post={post} isSaved={isSaved} />
+      <PostDetailsModal
+        post={post}
+        profileDetails={profileDetails}
+        isSaved={isSaved}
+      />
     </>
   );
 };

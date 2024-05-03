@@ -89,7 +89,6 @@ const SignUp = ({
     const urlParams = new URLSearchParams(window.location.search);
     const redirectURL = urlParams.get("redirectURL");
     if (window.location.search.includes("redirectURL")) {
-      console.log(`/auth?redirectURL=${redirectURL}`);
       history.push(`/auth?redirectURL=${redirectURL}`);
     } else history.push("/auth");
   };

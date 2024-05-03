@@ -7,6 +7,7 @@ import {
   FETCH_POST_BY_ID,
   FETCH_COMMENT_BY_POST_ID,
   FETCH_POST_BY_USER,
+  FETCH_SAVED_POST_BY_USER,
   CREATE_POST,
   UPDATE_POST,
   LIKE_POST,
@@ -33,6 +34,7 @@ export default (
   state = {
     posts: [],
     post: {},
+    savedPosts: [],
     userPosts: [],
     isPostLoading: true,
     isPostCommentsLoading: true,
@@ -74,6 +76,11 @@ export default (
       return {
         ...state,
         posts: action.payload.data,
+      };
+    case FETCH_SAVED_POST_BY_USER:
+      return {
+        ...state,
+        savedPosts: action.payload.savedPosts,
       };
     case FETCH_POSTS_BY_FOLLOWING_UPDATED_SAVE:
       // console.log(action.payload);

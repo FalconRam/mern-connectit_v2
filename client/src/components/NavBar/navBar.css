@@ -6,23 +6,27 @@
   background: #ffffff;
 }
 
+.navbar-brand:hover {
+  cursor: pointer;
+}
+
 .navbar-brand,
 .navbar-brand:hover,
 .navbar-brand:focus {
   color: #000000;
 }
 
-.nav-listItems > li > a,
-.nav-listItems > li > a > button {
+.nav-listItems>li>a,
+.nav-listItems>li>a>button {
   font-size: 0.8rem;
   color: #666666;
 }
 
-.nav-listItems > li > a:hover {
+.nav-listItems>li>a:hover {
   color: #191919;
 }
 
-.nav-listItems > li > a > button:hover {
+.nav-listItems>li>a>button:hover {
   color: #fff;
   background: red;
 }
@@ -47,4 +51,9 @@
 .navProfilePic {
   width: 1.5rem;
   height: 1.5rem;
+}
+
+.sideNavProfilePic {
+  width: 1.3rem;
+  height: 1.3rem;
 }

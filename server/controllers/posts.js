@@ -212,6 +212,67 @@ export const getPostsById = async (req, res) => {
   }
 };
 
+export const getSavedPosts = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    const savedPosts = await SavedUserPosts.findOne({ userId: user._id });
+
+    let savedPostWithprofPic = await PostMessage.aggregate([
+      {
+        $match: {
+          _id: {
+            $in: savedPosts.savedPosts.map((id) => mongoose.Types.ObjectId(id)),
+          },
+        },
+      },
+      {
+        $addFields: {
+          creator: { $toObjectId: "$creator" },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "creator",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          message: 1,
+          name: 1,
+          creator: 1,
+          tags: 1,
+          selectedFile: 1,
+          likes: 1,
+          comments: 1,
+          commentsInfo: 1,
+          createdAt: 1,
+          profilePicture: {
+            $arrayElemAt: ["$userInfo.profilePicture", 0],
+          },
+          creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
+          isSaved: { $in: [{ $toString: "$_id" }, savedPosts.savedPosts] },
+        },
+      },
+    ]);
+
+    return createSuccessResponse(res, 200, {
+      savedPosts: savedPostWithprofPic,
+    });
+  } catch (error) {
+    return createErrorResponse(
+      res,
+      500,
+      {},
+      error.messsage || error.stack || error
+    );
+  }
+};
+
 export const getCommentsByPost = async (req, res) => {
   try {
     const { postId } = req.query;
@@ -395,16 +456,16 @@ export const getRepliesByComment = async (req, res) => {
 };
 
 export const createPost = async (req, res) => {
-  const { title, message, tags, selectedFile, name } = req.body;
-  const newPost = new PostMessage({
-    title,
-    message,
-    tags,
-    name,
-    creator: req.userId,
-    createdAt: new Date().toISOString(),
-  });
   try {
+    const { title, message, tags, selectedFile, name } = req.body;
+    const newPost = new PostMessage({
+      title,
+      message,
+      tags,
+      name,
+      creator: req.userId,
+      createdAt: new Date().toISOString(),
+    });
     let createdPost = await newPost.save();
 
     // Convert the Base64 Image to Cloudinary Image URL(Image uploaded in Cloudinary account)
@@ -778,6 +839,7 @@ export const likeComentReply = async (req, res) => {
 
 export const savePost = async (req, res) => {
   try {
+    let isSaved = false;
     const user = await User.findById(req.userId);
     if (!user) return createErrorResponse(res, 404, {}, "User not Found.");
 
@@ -792,7 +854,8 @@ export const savePost = async (req, res) => {
         savedPosts: [].push(postId),
       });
       await newSavedPost.save();
-      return createSuccessResponse(res, 200, { isSaved: true }, "Post Saved");
+      isSaved = true; // Created New instance for the User and Post Saved
+      return createSuccessResponse(res, 200, { isSaved }, "");
     }
     let updatedSaved;
     if (existingSaved.savedPosts.includes(postId)) {
@@ -806,6 +869,7 @@ export const savePost = async (req, res) => {
           new: true,
         }
       );
+      isSaved = false; // Post Saved removed
     } else {
       existingSaved.savedPosts.push(postId);
       updatedSaved = await SavedUserPosts.findByIdAndUpdate(
@@ -815,14 +879,10 @@ export const savePost = async (req, res) => {
           new: true,
         }
       );
+      isSaved = true; // Post Saved
     }
 
-    return createSuccessResponse(
-      res,
-      200,
-      { isSaved: true, updatedSaved },
-      "Post Saved"
-    );
+    return createSuccessResponse(res, 200, { isSaved }, "");
   } catch (error) {
     return createErrorResponse(
       res,
