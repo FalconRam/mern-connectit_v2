@@ -53,10 +53,10 @@ const ViewEditModal = ({ post, profileDetails }) => {
                   data-bs-toggle="modal"
                   data-bs-target={`#exampleModalCenter${post._id}`}
                 >
-                  <a className="dropdown-item">
+                  <a className="dropdown-item" onClick={getComments}>
                     <button
                       className="btn dropdown-item-custom"
-                      onClick={getComments}
+                      // onClick={getComments}
                     >
                       View Post
                     </button>
