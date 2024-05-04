@@ -22,7 +22,8 @@ export const getPostsByFollowing = async (req, res) => {
     const followedUserIds = user.following;
     followedUserIds.push(user._id);
 
-    const savedPosts = await SavedUserPosts.findOne({ userId: user._id });
+    let savedPosts = await SavedUserPosts.findOne({ userId: user._id });
+    if (!savedPosts) savedPosts = { savePosts: [] };
 
     // Use the list of followed user IDs to retrieve the post objects
     // made by users by using mongoose db query
@@ -62,7 +63,7 @@ export const getPostsByFollowing = async (req, res) => {
           profilePicture: { $arrayElemAt: ["$userInfo.profilePicture", 0] },
           creatorBio: { $arrayElemAt: ["$userInfo.bio", 0] },
           isSaved: {
-            $in: [{ $toString: "$_id" }, savedPosts.savedPosts],
+            $in: [{ $toString: "$_id" }, savedPosts.savedPosts || []],
           },
         },
       },
@@ -217,6 +218,11 @@ export const getSavedPosts = async (req, res) => {
     const user = await User.findById(req.userId);
 
     const savedPosts = await SavedUserPosts.findOne({ userId: user._id });
+
+    if (!savedPosts)
+      return createSuccessResponse(res, 200, {
+        savedPosts: [],
+      });
 
     let savedPostWithprofPic = await PostMessage.aggregate([
       {

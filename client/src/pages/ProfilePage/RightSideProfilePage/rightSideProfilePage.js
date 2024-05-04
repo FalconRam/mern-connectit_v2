@@ -11,6 +11,7 @@ const RightSideProfilePage = ({
   profileDetails,
   isPostLoading,
   isProfileLoading,
+  isLoggedInUser,
 }) => {
   let postCount = userPosts?.userPosts?.length;
   return (
@@ -28,6 +29,7 @@ const RightSideProfilePage = ({
           savedPosts={savedPosts}
           profileDetails={profileDetails}
           isPostLoading={isPostLoading}
+          isLoggedInUser={isLoggedInUser}
         />
       </div>
     </div>

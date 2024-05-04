@@ -153,7 +153,7 @@ const UserFollowerFollowing = () => {
           </div>
 
           {/* New Peoplo Suggesstion */}
-          <div className="col-sm-12 col-md-4 mb-2">
+          <div className="col-sm-12 col-md-4 mb-2 d-none d-lg-block">
             <ul className="list-group list-group-flush">
               <li className="list-group-item">An item</li>
             </ul>

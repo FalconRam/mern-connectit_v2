@@ -25,7 +25,8 @@ export const sendFollowRequestAction = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -45,7 +46,8 @@ export const sendUnFollowRequestAction = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -71,6 +73,7 @@ export const sendRemoveFollowerAction = (id, profileId) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
+    toast.error("Something went wrong!");
   }
 };

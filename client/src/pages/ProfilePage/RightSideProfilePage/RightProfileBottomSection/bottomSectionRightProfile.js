@@ -9,6 +9,7 @@ const BottomSectionRightProfile = ({
   savedPosts,
   profileDetails,
   isPostLoading,
+  isLoggedInUser,
 }) => {
   const [tab, setTab] = useState("");
 
@@ -59,24 +60,26 @@ const BottomSectionRightProfile = ({
               Post
             </button>
           </li>
-          <li
-            className="nav-item"
-            role="presentation"
-            onClick={handleSwtichTab}
-          >
-            <button
-              className={tab === "my-items" ? "nav-link active" : "nav-link"}
-              id="saved-tab"
-              data-bs-toggle="tab"
-              data-bs-target="#saved-tab-pane"
-              type="button"
-              role="tab"
-              aria-controls="saved-tab-pane"
-              aria-selected="false"
+          {isLoggedInUser && (
+            <li
+              className="nav-item"
+              role="presentation"
+              onClick={handleSwtichTab}
             >
-              Saved
-            </button>
-          </li>
+              <button
+                className={tab === "my-items" ? "nav-link active" : "nav-link"}
+                id="saved-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#saved-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="saved-tab-pane"
+                aria-selected="false"
+              >
+                Saved
+              </button>
+            </li>
+          )}
         </ul>
 
         {/* Content - User Post */}
@@ -98,39 +101,51 @@ const BottomSectionRightProfile = ({
               <div className="container mt-3">
                 <div className="row">
                   <div className="d-flex justify-content-center flex-wrap gap-3">
-                    {userPosts?.userPosts?.map((post, i) => (
-                      <UserPost
-                        key={i}
-                        post={post}
-                        profileDetails={profileDetails}
-                      />
-                    ))}
+                    {!userPosts?.userPosts?.length ? (
+                      <p className="text-muted">
+                        No Posts, Connect friends to see what they are doing
+                      </p>
+                    ) : (
+                      userPosts?.userPosts?.map((post, i) => (
+                        <UserPost
+                          key={i}
+                          post={post}
+                          profileDetails={profileDetails}
+                        />
+                      ))
+                    )}
                   </div>
                 </div>
               </div>
             </div>
             {/* Saved Posts */}
-            <div
-              className={
-                tab === "my-items"
-                  ? "tab-pane fade show active"
-                  : "tab-pane fade"
-              }
-              id="saved-tab-pane"
-              role="tabpanel"
-              aria-labelledby="saved-tab"
-              tabIndex="0"
-            >
-              <div className="container mt-3">
-                <div className="row">
-                  <div className="d-flex justify-content-center flex-wrap gap-3">
-                    {savedPosts?.map((savedPost, i) => (
-                      <UserPost key={i} post={savedPost} isSaved={true} />
-                    ))}
+            {isLoggedInUser && (
+              <div
+                className={
+                  tab === "my-items"
+                    ? "tab-pane fade show active"
+                    : "tab-pane fade"
+                }
+                id="saved-tab-pane"
+                role="tabpanel"
+                aria-labelledby="saved-tab"
+                tabIndex="0"
+              >
+                <div className="container mt-3">
+                  <div className="row">
+                    <div className="d-flex justify-content-center flex-wrap gap-3">
+                      {savedPosts?.length === 0 ? (
+                        <p className="text-muted">No Saved Posts</p>
+                      ) : (
+                        savedPosts?.map((savedPost, i) => (
+                          <UserPost key={i} post={savedPost} isSaved={true} />
+                        ))
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>

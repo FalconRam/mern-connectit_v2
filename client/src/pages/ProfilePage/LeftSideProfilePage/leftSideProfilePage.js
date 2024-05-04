@@ -72,7 +72,7 @@ const LeftSideProfilePage = () => {
   return (
     <>
       <div className="">
-        <div className="nav flex-sm-row flex-md-column justify-content-between gap-2 customMargin2 customFontSideNav">
+        <div className="nav flex-sm-row flex-md-column justify-content-between align-items-start gap-2 customMargin2 customFontSideNav">
           <li className="nav-item p-2 text-dark">
             <span onClick={handleHome} className="sideNavButton">
               <i className="bi bi-house-door-fill"></i>{" "}
@@ -129,8 +129,8 @@ const LeftSideProfilePage = () => {
               </h6>
             </span>
           </li>
-          <div className="d-none d-md-block">
-            <li className="nav-item p-2 text-dark">
+          <div className="">
+            <li className="nav-item p-2 ps-0 text-dark">
               <MiniProfilePicture isSideNav={true} />
             </li>
           </div>

@@ -39,7 +39,7 @@ export const signUp = (formData, history) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    toast.error("Something went wrong!");
   }
 };
 
@@ -70,7 +70,7 @@ export const logIn = (formData, history) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    toast.error("Something went wrong!");
   }
 };
 
@@ -94,7 +94,7 @@ export const initiatePasswordReset =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      toast.error("Something went wrong!");
       // dispatch({ type: FAILED_INITIATE_RESET, payload: email });
       return false;
     }

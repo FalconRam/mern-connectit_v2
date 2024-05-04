@@ -36,7 +36,8 @@ export const getFollowingAndFollowersCount = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_PROFILE_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -56,7 +57,8 @@ export const getFollowingProfileDetails = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_PROFILE_FOLLOWING_LIST_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -79,7 +81,8 @@ export const getFollowersProfileDetails = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_PROFILE_FOLLOWERS_LIST_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -118,7 +121,9 @@ export const getProfileDetails = (id, isUser) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_USER_PROFILE_LOADING });
+    dispatch({ type: END_PROFILE_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -145,7 +150,8 @@ export const updateProfileDetails = (id, userData) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_PROFILE_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -168,7 +174,8 @@ export const updateProfilePassword =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      dispatch({ type: END_PROFILE_LOADING });
+      toast.error("Something went wrong!");
     }
   };
 
@@ -188,6 +195,7 @@ export const updateProfilePictures = (id, newPictures) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_PROFILE_LOADING });
+    toast.error("Something went wrong!");
   }
 };
