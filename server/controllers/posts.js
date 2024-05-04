@@ -857,7 +857,7 @@ export const savePost = async (req, res) => {
     if (!existingSaved) {
       const newSavedPost = new SavedUserPosts({
         userId: req.userId,
-        savedPosts: [].push(postId),
+        savedPosts: new Array(postId),
       });
       await newSavedPost.save();
       isSaved = true; // Created New instance for the User and Post Saved
