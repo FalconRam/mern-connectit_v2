@@ -50,7 +50,8 @@ export const getPostsByFollowing = () => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_POST_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -70,7 +71,8 @@ export const getPosts = (page) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_POST_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -90,7 +92,8 @@ export const getPostById = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_POST_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -114,7 +117,7 @@ export const getCommentsWithProfilePicture =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -139,7 +142,7 @@ export const getRepliesWithProfilePicture =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -159,7 +162,8 @@ export const getPostByUser = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_POST_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -181,7 +185,8 @@ export const getSavedPosts =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      loadingRequired && dispatch({ type: END_POST_LOADING });
+      toast.error("Something went wrong!");
     }
   };
 
@@ -203,7 +208,8 @@ export const getPostsBySearch = (search) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    dispatch({ type: END_POST_LOADING });
+    toast.error("Something went wrong!");
   }
 };
 
@@ -224,7 +230,7 @@ export const createPost = (post, history) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    toast.error("Something went wrong!");
   }
 
   try {
@@ -242,7 +248,7 @@ export const createPost = (post, history) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    toast.error("Something went wrong!");
   }
 };
 
@@ -264,7 +270,7 @@ export const updatePost = (id, post, history) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    toast.error("Something went wrong!");
   }
 };
 
@@ -280,7 +286,7 @@ export const deletePost = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    toast.error("Something went wrong!");
   }
 };
 
@@ -296,7 +302,7 @@ export const deleteUserPost = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    toast.error("Something went wrong!");
   }
 };
 
@@ -312,7 +318,7 @@ export const likePost = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    toast.error("Something went wrong!");
   }
 };
 
@@ -328,7 +334,7 @@ export const unLikePost = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    toast.error("Something went wrong!");
   }
 };
 
@@ -355,7 +361,7 @@ export const saveUnSavePost = (postId, shouldSave) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    toast.error(message);
+    toast.error("Something went wrong!");
     return false;
   }
 };
@@ -383,7 +389,7 @@ export const likeCommentReply =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -403,7 +409,7 @@ export const commentPostWithUserDetails =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -423,7 +429,7 @@ export const submitReplyToCommentAction =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -451,7 +457,7 @@ export const submitReplyToReplyAction =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -470,7 +476,7 @@ export const deletePostCommentAction =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -491,7 +497,7 @@ export const deletePostReplyAction =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      toast.error(message);
+      toast.error("Something went wrong!");
     }
   };
 

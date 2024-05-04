@@ -26,8 +26,8 @@ const ProfileListItem = ({ profile, isFollowingNavTab }) => {
 
   let isLoggedInUser = user?.id === profileId;
 
-  const [isUnFollow, setIsUnFollow] = useState(true);
-  const [isRemove, setIsRemove] = useState(true);
+  const [isUnFollow, setIsUnFollow] = useState(isLoggedInUser ? true : false); // todo: Should be based on User following
+  const [isRemove, setIsRemove] = useState(isLoggedInUser ? true : false); // todo: Should be based on User following
   // const [isOtherUser, setIsOtherUserFollow] = useState(true);
 
   const handleProfile = (id) => {
@@ -77,7 +77,7 @@ const ProfileListItem = ({ profile, isFollowingNavTab }) => {
         </div>
 
         {/* Follow/UnFollow Button */}
-        {isFollowingNavTab && isLoggedInUser && (
+        {isFollowingNavTab && (
           <button
             type="button"
             className="btn btn-primary customFollowBtn"
@@ -88,7 +88,7 @@ const ProfileListItem = ({ profile, isFollowingNavTab }) => {
         )}
 
         {/* Remove/Add-again Button */}
-        {!isFollowingNavTab && isLoggedInUser && (
+        {!isFollowingNavTab && (
           <button
             disabled={!isRemove}
             type="button"

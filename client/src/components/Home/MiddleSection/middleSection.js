@@ -6,16 +6,19 @@ import Loader from "../../Shared/utils/loader";
 
 const MiddleSection = ({ posts, isPostLoading }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
-
   return (
     <>
       {isPostLoading ? (
         <Loader />
       ) : (
         <div>
-          {posts?.map((post, i) => (
-            <Posts key={i} post={post} />
-          ))}
+          {!posts.length ? (
+            <p className="text-muted text-center">
+              No Posts, Connect friends to see what they are doing
+            </p>
+          ) : (
+            posts?.map((post, i) => <Posts key={i} post={post} />)
+          )}
         </div>
       )}
     </>

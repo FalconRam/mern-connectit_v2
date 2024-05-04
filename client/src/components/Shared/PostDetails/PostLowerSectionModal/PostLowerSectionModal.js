@@ -60,19 +60,19 @@ const PostLowerSectionModal = ({
             <h6 className="mb-0 postCreator">{post?.name}</h6>
             <p className="p-content mb-0 d-sm-block d-md-none">
               {profileDetails?.userDetails
-                ? profileDetails?.userDetails?.bio.slice(0, 43)
+                ? profileDetails?.userDetails?.bio?.slice(0, 43)
                 : post?.creatorBio?.slice(0, 43)}
               ...
             </p>
             <p className="p-content mb-0 d-none d-md-block d-lg-none">
               {profileDetails?.userDetails
-                ? profileDetails?.userDetails?.bio.slice(0, 51)
+                ? profileDetails?.userDetails?.bio?.slice(0, 51)
                 : post?.creatorBio?.slice(0, 51)}
               ...
             </p>
             <p className="p-content mb-0 d-none d-lg-block">
               {profileDetails?.userDetails
-                ? profileDetails?.userDetails?.bio.slice(0, 89)
+                ? profileDetails?.userDetails?.bio?.slice(0, 89)
                 : post?.creatorBio?.slice(0, 89)}
               ...
             </p>

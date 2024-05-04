@@ -32,21 +32,22 @@ const ProfilePage = () => {
   const { userPosts, savedPosts, isPostLoading } = useSelector(
     (state) => state.posts
   );
-  const {
-    profileDetails,
-    userProfileDetails,
-    isProfileLoading,
-    isUserProfileLoading,
-  } = useSelector((state) => state.profile);
+
   let tokenFromCookie = Cookies.get("userToken");
 
   useEffect(() => {
     if (user && profileId) {
       dispatch(getPostByUser(profileId));
       dispatch(getProfileDetails(profileId, isLoggedInUser, tokenFromCookie));
-      dispatch(getSavedPosts());
+      isLoggedInUser && dispatch(getSavedPosts());
     }
   }, []);
+  const {
+    profileDetails,
+    userProfileDetails,
+    isProfileLoading,
+    isUserProfileLoading,
+  } = useSelector((state) => state.profile);
 
   return (
     <>
@@ -69,6 +70,7 @@ const ProfilePage = () => {
               isProfileLoading={
                 isLoggedInUser ? isUserProfileLoading : isProfileLoading
               }
+              isLoggedInUser={isLoggedInUser}
             />
           </div>
         </div>
