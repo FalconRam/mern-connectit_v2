@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   push-to-EC2:
     runs-on: ubuntu-latest
@@ -11,13 +12,9 @@ jobs:
       - name: Check Out Repo
         uses: actions/checkout@v2
 
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          script: |
-            sudo cd projects/mern-connectit_v2
-            sudo git pull origin main
-            sudo pm2 restart 0
+        run: |
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd projects/mern-connectit_v2 && git pull origin main && pm2 restart 0"
