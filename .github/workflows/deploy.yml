@@ -18,7 +18,4 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo su
-            cd projects/mern-connectit_v2
-            git pull origin main
-            pm2 restart 0
+            sudo su -c 'cd projects/mern-connectit_v2 && git pull origin main && pm2 restart 0' -s /bin/bash runner
