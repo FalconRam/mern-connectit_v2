@@ -11,6 +11,10 @@ jobs:
       - name: Check Out Repo
         uses: actions/checkout@v2
 
+      - name: Configure SSH
+        run: |
+          echo "IdentityFile ~/.ssh/id_rsa" >> $HOME/.ssh/config
+
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
