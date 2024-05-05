@@ -13,6 +13,7 @@ jobs:
 
       - name: Configure SSH
         run: |
+          mkdir -p $HOME/.ssh
           echo "IdentityFile ~/.ssh/id_rsa" >> $HOME/.ssh/config
 
       - name: Deploy to EC2
