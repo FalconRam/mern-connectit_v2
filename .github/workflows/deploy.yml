@@ -1,0 +1,23 @@
+name: Push to EC2 for Backend
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  push-to-EC2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo cd projects/mern-connectit_v2
+            sudo git pull origin main
+            sudo pm2 restart 0
