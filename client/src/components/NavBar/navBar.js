@@ -13,6 +13,7 @@ import "./navBar.css";
 import { getProfileDetails } from "../../actions/profile";
 import { getPostByUser } from "../../actions/posts";
 import LandingNav from "../LandingComponent/landingNav";
+import { landingAndResetPages } from "../../utils/localization/constans";
 
 const NavBar = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
@@ -31,7 +32,10 @@ const NavBar = () => {
   }, [location, user]);
 
   const isChatPage = useLocation().pathname === "/chats";
-  const islandingPage = useLocation().pathname === "/";
+
+  const islandingPageAndResetPages = landingAndResetPages.includes(
+    useLocation().pathname
+  );
 
   const [isScreenBelowMd, setIsScreenBelowMd] = useState(false);
   const [winHeight, setWinHeight] = useState(window.outerHeight);
@@ -99,10 +103,9 @@ const NavBar = () => {
       window.location.reload();
       return;
     } else if (window.location.pathname !== "/feeds") {
-      user && history.push("/feeds");
+      user ? history.push("/feeds") : history.push("/");
       return;
     }
-    history.push("/");
   };
 
   return (
@@ -122,7 +125,7 @@ const NavBar = () => {
             />
             ConnectIT
           </a>
-          {islandingPage && !user && <LandingNav />}
+          {islandingPageAndResetPages && !user && <LandingNav />}
 
           {/* From Medium to xxl Devices Component*/}
           {user && (
