@@ -26,6 +26,7 @@ const authReducer = (
           ...action?.userData?.profileData?.userDetails, // contains other information of User
           accessToken: action?.userData?.loginData.accessToken,
           refreshToken: action?.userData?.loginData.refreshToken,
+          sessionId: action?.userData?.loginData.sessionId,
         })
       );
       return {

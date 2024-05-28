@@ -78,6 +78,9 @@ API.interceptors.response.use(
 // Login/Signup APIs
 export const logIn = (formData) => API.post("/user/login-user", formData);
 
+export const logOutUser = (sessionData) =>
+  API.post("/user/logout", sessionData);
+
 export const signUp = (formData) => API.post("/user/create-user", formData);
 
 // export const refreshSession = (refreshToken) =>

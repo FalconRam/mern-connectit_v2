@@ -14,6 +14,7 @@ import { getProfileDetails } from "../../actions/profile";
 import { getPostByUser } from "../../actions/posts";
 import LandingNav from "../LandingComponent/landingNav";
 import { landingAndResetPages } from "../../utils/localization/constans";
+import { logOutUserSession } from "../../actions/auth";
 
 const NavBar = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
@@ -75,6 +76,7 @@ const NavBar = () => {
     };
 
   const logout = () => {
+    dispatch(logOutUserSession(user.sessionId));
     dispatch({ type: LOGOUT });
     history.push("/");
   };

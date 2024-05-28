@@ -8,6 +8,7 @@ import {
   validateResetLink,
   resetPassword,
   reportPassword,
+  logoutUser,
 } from "../controllers/user.js";
 
 import auth from "../middleware/auth.js";
@@ -17,6 +18,8 @@ const router = express.Router();
 router.post("/create-user", signUp);
 
 router.post("/login-user", logIn);
+
+router.post("/logout", logoutUser);
 
 router.post("/initiate-resetPassword", initiateResetPassword);
 

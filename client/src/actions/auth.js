@@ -74,6 +74,18 @@ export const logIn = (formData, history) => async (dispatch) => {
   }
 };
 
+export const logOutUserSession = (sessionId) => async (dispatch) => {
+  const { data } = await api.logOutUser({ sessionId });
+  try {
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error("Something went wrong!");
+  }
+};
+
 export const initiatePasswordReset =
   (email, resend = false) =>
   async (dispatch) => {

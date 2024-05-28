@@ -17,6 +17,7 @@ import {
 } from "../services/returnResponse/createResponse.js";
 import { nanoid } from "nanoid";
 import { sendResetEmail } from "../services/emailService/index.js";
+import { analysticsLogger } from "../services/analystics-logger/index.js";
 
 dotenv.config();
 
@@ -48,6 +49,8 @@ export const logIn = async (req, res) => {
       );
 
     [req.emailId, req.userId] = [existingUser.email, existingUser._id];
+    const sessionId = await analysticsLogger(req, false);
+
     // Generate AccessToken
     const accessToken = await signAccessToken(req);
 
@@ -73,13 +76,22 @@ export const logIn = async (req, res) => {
       name: existingUser.name,
       email: existingUser.email,
     };
-
     res.status(200).json({
       status: true,
       data: result,
       accessToken: token.accessToken,
       refreshToken: token.refreshToken,
+      sessionId,
     });
+  } catch (error) {
+    createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
+  }
+};
+
+export const logoutUser = async (req, res) => {
+  try {
+    await analysticsLogger(req, true);
+    createSuccessResponse(res, 200, {});
   } catch (error) {
     createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
