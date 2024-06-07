@@ -18,7 +18,7 @@ const MiniProfilePicture = ({
       : isSideNav
       ? user._id // If SideNav
       : post.creator; // For other Users
-    console.log(`/profile/details?profileId=${routeProfileId}`);
+    // console.log(`/profile/details?profileId=${routeProfileId}`);
     history.push(`/profile/details?profileId=${routeProfileId}`);
   };
   return (

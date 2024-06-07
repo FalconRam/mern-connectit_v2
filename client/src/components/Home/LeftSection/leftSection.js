@@ -21,8 +21,7 @@ const LeftSection = ({
   const handleProfile = () => {
     history.push(
       `/profile/details?profileId=${
-        userProfileDetails?.userDetails?.id ??
-        userProfileDetails?.userDetails?._id
+        userProfileDetails?.id || userProfileDetails?.userDetails?._id
       }`
     );
   };
@@ -34,22 +33,18 @@ const LeftSection = ({
   const handleSavedItems = () => {
     history.push(
       `/profile/details?profileId=${
-        userProfileDetails?.userDetails?.id ??
-        userProfileDetails?.userDetails?._id
+        userProfileDetails?.id || userProfileDetails?.userDetails?._id
       }&type=my-items`
     );
   };
 
-  const [isCreator, setIsCreator] = useState(false);
-  const [isLoggedInuser, setIsLoggedInUser] = useState(false);
+  // Only changes the state, if post is available, by default true to support on home page
+  const [isLoggedInUser, setisLoggedInUser] = useState(true);
 
   useEffect(() => {
-    if (id !== undefined && profileId !== undefined) {
-      setIsCreator(post?.creator === userProfileDetails?.userDetails?._id);
-      setIsLoggedInUser(post?.creator === user._id);
-    }
+    // Only changes the state, if post is available
+    if (post) setisLoggedInUser(post?.creator === user._id);
   }, [post, user]);
-  console.log(isCreator);
 
   return (
     <>
@@ -77,6 +72,7 @@ const LeftSection = ({
         <div className="card sticky-md-top sticky-lg-top">
           <img
             src={
+              userProfileDetails?.profileBgWallPicture ||
               userProfileDetails?.userDetails?.profileBgWallPicture ||
               "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
             }
@@ -86,22 +82,32 @@ const LeftSection = ({
 
           <img
             src={
+              userProfileDetails?.profilePicture ||
               userProfileDetails?.userDetails?.profilePicture ||
+              userProfileDetails?.name?.charAt(0).toUpperCase() ||
               userProfileDetails?.userDetails?.name.charAt(0).toUpperCase() ||
               "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
             }
             className="img-thumbnail rounded-circle profilePic d-flex align-items-center justify-content-center"
-            alt={userProfileDetails?.userDetails?.name.charAt(0).toUpperCase()}
+            alt={
+              userProfileDetails?.name?.charAt(0).toUpperCase() ||
+              userProfileDetails?.userDetails?.name.charAt(0).toUpperCase()
+            }
           ></img>
           <div
             className="card-body pt-2 profileUser"
-            onClick={() => handleProfile(userProfileDetails?.userDetails?._id)}
+            onClick={() =>
+              handleProfile(
+                userProfileDetails?.id || userProfileDetails?.userDetails?._id
+              )
+            }
           >
             <h6 className="card-title text-center text-primary">
-              {userProfileDetails?.userDetails?.name}
+              {userProfileDetails?.name ||
+                userProfileDetails?.userDetails?.name}
             </h6>
             <p className="card-text text-center text-muted headline">
-              {userProfileDetails?.userDetails?.bio}
+              {userProfileDetails?.bio || userProfileDetails?.userDetails?.bio}
             </p>
           </div>
           <ul className="list-group list-group-flush">
@@ -109,24 +115,29 @@ const LeftSection = ({
               <div
                 className="text-center d-flex flex-row justify-content-center text-muted followFollows"
                 onClick={() =>
-                  handleFollowFollows(userProfileDetails?.userDetails?._id)
+                  handleFollowFollows(
+                    userProfileDetails?.id ||
+                      userProfileDetails?.userDetails?._id
+                  )
                 }
               >
                 <span className="card-link followCount">
                   <p className="mb-0 followCount">
-                    {userProfileDetails?.userDetails?.following?.length}
+                    {userProfileDetails?.following?.length ||
+                      userProfileDetails?.userDetails?.following?.length}
                   </p>
                   Following
                 </span>
                 <span className="card-link followCount">
                   <p className="mb-0 followCount">
-                    {userProfileDetails?.userDetails?.followers?.length}
+                    {userProfileDetails?.followers?.length ||
+                      userProfileDetails?.userDetails?.followers?.length}
                   </p>
                   Followers
                 </span>
               </div>
             </li>
-            {isLoggedInuser && (
+            {isLoggedInUser && (
               <li className="list-group-item text-muted">
                 <div className="text-center">
                   <span
@@ -144,7 +155,7 @@ const LeftSection = ({
                 </div>
               </li>
             )}
-            {isLoggedInuser && (
+            {isLoggedInUser && (
               <li className="list-group-item text-center text-muted savedItems liLeft">
                 <div onClick={handleSavedItems}>
                   <i className="bi bi-bookmark-fill"></i> My items

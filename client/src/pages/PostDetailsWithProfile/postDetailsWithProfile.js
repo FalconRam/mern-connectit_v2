@@ -35,16 +35,16 @@ const PostDetailsWithProfile = () => {
 
   useEffect(() => {
     if (postId) {
-      dispatch(getPostById(postId));
+      dispatch(getPostById(postId, false));
       dispatch(getCommentsWithProfilePicture(postId, true));
     }
   }, [postId]);
 
-  useEffect(() => {
-    if (post?.creator !== undefined) {
-      dispatch(getProfileDetails(post?.creator, false));
-    }
-  }, [post?.creator]);
+  // useEffect(() => {
+  //   if (post?.creator !== undefined) {
+  //     dispatch(getProfileDetails(post?.creator, false));
+  //   }
+  // }, [dispatch, post?.creator]);
 
   const openProfile = (profileId) =>
     history.push(`/profile/details?profileId=${profileId}`);

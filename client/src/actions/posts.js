@@ -29,8 +29,11 @@ import {
   SET_COMMENT_REPLY_DETAILS,
   DELETE_POST_COMMENT,
   DELETE_POST_REPLY,
+  GET_PROFILE_DETAILS,
+  END_PROFILE_LOADING,
 } from "../constants/actionTypes";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 // Action Creators
 
@@ -78,12 +81,21 @@ export const getPosts = (page) => async (dispatch) => {
 
 export const getPostById = (id) => async (dispatch) => {
   try {
+    const accessTokenFromCookie = Cookies.get("userToken");
+
     dispatch({ type: START_POST_LOADING });
 
     const { data } = await api.fetchPostById(id);
     dispatch({ type: FETCH_POST_BY_ID, payload: data });
 
+    const { data: profileData } = await api.fetchProfileDetails(
+      data.data.creator,
+      accessTokenFromCookie
+    );
+    dispatch({ type: GET_PROFILE_DETAILS, payload: profileData });
+
     dispatch({ type: END_POST_LOADING });
+    dispatch({ type: END_PROFILE_LOADING });
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")
@@ -342,13 +354,13 @@ export const saveUnSavePost = (postId, shouldSave) => async (dispatch) => {
   try {
     const { data } = await api.saveUnSavePost(postId);
     if (shouldSave) {
-      console.log("Saving");
+      // console.log("Saving");
       dispatch({
         type: FETCH_POSTS_BY_FOLLOWING_UPDATED_SAVE,
         payload: postId,
       });
     } else {
-      console.log("Un-Saving");
+      // console.log("Un-Saving");
       dispatch({
         type: FETCH_POSTS_BY_FOLLOWING_UPDATED_UNSAVE,
         payload: postId,
