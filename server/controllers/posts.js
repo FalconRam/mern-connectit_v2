@@ -254,7 +254,7 @@ export const getSavedPosts = async (req, res) => {
           isSaved: { $in: [{ $toString: "$_id" }, savedPosts.savedPosts] },
         },
       },
-    ]);
+    ]).sort({ createdAt: -1 });
 
     return createSuccessResponse(res, 200, {
       savedPosts: savedPostWithprofPic,
