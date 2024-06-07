@@ -129,11 +129,11 @@ const LeftSideProfilePage = () => {
               </h6>
             </span>
           </li>
-          <div className="">
-            <li className="nav-item p-2 ps-0 text-dark">
-              <MiniProfilePicture isSideNav={true} />
-            </li>
-          </div>
+          {/* <div className=""> */}
+          <li className="nav-item p-2 text-dark">
+            <MiniProfilePicture isSideNav={true} isComment={false} />
+          </li>
+          {/* </div> */}
         </div>
       </div>
       <Chat handleMessages={handleMessages} />

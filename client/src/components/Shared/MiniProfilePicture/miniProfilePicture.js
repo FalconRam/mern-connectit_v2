@@ -4,8 +4,8 @@ import { useHistory } from "react-router-dom";
 
 const MiniProfilePicture = ({
   post,
-  isComment,
-  isSideNav = false,
+  isComment, // TODO: Check is the condition working as expected
+  isSideNav = false, // TODO: Check is the condition working as expected
   comment,
   reply,
 }) => {
