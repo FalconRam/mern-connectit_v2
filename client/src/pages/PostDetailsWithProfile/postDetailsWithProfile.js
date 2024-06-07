@@ -38,14 +38,13 @@ const PostDetailsWithProfile = () => {
       dispatch(getPostById(postId));
       dispatch(getCommentsWithProfilePicture(postId, true));
     }
-  }, []);
-
-  let profileId = post?.creator;
+  }, [postId]);
 
   useEffect(() => {
-    if (profileId !== undefined)
+    if (post?.creator !== undefined) {
       dispatch(getProfileDetails(post?.creator, false));
-  }, [profileId]);
+    }
+  }, [post?.creator]);
 
   const openProfile = (profileId) =>
     history.push(`/profile/details?profileId=${profileId}`);
@@ -62,7 +61,7 @@ const PostDetailsWithProfile = () => {
                 userProfileDetails={profileDetails}
                 isProfileLoading={isProfileLoading}
                 id={postId}
-                profileId={profileId}
+                profileId={post?.creator}
                 post={post}
               />
             </div>
