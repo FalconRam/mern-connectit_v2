@@ -67,15 +67,9 @@ export const getPostsByFollowing = async (req, res) => {
           },
         },
       },
-    ]);
+    ]).sort({ createdAt: -1 });
 
-    const sortedPosts = followedPosts.sort(function (a, b) {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
-
-    // Wait for the loop to finish before sending the response
-
-    return createSuccessResponse(res, 200, sortedPosts);
+    return createSuccessResponse(res, 200, followedPosts);
   } catch (error) {
     createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
@@ -86,13 +80,11 @@ export const postsByUserId = async (req, res) => {
   try {
     const user = await User.findById(id);
 
-    const posts = await PostMessage.find({ creator: user._id.toString() });
+    const userPosts = await PostMessage.find({
+      creator: user._id.toString(),
+    }).sort({ createdAt: -1 });
 
-    const sortedPosts = posts.sort(function (a, b) {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
-
-    return createSuccessResponse(res, 200, { userPosts: sortedPosts });
+    return createSuccessResponse(res, 200, { userPosts });
   } catch (error) {
     createErrorResponse(res, 500, {}, error.messsage || error.stack || error);
   }
@@ -142,7 +134,7 @@ export const getPostsBySearch = async (req, res) => {
     // one is searchQuery and array of tags (is one of the tags in array of tags, equal to our tags )
 
     if (searchQuery === "none" && tags === "none")
-      postMessages = await PostMessage.find();
+      postMessages = await PostMessage.find().sort({ createdAt: -1 });
 
     return createSuccessResponse(res, 200, postMessages);
   } catch (error) {
@@ -156,23 +148,21 @@ export const getPostsBySearch = async (req, res) => {
 };
 
 export const getPostsById = async (req, res) => {
-  const { id } = req.params;
+  const { id: postId } = req.params;
   try {
     const user = await User.findById(req.userId);
-
-    const post = await PostMessage.findById(id);
 
     const savedPosts = await SavedUserPosts.findOne({ userId: user._id });
 
     let updatedPostWithprofPic = await PostMessage.aggregate([
       {
         $match: {
-          _id: post._id,
+          _id: mongoose.Types.ObjectId(postId),
         },
       },
       {
         $addFields: {
-          creator: { $toObjectId: post.creator },
+          creator: { $toObjectId: "$creator" },
         },
       },
       {
@@ -493,13 +483,14 @@ export const createPost = async (req, res) => {
     createdPost.selectedFile = cloudinaryResponse.secure_url;
 
     // update the Post's selectedFile as Cloudinary Image URL
-    createdPost = await PostMessage.findByIdAndUpdate(
-      createdPost._id,
-      createdPost,
-      {
-        new: true,
-      }
-    );
+    createdPost = await newPost.save();
+    // createdPost = await PostMessage.findByIdAndUpdate(
+    //   createdPost._id,
+    //   createdPost,
+    //   {
+    //     new: true,
+    //   }
+    // );
 
     return createSuccessResponse(res, 201, createdPost);
   } catch (error) {
