@@ -14,27 +14,29 @@ const BottomSectionRightProfile = ({
   const [tab, setTab] = useState("");
 
   const url = new URL(window.location.href);
-  const urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(url.search);
   const type = urlParams.get("type");
 
   useEffect(() => {
-    if (type === "my-items") setTab("my-items");
-    else setTab("");
-  }, [type]);
+    if (type === "my-items" && isLoggedInUser) setTab("my-items");
+    else {
+      // If Not loggedin User profile & invalid type's value
+      setTab("");
+      url.searchParams.delete("type");
+      window.history.pushState(null, "", url.toString()); // push to page, without reload
+    }
+  }, [url]);
 
   const handleSwtichTab = () => {
-    let type = url.searchParams.get("type");
+    // let currentType = url.searchParams.get("type");
     if (!type) {
+      // If there is no type, set type as my-items, to active Saved Tab
       url.searchParams.set("type", "my-items");
-      window.history.pushState(null, "", url.toString());
-    } else if (type) {
-      url.searchParams.delete("type", "my-items");
-      window.history.pushState(null, "", url.toString());
+    } else {
+      // Delete type, since User Post tab should be active
+      url.searchParams.delete("type");
     }
-    // else if (type !== "my-items") {
-    //   url.searchParams.delete("type", type);
-    //   window.history.pushState(null, "", url.toString());
-    // }
+    window.history.pushState(null, "", url.toString());
   };
 
   return (
