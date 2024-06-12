@@ -1,5 +1,10 @@
 import PostMessage from "../models/postMessage.js";
 import User from "../models/user.js";
+import { createNotificationService } from "../services/Notification/index.js";
+import {
+  createErrorResponse,
+  createSuccessResponse,
+} from "../services/returnResponse/createResponse.js";
 
 export const followRequest = async (req, res) => {
   const { companionId } = req.params;
@@ -8,30 +13,44 @@ export const followRequest = async (req, res) => {
     const currentUser = await User.findById(req.userId); // req.userId fetched from auth middleware
     const companionUser = await User.findById(companionId);
 
-    // removes companionUser id on following array of current user account
-    if (!currentUser.following.includes(companionId)) {
-      currentUser.following.push(companionId);
-
-      const updatedCurrentUser = await User.findByIdAndUpdate(
-        currentUser._id,
-        currentUser,
-        { new: true }
+    if (currentUser.following.includes(companionId))
+      return createSuccessResponse(
+        res,
+        200,
+        { isFollowed: true, isAlreadyFollowed: true },
+        "Already followed"
       );
 
-      let result = {
-        id: updatedCurrentUser._id,
-        name: updatedCurrentUser.name,
-        following: updatedCurrentUser.following,
-      };
+    // Flow to follow
+    currentUser.following.push(companionId);
 
-      res.status(200).json({
-        success: true,
-        message: "Request Sent",
-        data: result,
-      });
-    } else {
-      res.status(409).json({ status: false, message: "Already followed" });
-    }
+    const updatedCurrentUser = await User.findByIdAndUpdate(
+      currentUser._id,
+      currentUser,
+      { new: true }
+    );
+
+    let result = {
+      id: updatedCurrentUser._id,
+      name: updatedCurrentUser.name,
+      following: updatedCurrentUser.following,
+    };
+
+    createNotificationService("request", {
+      notificationCreatedBy: {
+        userId: req.userId,
+        userEmail: req.emailId,
+        userName: result.name,
+        profilePicture: updatedCurrentUser.profilePicture,
+      },
+      notificationTo: { userId: companionId },
+    });
+    return createSuccessResponse(
+      res,
+      200,
+      { ...result, isFollowed: true, isAlreadyFollowed: false },
+      "Request Sent"
+    );
   } catch (error) {
     res.status(500).json({ status: false, message: error.message });
   }
@@ -45,7 +64,7 @@ export const unFollowRequest = async (req, res) => {
     const companionUser = await User.findById(companionId);
 
     if (!currentUser.following.includes(companionId))
-      res.status(409).json({ status: false, message: "No Friend Exists" });
+      return createErrorResponse(res, 409, {}, "No Friend Exists");
 
     // removes companionUser id from following on current user account
     const index = currentUser.following.indexOf(companionUser._id);
@@ -64,14 +83,14 @@ export const unFollowRequest = async (req, res) => {
       name: updatedCurrentUser.name,
       following: updatedCurrentUser.following,
     };
-
-    res.status(200).json({
-      status: true,
-      message: "UnFriend Success",
-      data: result,
-    });
+    return createSuccessResponse(
+      res,
+      200,
+      { ...result, isUnFollowed: true },
+      ""
+    );
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    return createErrorResponse(res, 500, {}, error.message);
   }
 };
 
@@ -83,7 +102,7 @@ export const removeFollowerRequest = async (req, res) => {
     const companionUser = await User.findById(companionId);
 
     if (!currentUser.followers.includes(companionId))
-      res.status(409).json({ status: false, message: "No Follower Exists" });
+      return createErrorResponse(res, 409, {}, "No Follower Exists");
 
     // removes companionUser id from following on current user account
     const index = currentUser.followers.indexOf(companionUser._id);
@@ -103,13 +122,14 @@ export const removeFollowerRequest = async (req, res) => {
       followers: updatedCurrentUser.followers,
     };
 
-    res.status(200).json({
-      status: true,
-      message: "Removed Follower",
-      data: result,
-    });
+    return createSuccessResponse(
+      res,
+      200,
+      { ...result, isUnFollowed: true },
+      "Removed Follower"
+    );
   } catch (error) {
-    res.status(500).json({ status: false, message: error.message });
+    return createErrorResponse(res, 500, {}, error.message);
   }
 };
 
@@ -120,20 +140,20 @@ export const rejectFriendRequest = async (req, res) => {};
 export const getFollowersByUserId = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
-    const { followers } = user;
-    res.status(200).json({ status: true, data: { followersIds: followers } });
+    const { followers: followersIds } = user;
+    return createSuccessResponse(res, 200, followersIds, "");
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    return createErrorResponse(res, 500, {}, error.message);
   }
 };
 
 export const getFollowingByUserId = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
-    const { following } = user;
-    res.status(200).json({ status: true, data: { followingIds: following } });
+    const { following: followingIds } = user;
+    return createSuccessResponse(res, 200, followingIds, "");
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    return createErrorResponse(res, 500, {}, error.message);
   }
 };
 
@@ -150,7 +170,7 @@ export const suggestPeoples = async (req, res) => {
     );
     const similarCityProfile = similarCityProfiles.map((city) => city);
     Promise.all(similarCityProfile).then((similarCityProfiles) => {
-      res.status(200).json({ status: true, data: similarCityProfiles });
+      return createSuccessResponse(res, 200, similarCityProfiles, "");
     });
     //   res.status(201).json({
     //     status: true,
@@ -165,32 +185,26 @@ export const suggestPeoples = async (req, res) => {
     //   })
     // );
   } catch (error) {
-    res.status(500).json({ status: false, error: error.message });
+    return createErrorResponse(res, 500, {}, error.message);
   }
 };
 
 export const getProfile = async (req, res) => {
-  const { id } = req.params;
+  const { profileId } = req.query;
   try {
-    const profile = await User.findById(id);
-    const post = await PostMessage.find({ creator: profile._id });
-    res.status(200).json({
-      status: true,
-      data: {
-        profile: {
-          id: profile._id,
-          name: profile.name,
-          email: profile.email,
-          following: profile.following,
-          followers: profile.followers,
-          createdAt: profile.createdAt,
-          city: profile.city,
-          country: profile.country,
-        },
+    const profilePromise = User.findById(profileId).select("-__v -password");
+    const postPromise = PostMessage.find({ creator: profileId });
+    const [profile, post] = await Promise.all([profilePromise, postPromise]);
+    return createSuccessResponse(
+      res,
+      200,
+      {
+        profile,
         post,
       },
-    });
+      ""
+    );
   } catch (error) {
-    res.status(500).json({ status: false, message: error });
+    return createErrorResponse(res, 500, {}, error.message);
   }
 };

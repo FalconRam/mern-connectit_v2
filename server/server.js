@@ -3,11 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
-import postRoutes from "./routes/post.js";
-import userRoutes from "./routes/user.js";
-import followsAndUnfollows from "./routes/followsAndUnfollows.js";
-import profileRoutes from "./routes/profile.js";
-import chatRoutes from "./routes/chat.js";
+import rootRoutes from "./routes/index.js";
 
 const app = express();
 dotenv.config();
@@ -30,15 +26,13 @@ if (process.env.NODE_ENV !== "production") app.use(cors());
 
 // app.use(cors({ origin: "https://connectit-v2.vercel.app" }));
 
-app.use("/posts", postRoutes);
-app.use("/user", userRoutes);
-app.use("/request", followsAndUnfollows);
-app.use("/profile", profileRoutes);
-app.use("/chat", chatRoutes);
+// api Routes
+app.use(rootRoutes);
 
 const port = process.env.PORT;
 const dbUri = process.env.CONNECTION_URL;
 
+// To Support deployment on Render
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "/client/build")));
 app.get("*", (req, res) =>

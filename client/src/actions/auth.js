@@ -4,6 +4,7 @@ import {
   INITIATE_RESET,
   RE_INITIATE_RESET,
   FAILED_INITIATE_RESET,
+  FETCH_NOTIFICATION_COUNT,
 } from "../constants/actionTypes";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
@@ -65,6 +66,12 @@ export const logIn = (formData, history) => async (dispatch) => {
     } else history.push("/feeds");
 
     toast.success(`Welcome ${data.data.name.slice(0, 3)}..!`);
+
+    const { data: notifiCount } = await api.getNotificationCount();
+    dispatch({
+      type: FETCH_NOTIFICATION_COUNT,
+      payload: notifiCount.data.notificationCount,
+    });
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
