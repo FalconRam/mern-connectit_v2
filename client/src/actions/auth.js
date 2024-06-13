@@ -65,13 +65,7 @@ export const logIn = (formData, history) => async (dispatch) => {
       localStorage.removeItem("redirectURL");
     } else history.push("/feeds");
 
-    toast.success(`Welcome ${data.data.name.slice(0, 3)}..!`);
-
-    const { data: notifiCount } = await api.getNotificationCount();
-    dispatch({
-      type: FETCH_NOTIFICATION_COUNT,
-      payload: notifiCount.data.notificationCount,
-    });
+    toast.success(`Welcome ${data.data.name.split(" ")[0]}..!`);
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||

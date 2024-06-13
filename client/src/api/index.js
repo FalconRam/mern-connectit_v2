@@ -188,7 +188,7 @@ export const sendRemoveFollowerRequest = (id) =>
 
 export const getNotificationCount = () => API.get("/notification/count");
 
-export const getNotifications = () => API.get("/notification/list");
+export const getNotificationsList = () => API.get("/notification/list");
 
 export const updateNotifications = (notificationId) =>
   API.post(`/notification/updateRead/${notificationId}`);

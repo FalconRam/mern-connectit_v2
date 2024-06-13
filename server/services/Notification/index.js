@@ -4,7 +4,7 @@ import User from "../../models/user.js";
 export const createNotificationService = async (type, data) => {
   try {
     if (type === "request") {
-      const { userId, userEmail, userName, profilePicture } =
+      const { userId, userEmail, name, profilePicture } =
         data.notificationCreatedBy;
       const { userId: notfiUserId } = data.notificationTo;
       const notificationToUser = await User.findById(notfiUserId);
@@ -17,7 +17,7 @@ export const createNotificationService = async (type, data) => {
         metaData: {
           requestBy: {
             userId,
-            userName,
+            name,
             email: userEmail,
             profilePicture,
           },

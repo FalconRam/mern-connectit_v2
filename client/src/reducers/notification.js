@@ -18,10 +18,9 @@ export default (state = initialState, action) => {
     case STOP_NOTIFICATION_LIST_LOADING:
       return { ...state, isNotificationListLoading: false };
     case FETCH_NOTIFICATION_COUNT:
-      console.log(action.payload);
       return { ...state, notificationCount: action.payload.notificationCount };
     case FETCH_NOTIFICATIONS_LIST:
-      return { ...state, notificationsList: action.payload.notificationsList };
+      return { ...state, notificationsList: action.payload };
     default:
       return state;
   }

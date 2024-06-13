@@ -1,0 +1,17 @@
+.notification-card {
+    position: absolute;
+    top: 1rem;
+    right: -140px;
+    min-width: 20rem;
+    max-height: 25rem;
+}
+
+/* .notification-wrapper {} */
+
+.notification-item {}
+
+.btn-sm-cutom {
+    font-size: 0.5rem;
+    padding: 0.2rem;
+    border-radius: 10px;
+}

@@ -8,7 +8,7 @@ const userMetaData = {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  userName: { type: String, default: "" },
+  name: { type: String, default: "" },
   email: { type: String, default: "" },
   profilePicture: { type: String, default: "" },
 };

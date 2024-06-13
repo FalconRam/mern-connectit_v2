@@ -15,6 +15,11 @@ import { getPostByUser } from "../../actions/posts";
 import LandingNav from "../LandingComponent/landingNav";
 import { landingAndResetPages } from "../../utils/localization/constans";
 import { logOutUserSession } from "../../actions/auth";
+import {
+  fetchNotificationCount,
+  fetchNotificationList,
+} from "../../actions/notification";
+import NotificationBox from "../NotificationBox/notificationBox";
 
 const NavBar = () => {
   let user = JSON.parse(localStorage.getItem("profile"));
@@ -22,6 +27,12 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
+
+  useEffect(() => {
+    user && dispatch(fetchNotificationCount());
+  }, [location]);
+
+  const { notificationCount } = useSelector((state) => state.notification);
 
   useEffect(() => {
     const token = user?.token;
@@ -41,6 +52,8 @@ const NavBar = () => {
   const [isScreenBelowMd, setIsScreenBelowMd] = useState(false);
   const [winHeight, setWinHeight] = useState(window.outerHeight);
   const [winWidth, setWinWidth] = useState(window.outerWidth);
+
+  const [showNotificationBox, setShowNotificationBox] = useState(false);
 
   // Get the Win Height & Width when the Win size changes
   // and remove the event - resize when page is unmounted
@@ -93,7 +106,8 @@ const NavBar = () => {
   };
 
   const handleNotification = () => {
-    history.push("/notification");
+    setShowNotificationBox(!showNotificationBox);
+    if (showNotificationBox === false) dispatch(fetchNotificationList());
   };
 
   const handleSettings = () => {
@@ -163,8 +177,21 @@ const NavBar = () => {
                   className="nav-item sideNavButton"
                   onClick={handleNotification}
                 >
-                  <a className="nav-link">Notification</a>
+                  <a className="nav-link notification">
+                    Notification
+                    {notificationCount > 0 && !showNotificationBox && (
+                      <span className="notification-badge translate-middle badge rounded-pill bg-danger">
+                        {notificationCount >= 100 ? "99+" : notificationCount}
+                      </span>
+                    )}
+                  </a>
                 </li>
+                {showNotificationBox && (
+                  <NotificationBox
+                    showNotificationBox={showNotificationBox}
+                    setShowNotificationBox={setShowNotificationBox}
+                  />
+                )}
                 <li className="nav-item sideNavButton" onClick={handleSettings}>
                   <a className="nav-link">Settings</a>
                 </li>

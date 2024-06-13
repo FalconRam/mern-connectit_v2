@@ -40,7 +40,7 @@ export const followRequest = async (req, res) => {
       notificationCreatedBy: {
         userId: req.userId,
         userEmail: req.emailId,
-        userName: result.name,
+        name: result.name,
         profilePicture: updatedCurrentUser.profilePicture,
       },
       notificationTo: { userId: companionId },
