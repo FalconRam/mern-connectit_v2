@@ -28,7 +28,10 @@ const notificationSchema = mongoose.Schema(
       required: true,
     },
     metaData: {
-      requestBy: userMetaData,
+      requestBy: {
+        ...userMetaData,
+        isAccepted: { type: Boolean, default: null },
+      },
       messageBy: userMetaData,
     },
     message: { type: String, required: true },

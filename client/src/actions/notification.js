@@ -49,29 +49,28 @@ export const fetchNotificationList = () => async (dispatch) => {
   }
 };
 
-export const updateReadNotificationAction =
-  (notificationId) => async (dispatch) => {
-    try {
-      const { data: updateNotificationResp } =
-        await api.updateReadNotificationAPI(notificationId);
-      const { data: notificationListResp } = await api.getNotificationsList();
-      dispatch({
-        type: FETCH_NOTIFICATIONS_LIST,
-        payload: notificationListResp.data,
-      });
-      const { data: notificationCount } = await api.getNotificationCount();
-      dispatch({
-        type: FETCH_NOTIFICATION_COUNT,
-        payload: notificationCount.data,
-      });
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      console.log(error);
-      toast.error("Something went wrong!");
-    }
-  };
+export const updateReadNotificationAction = (payload) => async (dispatch) => {
+  try {
+    const { data: updateNotificationResp } =
+      await api.updateReadNotificationAPI(payload);
+
+    const { data: notificationListResp } = await api.getNotificationsList();
+    dispatch({
+      type: FETCH_NOTIFICATIONS_LIST,
+      payload: notificationListResp.data,
+    });
+
+    const { data: notificationCount } = await api.getNotificationCount();
+    dispatch({
+      type: FETCH_NOTIFICATION_COUNT,
+      payload: notificationCount.data,
+    });
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    console.log(error);
+    toast.error("Something went wrong!");
+  }
+};

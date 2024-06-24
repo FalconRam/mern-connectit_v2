@@ -1,12 +1,12 @@
 import express from "express";
 import {
-  acceptFriendRequest,
   followRequest,
   getFollowersByUserId,
   getFollowingByUserId,
   getProfile,
   rejectFriendRequest,
   removeFollowerRequest,
+  requestResponseController,
   suggestPeoples,
   unFollowRequest,
 } from "../controllers/request.js";
@@ -20,7 +20,7 @@ router.post("/follow/:companionId", followRequest);
 
 router.post("/unFollow/:companionId", unFollowRequest);
 
-router.post("/accept/:companionId", acceptFriendRequest);
+router.post("/request-response", requestResponseController);
 
 router.post("/reject/:companionId", rejectFriendRequest);
 

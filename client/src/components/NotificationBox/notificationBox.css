@@ -17,12 +17,22 @@
 }
 
 .notification-unread {
-    background-color: #f3f2ef;
+    background-color: #e7e7e7;
     border: none;
-    border-radius: 0.5rem;
+    /* border-radius: 0.5rem; */
+}
+
+.custom-divider-1 {
+    border: 2px solid #f3f2ef;
 }
 
 .custom-divider-2 {
-    padding-top: 0.2px;
-    margin: 0.4rem 0 0;
+    border: 1px solid #afadad;
+}
+
+.custom-divider-1,
+.custom-divider-2 {
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }

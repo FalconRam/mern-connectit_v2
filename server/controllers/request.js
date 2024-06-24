@@ -133,7 +133,15 @@ export const removeFollowerRequest = async (req, res) => {
   }
 };
 
-export const acceptFriendRequest = async (req, res) => {};
+export const requestResponseController = async (req, res) => {
+  try {
+    const { isAccept, notificationId } = req.body;
+
+    return createSuccessResponse(res, 200, { isAccept, notificationId }, "");
+  } catch (error) {
+    return createErrorResponse(res, 500, {}, error.message);
+  }
+};
 
 export const rejectFriendRequest = async (req, res) => {};
 

@@ -130,7 +130,7 @@ const ForgotPasswordComp = () => {
             <>
               <div>
                 <div className="text-center">
-                  <i class="bi bi-check-lg text-success d-inline me-2" />
+                  <i className="bi bi-check-lg text-success d-inline me-2" />
                   <h5 className="d-inline text-success fw-bold">Email Sent</h5>
                 </div>
                 <p className="mt-3 mb-2 postCreator">
@@ -151,7 +151,7 @@ const ForgotPasswordComp = () => {
                         <>
                           <p className="mb-1">
                             Resend Link
-                            <i class="bi bi-arrow-repeat ms-1"></i>
+                            <i className="bi bi-arrow-repeat ms-1"></i>
                           </p>{" "}
                         </>
                       ) : (

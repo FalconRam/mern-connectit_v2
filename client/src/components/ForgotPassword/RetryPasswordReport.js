@@ -9,7 +9,7 @@ const RetryPasswordReport = ({ handleRetry }) => {
           <p className="">Please click the Report Again, by clicking below</p>
         </div>
         <button className="btn report-btn" onClick={handleRetry}>
-          Report Again <i class="ms-2 bi bi-arrow-clockwise"></i>
+          Report Again <i className="ms-2 bi bi-arrow-clockwise"></i>
         </button>
       </div>
     </>

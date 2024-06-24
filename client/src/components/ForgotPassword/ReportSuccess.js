@@ -4,7 +4,7 @@ import check_img from "../../assets/check.png";
 const ReportSuccess = ({ history }) => {
   return (
     <div className="min-vh-100 p-3 d-flex flex-column justify-content-center align-items-center">
-      <img class="check-img" src={check_img} alt="Success-Check" />
+      <img className="check-img" src={check_img} alt="Success-Check" />
       <p className="text-muted mt-3">
         The Request has been reported,{" "}
         <b>
@@ -23,7 +23,7 @@ const ReportSuccess = ({ history }) => {
           className="btn btn-sm btn-success"
           onClick={() => history.push("/reset-account")}
         >
-          Reset Password<i class="bi bi-arrow-right ms-2"></i>
+          Reset Password<i className="bi bi-arrow-right ms-2"></i>
         </button>
       </div>
     </div>

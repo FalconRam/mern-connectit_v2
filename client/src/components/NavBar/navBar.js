@@ -28,8 +28,11 @@ const NavBar = () => {
   const location = useLocation();
   const history = useHistory();
 
+  const [showNotificationBox, setShowNotificationBox] = useState(false);
+
   useEffect(() => {
     user && dispatch(fetchNotificationCount());
+    setShowNotificationBox(false); // set false to show notif box on page change
   }, [location]);
 
   const { notificationCount } = useSelector((state) => state.notification);
@@ -53,8 +56,6 @@ const NavBar = () => {
   const [winHeight, setWinHeight] = useState(window.outerHeight);
   const [winWidth, setWinWidth] = useState(window.outerWidth);
 
-  const [showNotificationBox, setShowNotificationBox] = useState(false);
-
   // Get the Win Height & Width when the Win size changes
   // and remove the event - resize when page is unmounted
   useEffect(() => {
@@ -72,8 +73,10 @@ const NavBar = () => {
 
   // Set the boolean if the Win size is reduced below md
   useEffect(() => {
-    if (winHeight <= 1080 && winWidth <= 758) {
+    if (winHeight <= 1080 && winWidth <= 762) {
       setIsScreenBelowMd(true);
+      console.log("setting false");
+      setShowNotificationBox(false); // set false to show notif box on size change below md
     } else {
       setIsScreenBelowMd(false);
     }

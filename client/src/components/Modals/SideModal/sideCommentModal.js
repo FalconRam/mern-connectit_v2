@@ -52,10 +52,10 @@ const SideCommentModal = ({
             onClick={clearCmtReplyState}
           />
         </div>
-        {/* <div class="offcanvas-header">
+        {/* <div className="offcanvas-header">
           <button
             type="button"
-            class="btn-close"
+            className="btn-close"
             data-bs-dismiss="offcanvas"
             aria-label="Close"
           ></button>

@@ -20,8 +20,8 @@ const NotificationBox = ({ showNotificationBox, setShowNotificationBox }) => {
 
   return (
     <div className="notification">
-      <div class="card notification-card text-center">
-        <div className=" d-flex justify-content-between align-items-center m-2">
+      <div className="card notification-card text-center">
+        <div className="d-flex justify-content-between align-items-center m-2 mb-1">
           <button
             className="btn text-primary postCreator"
             onClick={openNotificationPage}
@@ -34,6 +34,7 @@ const NotificationBox = ({ showNotificationBox, setShowNotificationBox }) => {
             onClick={() => setShowNotificationBox(false)}
           />
         </div>
+        <div className="custom-divider-1 mb-2" />
         {isNotificationListLoading ? (
           <LoaderMini />
         ) : (

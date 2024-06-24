@@ -22,7 +22,7 @@ export const createNotificationService = async (type, data) => {
             profilePicture,
           },
         },
-        message: `${userName} Sent you Friend Request`,
+        message: `${name} sent you a Request`,
         actionURL: encodeURIComponent(`/profile/details?profileId=${userId}`),
       };
 

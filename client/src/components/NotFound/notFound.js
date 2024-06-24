@@ -12,7 +12,7 @@ const NotFound = () => {
       </p>
       <button
         type="button"
-        class="btn btn-primary btn-sm"
+        className="btn btn-primary btn-sm"
         onClick={() => history.push("/")}
       >
         Go back to Home
