@@ -77,3 +77,20 @@ export const sendRemoveFollowerAction = (id, profileId) => async (dispatch) => {
     toast.error("Something went wrong!");
   }
 };
+
+export const followRequestResponseAction = (payload) => async (dispatch) => {
+  try {
+    // dispatch({ type: START_FOllOW_UNFOLLOW_LOADING });
+
+    const { data } = await api.followRequestResponseAPI(payload);
+    // dispatch({ type: ACCEPT_FOLLOW_REQUEST, payload: data });
+
+    // dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    toast.error("Something went wrong!");
+  }
+};

@@ -10,8 +10,19 @@
 
 .notification-item {}
 
-.btn-sm-cutom {
+.btn-sm-custom {
     font-size: 0.5rem;
     padding: 0.2rem;
     border-radius: 10px;
+}
+
+.notification-unread {
+    background-color: #f3f2ef;
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.custom-divider-2 {
+    padding-top: 0.2px;
+    margin: 0.4rem 0 0;
 }

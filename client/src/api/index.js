@@ -184,13 +184,16 @@ export const sendUnFollowRequest = (id) => API.post(`/request/unFollow/${id}`);
 export const sendRemoveFollowerRequest = (id) =>
   API.post(`/request/removeFollower/${id}`);
 
+export const followRequestResponseAPI = (payload) =>
+  API.post("/request/response", payload);
+
 // Notification
 
 export const getNotificationCount = () => API.get("/notification/count");
 
 export const getNotificationsList = () => API.get("/notification/list");
 
-export const updateNotifications = (notificationId) =>
+export const updateReadNotificationAPI = (notificationId) =>
   API.post(`/notification/updateRead/${notificationId}`);
 
 // Chat & Messages

@@ -16,21 +16,28 @@ const MiniProfilePicture = ({
   post,
   isComment, // TODO: Check is the condition working as expected
   isSideNav = false, // TODO: Check is the condition working as expected
-  isNotification = false,
   comment,
   reply,
+  isNotification = false,
+  actionURL, // For Notification
+  setShowNotificationBox, // For Notification
 }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const profileId = comment ? comment?.commenterId : reply?.replierId;
   const history = useHistory();
 
   const handleProfile = () => {
+    if (isNotification) {
+      setShowNotificationBox(false);
+      history.push(decodeURIComponent(actionURL));
+      return;
+    }
+
     const routeProfileId = isComment
       ? profileId
       : isSideNav
       ? user._id
       : post.creator;
-
     history.push(`/profile/details?profileId=${routeProfileId}`);
   };
 

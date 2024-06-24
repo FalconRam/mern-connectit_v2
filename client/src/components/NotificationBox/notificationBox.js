@@ -31,7 +31,7 @@ const NotificationBox = ({ showNotificationBox, setShowNotificationBox }) => {
           <button
             type="button"
             className="btn-close"
-            onClick={openNotificationPage}
+            onClick={() => setShowNotificationBox(false)}
           />
         </div>
         {isNotificationListLoading ? (
@@ -39,7 +39,11 @@ const NotificationBox = ({ showNotificationBox, setShowNotificationBox }) => {
         ) : (
           <div className="mb-2">
             {notificationsList?.map((notification, index) => (
-              <NotificationItem notification={notification} key={index} />
+              <NotificationItem
+                notification={notification}
+                key={index}
+                setShowNotificationBox={setShowNotificationBox}
+              />
             ))}
           </div>
         )}
