@@ -20,6 +20,7 @@ export const getUsersBySearch = (search) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     dispatch({ type: END_FETCH_USERS_BY_SEARCH_LOADING });
     toast.error("Something went wrong!");
   }

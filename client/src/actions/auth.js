@@ -40,6 +40,7 @@ export const signUp = (formData, history) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
   }
 };
@@ -71,6 +72,7 @@ export const logIn = (formData, history) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
   }
 };
@@ -83,6 +85,7 @@ export const logOutUserSession = (sessionId) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
   }
 };
@@ -107,6 +110,7 @@ export const initiatePasswordReset =
           error.response.data.message) ||
         error.message ||
         error.toString();
+      console.error(message);
       toast.error("Something went wrong!");
       // dispatch({ type: FAILED_INITIATE_RESET, payload: email });
       return false;
@@ -136,6 +140,7 @@ export const validateResetId =
           error.response.data.message) ||
         error.message ||
         error.toString();
+      console.error(message);
       history.push("/reset-account");
       toast.error("Invalid Link, Please try again!");
     }
@@ -153,6 +158,7 @@ export const confirmResetPassword = (payload, history) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Error Occured, Please try again!");
   }
 };
@@ -168,6 +174,7 @@ export const reportPasswordRequest = (resetId) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     // toast.error("Error Occured, Please try again!");
     return false;
   }

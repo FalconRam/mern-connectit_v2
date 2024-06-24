@@ -15,8 +15,6 @@ export const sendFollowRequestAction = (id) => async (dispatch) => {
 
     const { data } = await api.sendFollowRequest(id);
     dispatch({ type: SEND_FOllOW_REQUEST, payload: data });
-
-    dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")
@@ -25,8 +23,10 @@ export const sendFollowRequestAction = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
   }
 };
 
@@ -36,8 +36,6 @@ export const sendUnFollowRequestAction = (id) => async (dispatch) => {
 
     const { data } = await api.sendUnFollowRequest(id);
     dispatch({ type: SEND_UNFOllOW_REQUEST, payload: data });
-
-    dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")
@@ -46,8 +44,10 @@ export const sendUnFollowRequestAction = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
   }
 };
 
@@ -73,6 +73,7 @@ export const sendRemoveFollowerAction = (id, profileId) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     dispatch({ type: END_FOllOW_UNFOLLOW_LOADING });
     toast.error("Something went wrong!");
   }
@@ -91,6 +92,7 @@ export const followRequestResponseAction = (payload) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
   }
 };

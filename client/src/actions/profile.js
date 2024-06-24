@@ -26,8 +26,6 @@ export const getFollowingAndFollowersCount = (id) => async (dispatch) => {
 
     const { data } = await api.fetchFollowersProfileDetails(id);
     dispatch({ type: GET_FOLLOWING_AND_FOLLOWERS_COUNT, payload: data });
-
-    dispatch({ type: END_PROFILE_LOADING });
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")
@@ -36,8 +34,10 @@ export const getFollowingAndFollowersCount = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_PROFILE_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_PROFILE_LOADING });
   }
 };
 
@@ -47,8 +47,6 @@ export const getFollowingProfileDetails = (id) => async (dispatch) => {
 
     const { data } = await api.fetchFollowingProfileDetails(id);
     dispatch({ type: GET_FOLLOWING_PROFILE_DETAILS, payload: data });
-
-    dispatch({ type: END_PROFILE_FOLLOWING_LIST_LOADING });
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")
@@ -57,8 +55,10 @@ export const getFollowingProfileDetails = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_PROFILE_FOLLOWING_LIST_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_PROFILE_FOLLOWING_LIST_LOADING });
   }
 };
 
@@ -71,8 +71,6 @@ export const getFollowersProfileDetails = (id) => async (dispatch) => {
       type: GET_FOLLOWERS_PROFILE_DETAILS,
       payload: data,
     });
-
-    dispatch({ type: END_PROFILE_FOLLOWERS_LIST_LOADING });
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")
@@ -81,8 +79,10 @@ export const getFollowersProfileDetails = (id) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_PROFILE_FOLLOWERS_LIST_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_PROFILE_FOLLOWERS_LIST_LOADING });
   }
 };
 
@@ -101,17 +101,11 @@ export const getProfileDetails = (id, isUser) => async (dispatch) => {
           ...data.data.userDetails,
         })
       );
-
       dispatch({ type: GET_USER_PROFILE_DETAILS, payload: data });
-
-      dispatch({ type: END_USER_PROFILE_LOADING });
     } else {
       dispatch({ type: START_PROFILE_LOADING });
-
       const { data } = await api.fetchProfileDetails(id, accessTokenFromCookie);
       dispatch({ type: GET_PROFILE_DETAILS, payload: data });
-
-      dispatch({ type: END_PROFILE_LOADING });
     }
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
@@ -121,9 +115,11 @@ export const getProfileDetails = (id, isUser) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
+    toast.error("Something went wrong!");
+  } finally {
     dispatch({ type: END_USER_PROFILE_LOADING });
     dispatch({ type: END_PROFILE_LOADING });
-    toast.error("Something went wrong!");
   }
 };
 
@@ -133,7 +129,6 @@ export const updateProfileDetails = (id, userData) => async (dispatch) => {
 
     const { data } = await api.updateProfileDetails(id, userData);
     dispatch({ type: UPDATE_PROFILE_DETAILS, payload: data });
-    dispatch({ type: END_PROFILE_LOADING });
 
     localStorage.setItem(
       "profile",
@@ -150,8 +145,10 @@ export const updateProfileDetails = (id, userData) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_PROFILE_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_PROFILE_LOADING });
   }
 };
 
@@ -162,8 +159,6 @@ export const updateProfilePassword =
 
       const { data } = await api.updateProfilePassword(id, newUpdatePassword);
       // dispatch({ type: UPDATE_PROFILE_PASSWORD, payload: data });
-
-      dispatch({ type: END_PROFILE_LOADING });
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message)
         if (error.response.data.message === "jwt expired")
@@ -174,8 +169,10 @@ export const updateProfilePassword =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      dispatch({ type: END_PROFILE_LOADING });
+      console.error(message);
       toast.error("Something went wrong!");
+    } finally {
+      dispatch({ type: END_PROFILE_LOADING });
     }
   };
 
@@ -185,8 +182,6 @@ export const updateProfilePictures = (id, newPictures) => async (dispatch) => {
 
     const { data } = await api.updateProfilePictures(id, newPictures);
     dispatch({ type: UPDATE_PROFILE_PICTURES, payload: data });
-
-    dispatch({ type: END_PROFILE_LOADING });
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message)
       if (error.response.data.message === "jwt expired")
@@ -195,7 +190,9 @@ export const updateProfilePictures = (id, newPictures) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_PROFILE_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_PROFILE_LOADING });
   }
 };

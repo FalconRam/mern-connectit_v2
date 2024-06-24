@@ -43,18 +43,15 @@ export const getPostsByFollowing = () => async (dispatch) => {
 
     const { data } = await api.fetchPostsByFollowing();
     dispatch({ type: FETCH_POSTS_BY_FOLLOWING, payload: data });
-
-    dispatch({ type: END_POST_LOADING });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_POST_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_POST_LOADING });
   }
 };
 
@@ -64,18 +61,15 @@ export const getPosts = (page) => async (dispatch) => {
 
     const { data } = await api.fetchPosts(page);
     dispatch({ type: FETCH_ALL_POSTS, payload: data });
-
-    dispatch({ type: END_POST_LOADING });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_POST_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_POST_LOADING });
   }
 };
 
@@ -93,19 +87,17 @@ export const getPostById = (id) => async (dispatch) => {
       accessTokenFromCookie
     );
     dispatch({ type: GET_PROFILE_DETAILS, payload: profileData });
-
-    dispatch({ type: END_POST_LOADING });
-    dispatch({ type: END_PROFILE_LOADING });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_POST_LOADING });
+    console.error(message);
+
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_POST_LOADING });
+    dispatch({ type: END_PROFILE_LOADING });
   }
 };
 
@@ -116,10 +108,7 @@ export const getCommentsWithProfilePicture =
 
       const { data } = await api.fetchCommentsByPostId(id);
       dispatch({ type: FETCH_COMMENT_BY_POST_ID, payload: data });
-
-      isLoad && dispatch({ type: END_FETCH_COMMENT_BY_POST_ID });
     } catch (error) {
-      dispatch({ type: END_FETCH_COMMENT_BY_POST_ID });
       if (error.response && error.response.data && error.response.data.message)
         if (error.response.data.message === "jwt expired")
           window.location.href = "/auth";
@@ -129,7 +118,10 @@ export const getCommentsWithProfilePicture =
           error.response.data.message) ||
         error.message ||
         error.toString();
+      console.error(message);
       toast.error("Something went wrong!");
+    } finally {
+      isLoad && dispatch({ type: END_FETCH_COMMENT_BY_POST_ID });
     }
   };
 
@@ -139,12 +131,10 @@ export const getRepliesWithProfilePicture =
       dispatch({ type: START_FETCH_REPLIES_BY_COMMENT });
 
       const { data } = await api.fetchRepliesByComment(commentId, postId);
-      dispatch({ type: END_FETCH_REPLIES_BY_COMMENT });
       dispatch({ type: FETCH_REPLIES_BY_COMMENT, payload: data });
 
       return data.data;
     } catch (error) {
-      dispatch({ type: END_FETCH_REPLIES_BY_COMMENT });
       if (error.response && error.response.data && error.response.data.message)
         if (error.response.data.message === "jwt expired")
           window.location.href = "/auth";
@@ -154,7 +144,10 @@ export const getRepliesWithProfilePicture =
           error.response.data.message) ||
         error.message ||
         error.toString();
+      console.error(message);
       toast.error("Something went wrong!");
+    } finally {
+      dispatch({ type: END_FETCH_REPLIES_BY_COMMENT });
     }
   };
 
@@ -164,18 +157,15 @@ export const getPostByUser = (id) => async (dispatch) => {
 
     const { data } = await api.fetchPostByUser(id);
     dispatch({ type: FETCH_POST_BY_USER, payload: data });
-
-    dispatch({ type: END_POST_LOADING });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_POST_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_POST_LOADING });
   }
 };
 
@@ -188,8 +178,6 @@ export const getSavedPosts =
       const { data } = await api.fetchSavedPosts();
 
       dispatch({ type: FETCH_SAVED_POST_BY_USER, payload: data.data });
-
-      loadingRequired && dispatch({ type: END_POST_LOADING });
     } catch (error) {
       const message =
         (error.response &&
@@ -197,8 +185,10 @@ export const getSavedPosts =
           error.response.data.message) ||
         error.message ||
         error.toString();
-      loadingRequired && dispatch({ type: END_POST_LOADING });
+      console.error(message);
       toast.error("Something went wrong!");
+    } finally {
+      loadingRequired && dispatch({ type: END_POST_LOADING });
     }
   };
 
@@ -210,18 +200,15 @@ export const getPostsBySearch = (search) => async (dispatch) => {
       data: { data },
     } = await api.fetchPostsBySearch(search);
     dispatch({ type: FETCH_BY_SEARCH, payload: data });
-
-    dispatch({ type: END_POST_LOADING });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
-    dispatch({ type: END_POST_LOADING });
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
+    dispatch({ type: END_POST_LOADING });
   }
 };
 
@@ -242,6 +229,7 @@ export const createPost = (post, history) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
   }
 
@@ -253,14 +241,13 @@ export const createPost = (post, history) => async (dispatch) => {
     });
     dispatch({ type: FETCH_POSTS_BY_FOLLOWING, payload: data });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
+  } finally {
   }
 };
 
@@ -271,17 +258,14 @@ export const updatePost = (id, post, history) => async (dispatch) => {
       success: "Updated Successfully 👌",
       error: "Updating Failed 🤯",
     });
-    // history.push(`/posts/${id}`);
     dispatch({ type: UPDATE_POST, payload: data });
     dispatch({ type: FETCH_POST_BY_ID, payload: data });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
   }
 };
@@ -291,13 +275,11 @@ export const deletePost = (id) => async (dispatch) => {
     await api.deletePost(id);
     dispatch({ type: DELETE_POST, payload: id });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
   }
 };
@@ -307,13 +289,11 @@ export const deleteUserPost = (id) => async (dispatch) => {
     await api.deletePost(id);
     dispatch({ type: DELETE_USER_POST, payload: id });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
   }
 };
@@ -323,13 +303,11 @@ export const likePost = (id) => async (dispatch) => {
     const { data } = await api.likePost(id);
     dispatch({ type: LIKE_POST, payload: data });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
   }
 };
@@ -339,13 +317,11 @@ export const unLikePost = (id) => async (dispatch) => {
     const { data } = await api.likePost(id);
     dispatch({ type: UNLIKE_POST, payload: data });
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message)
-      if (error.response.data.message === "jwt expired")
-        window.location.href = "/auth";
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
   }
 };
@@ -373,6 +349,7 @@ export const saveUnSavePost = (postId, shouldSave) => async (dispatch) => {
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    console.error(message);
     toast.error("Something went wrong!");
     return false;
   }
@@ -392,15 +369,13 @@ export const likeCommentReply =
       const comments = await api.fetchCommentsByPostId(postId);
       dispatch({ type: FETCH_COMMENT_BY_POST_ID, payload: comments.data });
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message)
-        if (error.response.data.message === "jwt expired")
-          window.location.href = "/auth";
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
+      console.error(message);
       toast.error("Something went wrong!");
     }
   };
@@ -412,15 +387,13 @@ export const commentPostWithUserDetails =
       dispatch({ type: COMMENT_POST_WITH_USER_DETAILS, payload: data });
       return data.data.commentsInfo;
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message)
-        if (error.response.data.message === "jwt expired")
-          window.location.href = "/auth";
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
+      console.error(message);
       toast.error("Something went wrong!");
     }
   };
@@ -432,15 +405,13 @@ export const submitReplyToCommentAction =
       dispatch({ type: SUBMIT_REPLY_TO_COMMENT_OR_REPLY, payload: data });
       return;
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message)
-        if (error.response.data.message === "jwt expired")
-          window.location.href = "/auth";
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
+      console.error(message);
       toast.error("Something went wrong!");
     }
   };
@@ -460,15 +431,13 @@ export const submitReplyToReplyAction =
       dispatch({ type: FETCH_REPLIES_BY_COMMENT, payload: replies.data });
       return;
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message)
-        if (error.response.data.message === "jwt expired")
-          window.location.href = "/auth";
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
+      console.error(message);
       toast.error("Something went wrong!");
     }
   };
@@ -488,6 +457,7 @@ export const deletePostCommentAction =
           error.response.data.message) ||
         error.message ||
         error.toString();
+      console.error(message);
       toast.error("Something went wrong!");
     }
   };
@@ -509,6 +479,7 @@ export const deletePostReplyAction =
           error.response.data.message) ||
         error.message ||
         error.toString();
+      console.error(message);
       toast.error("Something went wrong!");
     }
   };
