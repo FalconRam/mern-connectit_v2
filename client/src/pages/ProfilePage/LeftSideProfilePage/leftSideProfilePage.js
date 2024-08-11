@@ -1,142 +1,124 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Chat from "../../../components/Chat/chat";
-
-import "./leftSideProfilePage.css";
 import MiniProfilePicture from "../../../components/Shared/MiniProfilePicture/miniProfilePicture";
+import "./leftSideProfilePage.css";
 
 const LeftSideProfilePage = () => {
   const history = useHistory();
-
   const isChatPage = useLocation().pathname === "/chats";
 
   const [isScreenBelowMd, setIsScreenBelowMd] = useState(false);
-  const [winHeight, setWinHeight] = useState(window.outerHeight);
-  const [winWidth, setWinWidth] = useState(window.outerWidth);
 
-  // Get the Win Height & Width when the Win size changes
-  // and remove the event - resize when page is unmounted
   useEffect(() => {
     const handleResize = () => {
-      setWinHeight(window.outerHeight);
-      setWinWidth(window.outerWidth);
+      setIsScreenBelowMd(window.innerWidth <= 758);
     };
 
     window.addEventListener("resize", handleResize);
+    handleResize(); // Call once initially to set state
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  // Set the boolean if the Win size is reduced below md
-  useEffect(() => {
-    if (winHeight <= 1080 && winWidth <= 758) {
-      setIsScreenBelowMd(true);
-    } else {
-      setIsScreenBelowMd(false);
-    }
-  }, [winHeight, winWidth]);
+  const spanProps = !isScreenBelowMd
+    ? {
+        "data-bs-toggle": "offcanvas",
+        "data-bs-target": "#offcanvasWithBothOptions",
+        "aria-controls": "offcanvasWithBothOptions",
+      }
+    : {};
 
-  // set spanProps in the Message span tag only if Win size is above sm
-  let spanProps = {};
-  if (!isScreenBelowMd)
-    spanProps = {
-      "data-bs-toggle": "offcanvas",
-      "data-bs-target": "#offcanvasWithBothOptions",
-      "aria-controls": "offcanvasWithBothOptions",
-    };
-
-  const handleHome = () => {
-    history.push("/feeds");
+  const handleFunctions = {
+    feeds: { navigateTo: "/feeds" },
+    search: { navigateTo: "/search" },
+    chats: {
+      condition: !isChatPage && isScreenBelowMd,
+      navigateTo: "/chats",
+    },
+    notification: { navigateTo: "/notification" },
+    profileSettings: { navigateTo: "/profile/settings" },
   };
 
-  const handleSearch = () => {
-    history.push("/search");
-  };
+  const handleButton = useCallback(
+    (action) => {
+      if (action.condition === undefined || action.condition) {
+        history.push(action.navigateTo);
+      }
+    },
+    [history]
+  );
 
-  const handleMessages = () => {
-    // Push to path only if not a Chat page and Win is below md
-    isChatPage || (isScreenBelowMd && history.push("/chats"));
-  };
-
-  const handleNotification = () => {
-    history.push("/notification");
-  };
-
-  const handleSettings = () => {
-    history.push("/profile/settings");
-  };
+  const sideNavItems = useMemo(
+    () => [
+      {
+        name: "Home",
+        action: () => handleButton(handleFunctions.feeds),
+        icon: <i className="bi bi-house-door-fill sideNavIcon" />,
+      },
+      {
+        name: "Create",
+        otherAttributes: {
+          "data-bs-toggle": "modal",
+          "data-bs-target": "#createModal",
+        },
+        icon: <i className="bi bi-plus-circle-fill sideNavIcon" />,
+      },
+      {
+        name: "Search",
+        action: () => handleButton(handleFunctions.search),
+        icon: <i className="bi bi-search sideNavIcon" />,
+      },
+      {
+        name: "Messages",
+        action: () => handleButton(handleFunctions.chats),
+        otherAttributes: isChatPage ? {} : spanProps,
+        icon: <i className="bi bi-chat-fill sideNavIcon" />,
+      },
+      {
+        name: "Notification",
+        action: () => handleButton(handleFunctions.notification),
+        icon: <i className="bi bi-bell-fill sideNavIcon" />,
+      },
+      {
+        name: "Settings",
+        action: () => handleButton(handleFunctions.profileSettings),
+        icon: <i className="bi bi-gear-fill sideNavIcon" />,
+      },
+      {
+        icon: <MiniProfilePicture isSideNav={true} isComment={false} />,
+      },
+    ],
+    [handleButton, handleFunctions, isChatPage, spanProps]
+  );
 
   return (
     <>
-      <div className="">
-        <div className="nav flex-sm-row flex-md-column justify-content-between align-items-start gap-2 customMargin2 customFontSideNav">
-          <li className="nav-item p-2 text-dark">
-            <span onClick={handleHome} className="sideNavButton">
-              <i className="bi bi-house-door-fill"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
-                Home
-              </h6>
-            </span>
-          </li>
-          <li className="nav-item p-2 text-dark">
-            <span
-              className="sideNavButton"
-              data-bs-toggle="modal"
-              data-bs-target="#createModal"
-            >
-              <i className="bi bi-plus-circle-fill"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
-                Create
-              </h6>
-            </span>
-          </li>
-          <li className="nav-item p-2 text-dark">
-            <span onClick={handleSearch} className="sideNavButton">
-              <i className="bi bi-search"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
-                Search
-              </h6>
-            </span>
-          </li>
-          <li className="nav-item p-2 text-dark">
-            <span
-              className="sideNavButton"
-              {...(isChatPage || spanProps)}
-              onClick={handleMessages}
-            >
-              <i className="bi bi-chat-fill"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
-                Messages
-              </h6>
-            </span>
-          </li>
-          <li className="nav-item p-2 text-dark">
-            <span onClick={handleNotification} className="sideNavButton">
-              <i className="bi bi-bell-fill"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
-                Notification
-              </h6>
-            </span>
-          </li>
-          <li className="nav-item p-2 text-dark">
-            <span onClick={handleSettings} className="sideNavButton">
-              <i className="bi bi-gear-fill"></i>{" "}
-              <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
-                Settings
-              </h6>
-            </span>
-          </li>
-          {/* <div className=""> */}
-          <li className="nav-item p-2 text-dark">
-            <MiniProfilePicture isSideNav={true} isComment={false} />
-          </li>
-          {/* </div> */}
+      <div>
+        <div className="nav d-flex flex-sm-row flex-md-column justify-content-between align-items-start gap-2 customMargin2 customFontSideNav">
+          {sideNavItems.map((item, index) => (
+            <li className="nav-item p-2 text-dark" key={index}>
+              {item?.icon?.type?.name !== "MiniProfilePicture" ? (
+                <span
+                  onClick={item.action}
+                  className="sideNavButton"
+                  {...(item.otherAttributes || {})}
+                >
+                  {item.icon}
+                  <h6 className="d-lg-inline-block d-none d-sm-none d-md-none ms-2">
+                    {item.name}
+                  </h6>
+                </span>
+              ) : (
+                item.icon
+              )}
+            </li>
+          ))}
         </div>
       </div>
-      <Chat handleMessages={handleMessages} />
+      <Chat handleButton={() => handleButton(handleFunctions.notification)} />
     </>
   );
 };

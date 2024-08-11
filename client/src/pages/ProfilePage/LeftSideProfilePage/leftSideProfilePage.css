@@ -10,6 +10,12 @@
   cursor: pointer;
 }
 
+.sideNavIcon {
+  display: inline-block;
+  width: 27px;
+  height: 27px;
+}
+
 @media screen and (max-width: 576px) {
   .customMargin2 {
     margin-top: 0;

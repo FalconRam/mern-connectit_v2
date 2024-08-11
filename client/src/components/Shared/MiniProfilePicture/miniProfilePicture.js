@@ -89,6 +89,11 @@ const MiniProfilePicture = ({
       {!isSideNav && !isNotification && (
         <h6 className="mb-0 postCreator">{post?.name}</h6>
       )}
+      {isSideNav && (
+        <h6 className="d-lg-inline-block d-none d-sm-none d-md-none m-0">
+          {user?.name}
+        </h6>
+      )}
     </MiniProfilePictureWrapper>
   );
 };
