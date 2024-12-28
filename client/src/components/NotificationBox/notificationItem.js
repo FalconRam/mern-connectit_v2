@@ -5,8 +5,14 @@ import { useDispatch } from "react-redux";
 import MiniProfilePicture from "../Shared/MiniProfilePicture/miniProfilePicture";
 import { followRequestResponseAction } from "../../actions/request";
 import { updateReadNotificationAction } from "../../actions/notification";
+import moment from "moment";
 
-const NotificationItem = ({ notification, index, setShowNotificationBox }) => {
+const NotificationItem = ({
+  notification,
+  index,
+  setShowNotificationBox,
+  notificationPageMetaData,
+}) => {
   const [localNotification, setLocalNotification] = useState(notification);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -17,7 +23,7 @@ const NotificationItem = ({ notification, index, setShowNotificationBox }) => {
   //   return;
   // };
 
-  console.log(localNotification);
+  // console.log(localNotification);
 
   // const updateNotification = () => {
   //   const payload = {
@@ -49,13 +55,21 @@ const NotificationItem = ({ notification, index, setShowNotificationBox }) => {
       isAccepted: isAccept,
     };
 
-    dispatch(updateReadNotificationAction(readNotifPayload));
+    dispatch(
+      updateReadNotificationAction(readNotifPayload, {
+        include_count: true,
+        skip: notificationPageMetaData.n_skip,
+        limit: notificationPageMetaData.n_limit,
+      })
+    );
   };
 
   const handleRemoveFollower = () => {};
 
   const getButtonAction = () => {
-    if (localNotification?.metaData?.requestBy?.isAccepted === null) {
+    if (
+      typeof localNotification?.metaData?.requestBy?.isAccepted !== "boolean"
+    ) {
       return (
         <>
           <button
@@ -73,14 +87,14 @@ const NotificationItem = ({ notification, index, setShowNotificationBox }) => {
         </>
       );
     }
-    if (localNotification?.metaData?.requestBy?.isAccepted === true) {
+    if (!localNotification?.metaData?.requestBy?.isAccepted) {
       return (
         <>
           <button
-            className="btn btn-outline-success btn-sm-custom"
+            className="btn btn-outline-danger btn-sm-custom"
             onClick={() => handleRemoveFollower()}
           >
-            Remove
+            Unfollow
           </button>
         </>
       );
@@ -95,8 +109,9 @@ const NotificationItem = ({ notification, index, setShowNotificationBox }) => {
         localNotification={localNotification}
         isRead={localNotification?.isRead}
         setLocalNotification={setLocalNotification}
+        notificationPageMetaData={notificationPageMetaData}
       >
-        <div className="d-flex justify-content-center align-items-center gap-3">
+        <div className="d-flex justify-content-between align-items-center ms-2 me-2">
           <div className="notification-item d-flex justify-content-center align-items-center gap-2 likeBtn">
             <MiniProfilePicture
               post={localNotification?.metaData?.requestBy}
@@ -104,7 +119,12 @@ const NotificationItem = ({ notification, index, setShowNotificationBox }) => {
               actionURL={localNotification?.actionURL}
               setShowNotificationBox={setShowNotificationBox}
             />
-            <p className="mb-0 postCreator">{localNotification?.message}</p>
+            <div className="d-flex flex-column align-items-start">
+              <p className="mb-0 postCreator">{localNotification?.message}</p>
+              <p className="mb-0 commenterCmt text-muted">
+                {moment(localNotification?.createdAt).fromNow()}
+              </p>
+            </div>
           </div>
           <div className="d-flex justify-content-center align-items-center gap-1">
             {getButtonAction()}
@@ -119,6 +139,7 @@ const NotificationItemWrapper = ({
   localNotification,
   isRead,
   setLocalNotification,
+  notificationPageMetaData,
 }) => {
   const dispatch = useDispatch();
 
@@ -132,13 +153,20 @@ const NotificationItemWrapper = ({
       type: localNotification.type,
       isAccepted: null,
     };
-    !isRead && dispatch(updateReadNotificationAction(payload));
+    !isRead &&
+      dispatch(
+        updateReadNotificationAction(payload, {
+          include_count: true,
+          skip: notificationPageMetaData.n_skip,
+          limit: notificationPageMetaData.n_limit,
+        })
+      );
   };
   return (
     <div
       className={`${
         !isRead && "notification-unread"
-      } notification-wrapper custom-divider-2 p-1`}
+      } notification-wrapper  p-1`}
       onClick={handleUpdate}
     >
       <div className="m-1 mt-1">{children}</div>

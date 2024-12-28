@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   notificationCount: 0,
-  notificationsList: [],
+  notifications: {},
   isNotificationListLoading: false,
 };
 
@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
     case FETCH_NOTIFICATION_COUNT:
       return { ...state, notificationCount: action.payload.notificationCount };
     case FETCH_NOTIFICATIONS_LIST:
-      return { ...state, notificationsList: action.payload };
+      return { ...state, notifications: action.payload };
     default:
       return state;
   }

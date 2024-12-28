@@ -191,7 +191,10 @@ export const followRequestResponseAPI = (payload) =>
 
 export const getNotificationCount = () => API.get("/notification/count");
 
-export const getNotificationsList = () => API.get("/notification/list");
+export const getNotificationsList = ({ include_count, skip, limit }) =>
+  API.get(
+    `/notification/list?include_count=${include_count}&skip=${skip}&limit=${limit}`
+  );
 
 export const updateReadNotificationAPI = (payload) =>
   API.post("/notification/updateRead", payload);
