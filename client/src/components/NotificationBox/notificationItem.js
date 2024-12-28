@@ -40,9 +40,17 @@ const NotificationItem = ({
 
   const handleRequest = (isAccept) => {
     console.log(isAccept);
-    setLocalNotification((prev) => {
-      return { ...prev, isRead: true };
-    });
+    setLocalNotification((prev) => ({
+      ...prev,
+      isRead: true,
+      metaData: {
+        ...prev.metaData,
+        requestBy: {
+          ...prev.metaData.requestBy,
+          isAccepted: !!isAccept,
+        },
+      },
+    }));
     dispatch(
       followRequestResponseAction({
         notificationId: localNotification._id,
@@ -58,18 +66,27 @@ const NotificationItem = ({
     dispatch(
       updateReadNotificationAction(readNotifPayload, {
         include_count: true,
-        skip: notificationPageMetaData.n_skip,
-        limit: notificationPageMetaData.n_limit,
+        skip: notificationPageMetaData.skip,
       })
     );
   };
 
-  const handleRemoveFollower = () => {};
+  const handleRemoveFollower = (isAccept) => {
+    setLocalNotification((prev) => ({
+      ...prev,
+      isRead: true,
+      metaData: {
+        ...prev.metaData,
+        requestBy: {
+          ...prev.metaData.requestBy,
+          isAccepted: !!isAccept,
+        },
+      },
+    }));
+  };
 
   const getButtonAction = () => {
-    if (
-      typeof localNotification?.metaData?.requestBy?.isAccepted !== "boolean"
-    ) {
+    if (localNotification?.metaData?.requestBy?.isAccepted === null) {
       return (
         <>
           <button
@@ -87,12 +104,12 @@ const NotificationItem = ({
         </>
       );
     }
-    if (!localNotification?.metaData?.requestBy?.isAccepted) {
+    if (localNotification?.metaData?.requestBy?.isAccepted === true) {
       return (
         <>
           <button
             className="btn btn-outline-danger btn-sm-custom"
-            onClick={() => handleRemoveFollower()}
+            onClick={() => handleRemoveFollower(false)}
           >
             Unfollow
           </button>
@@ -157,8 +174,7 @@ const NotificationItemWrapper = ({
       dispatch(
         updateReadNotificationAction(payload, {
           include_count: true,
-          skip: notificationPageMetaData.n_skip,
-          limit: notificationPageMetaData.n_limit,
+          skip: notificationPageMetaData.skip,
         })
       );
   };

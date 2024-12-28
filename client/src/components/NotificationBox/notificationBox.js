@@ -11,18 +11,20 @@ const NotificationBox = ({ showNotificationBox, setShowNotificationBox }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isNotificationListLoading, notificationCount, notifications } =
-    useSelector((state) => state.notification);
+  const { isNotificationListLoading, notifications } = useSelector(
+    (state) => state.notification
+  );
 
+  const [localNotificationList, setLocalNotificationList] = useState([]);
   const [canLoadMore, setCanLoadMore] = useState(true);
   const [notificationPageMetaData, setNotificationPageMetaData] = useState({
-    n_skip: 3,
-    n_limit: 6,
+    skip: 3,
     totalPage: 0,
     notificationCount: 0,
   });
 
   useEffect(() => {
+    setLocalNotificationList(notifications?.notifications);
     setNotificationPageMetaData((prev) => ({
       ...prev,
       totalPage: Math.ceil(notifications.count / 3),
@@ -32,8 +34,10 @@ const NotificationBox = ({ showNotificationBox, setShowNotificationBox }) => {
 
   useEffect(() => {
     setCanLoadMore(
-      notificationPageMetaData.n_skip <
-        notificationPageMetaData.notificationCount
+      notificationPageMetaData.skip <=
+        notificationPageMetaData.notificationCount &&
+        notifications?.notifications?.length !== // from state (will have prev fetched notifications)
+          notificationPageMetaData.notificationCount
     );
   }, [notificationPageMetaData]);
 
@@ -44,18 +48,11 @@ const NotificationBox = ({ showNotificationBox, setShowNotificationBox }) => {
 
   const handleLoadMore = () => {
     if (canLoadMore) {
+      dispatch(fetchNotificationList(true, notificationPageMetaData.skip));
       setNotificationPageMetaData((prev) => ({
         ...prev,
-        n_skip: prev.n_skip + 3,
-        n_limit: prev.n_limit + 3,
+        skip: prev.skip + 3,
       }));
-      dispatch(
-        fetchNotificationList(
-          true,
-          notificationPageMetaData.n_skip,
-          notificationPageMetaData.n_limit
-        )
-      );
     }
   };
 
@@ -80,7 +77,7 @@ const NotificationBox = ({ showNotificationBox, setShowNotificationBox }) => {
           <LoaderMini />
         ) : (
           <div className="">
-            {notifications.notifications?.map((notification, index) => (
+            {localNotificationList?.map((notification, index) => (
               <NotificationItem
                 notification={notification}
                 key={index}

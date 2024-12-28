@@ -26,7 +26,7 @@ export const fetchNotificationCount = () => async (dispatch) => {
 };
 
 export const fetchNotificationList =
-  (include_count = true, skip = 0, limit = 3) =>
+  (include_count = true, skip = 0) =>
   async (dispatch) => {
     try {
       dispatch({
@@ -35,7 +35,7 @@ export const fetchNotificationList =
       const { data } = await api.getNotificationsList({
         include_count,
         skip,
-        limit,
+        limit: 3,
       });
       dispatch({
         type: FETCH_NOTIFICATIONS_LIST,
@@ -63,13 +63,15 @@ export const updateReadNotificationAction =
       const { data: updateNotificationResp } =
         await api.updateReadNotificationAPI(payload);
 
-      // const { data: notificationListResp } = await api.getNotificationsList(
-      //   notificationPageMetaData
-      // );
-      // dispatch({
-      //   type: FETCH_NOTIFICATIONS_LIST,
-      //   payload: notificationListResp.data,
-      // });
+      const { data: notificationListResp } = await api.getNotificationsList({
+        ...notificationPageMetaData,
+        skip: 0,
+        limit: (notificationPageMetaData.skip / 3) * 3,
+      });
+      dispatch({
+        type: FETCH_NOTIFICATIONS_LIST,
+        payload: { ...notificationListResp.data, clearOld: true },
+      });
 
       const { data: notificationCount } = await api.getNotificationCount();
       dispatch({
