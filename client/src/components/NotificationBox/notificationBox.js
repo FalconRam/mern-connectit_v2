@@ -1,60 +1,71 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import "./notificationBox.css";
-import { useDispatch, useSelector } from "react-redux";
-import LoaderMini from "../Shared/utils/loaderMini";
-import NotificationItem from "./notificationItem";
-import { fetchNotificationList } from "../../actions/notification";
+import RequestNotification from "./requestNotification";
+import MessageNotification from "./messageNotification";
 
+const notificationsTypes = ["messageNotification", "followRequests"];
+
+// Tab Navigation Component
+const TabNavigation = ({ activeTab, setActiveTab, tabs }) => (
+  <ul
+    className="nav nav-tabs text-center postCreator"
+    id="myTab"
+    role="tablist"
+  >
+    {tabs.map((tab, index) => (
+      <li className="nav-item" role="presentation" key={tab}>
+        <button
+          className={activeTab === tab ? "nav-link active" : "nav-link"}
+          id={`${tab}-tab`}
+          data-bs-toggle="tab"
+          data-bs-target={`#${tab}-tab-pane`}
+          type="button"
+          role="tab"
+          aria-controls={`${tab}-tab-pane`}
+          aria-selected={activeTab === tab}
+          onClick={() => setActiveTab(tab)}
+        >
+          {index === 0 ? "Notifications" : "Follow Requests"}
+        </button>
+      </li>
+    ))}
+  </ul>
+);
+
+// NotificationBox Component
 const NotificationBox = ({ showNotificationBox, setShowNotificationBox }) => {
-  const dispatch = useDispatch();
   const history = useHistory();
+  const [tab, setTab] = useState(notificationsTypes[0]);
 
   const { isNotificationListLoading, notifications } = useSelector(
     (state) => state.notification
   );
 
-  const [localNotificationList, setLocalNotificationList] = useState([]);
-  const [canLoadMore, setCanLoadMore] = useState(true);
-  const [notificationPageMetaData, setNotificationPageMetaData] = useState({
-    skip: 3,
-    totalPage: 0,
-    notificationCount: 0,
-  });
-
-  useEffect(() => {
-    setLocalNotificationList(notifications?.notifications);
-    setNotificationPageMetaData((prev) => ({
-      ...prev,
-      totalPage: Math.ceil(notifications.count / 3),
-      notificationCount: notifications.count,
-    }));
-  }, [isNotificationListLoading]);
-
-  useEffect(() => {
-    setCanLoadMore(
-      notificationPageMetaData.skip <=
-        notificationPageMetaData.notificationCount &&
-        notifications?.notifications?.length !== // from state (will have prev fetched notifications)
-          notificationPageMetaData.notificationCount
+  const { messageNotifications, requestNotifications } = useMemo(() => {
+    return notifications?.notifications?.reduce(
+      (acc, notif) => {
+        if (notif.type === "request") acc.requestNotifications.push(notif);
+        else acc.messageNotifications.push(notif);
+        return acc;
+      },
+      {
+        messageNotifications: [],
+        requestNotifications: [],
+      }
     );
-  }, [notificationPageMetaData]);
+  }, [notifications]);
 
-  const openNotificationPage = () => {
+  const openNotificationPage = useCallback(() => {
     history.push("/notification");
     setShowNotificationBox(false);
-  };
+  }, [history, setShowNotificationBox]);
 
-  const handleLoadMore = () => {
-    if (canLoadMore) {
-      dispatch(fetchNotificationList(true, notificationPageMetaData.skip));
-      setNotificationPageMetaData((prev) => ({
-        ...prev,
-        skip: prev.skip + 3,
-      }));
-    }
-  };
+  const closeNotificationBox = useCallback(() => {
+    setShowNotificationBox(false);
+  }, [setShowNotificationBox]);
 
   return (
     <div className="notification">
@@ -69,31 +80,33 @@ const NotificationBox = ({ showNotificationBox, setShowNotificationBox }) => {
           <button
             type="button"
             className="btn-close"
-            onClick={() => setShowNotificationBox(false)}
+            onClick={closeNotificationBox}
           />
         </div>
         <div className="custom-divider-1 mb-2" />
-        {isNotificationListLoading ? (
-          <LoaderMini />
+        <TabNavigation
+          activeTab={tab}
+          setActiveTab={setTab}
+          tabs={notificationsTypes}
+        />
+        {tab === notificationsTypes[0] ? (
+          <MessageNotification
+            setShowNotificationBox={setShowNotificationBox}
+            isNotificationListLoading={isNotificationListLoading}
+            notifications={{
+              ...notifications,
+              notifications: messageNotifications,
+            }}
+          />
         ) : (
-          <div className="">
-            {localNotificationList?.map((notification, index) => (
-              <NotificationItem
-                notification={notification}
-                key={index}
-                setShowNotificationBox={setShowNotificationBox}
-                notificationPageMetaData={notificationPageMetaData}
-              />
-            ))}
-            <p
-              className={`mb-1 mt-1 eyeButton commenterCmt ${
-                !canLoadMore ? "text-muted" : ""
-              }`}
-              onClick={handleLoadMore}
-            >
-              {canLoadMore ? "Load More..." : "No More Notifications"}
-            </p>
-          </div>
+          <RequestNotification
+            setShowNotificationBox={setShowNotificationBox}
+            isNotificationListLoading={isNotificationListLoading}
+            notifications={{
+              ...notifications,
+              notifications: requestNotifications,
+            }}
+          />
         )}
       </div>
     </div>
