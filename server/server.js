@@ -22,9 +22,25 @@ app.use(
 );
 
 // CORS are added in EC2's nginx, hence only this add cors on local
-if (process.env.NODE_ENV !== "production") app.use(cors());
+// if (process.env.NODE_ENV !== "production") app.use(cors());
 
 // app.use(cors({ origin: "https://connectit-v2.vercel.app" }));
+
+const allowedOrigins = JSON.parse(JSON.stringify(process.env.ALLOWED_ORGINS));
+if (!allowedOrigins.length > 0) throw new Error("Allowed Origins not set");
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 // api Routes
 app.use(rootRoutes);

@@ -10,7 +10,8 @@ import { tokenMiddleware } from "../middleware/tokenMiddleware";
 //     : process.env.REACT_APP_PRODUCTION_BE_URL;
 
 let localURL = "http://localhost:5000/";
-let productionURL = "https://connectit-v2.ramvh.in/"; // Own Domain
+let productionURL = process.env.REACT_APP_PRODUCTION_BE_URL;
+// "https://connectit-v2.ramvh.in/"; // Own Domain
 // let productionURL = "https://connectit-v2-api.onrender.com/"; // Render
 
 export let URL =
